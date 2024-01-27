@@ -73,7 +73,7 @@ const AdminLayout: FC<Props> = ({ children }) => {
             <div className='relative h-full bg-white md:py-10'>
                <div
                   onClick={() => setShowSidebar(!showSidebar)}
-                  className={`absolute right-[-15px] top-[100px] hidden aspect-square ${
+                  className={`absolute  right-[-15px] top-[100px] hidden aspect-square ${
                      showSidebar ? 'rotate-90' : '-rotate-90'
                   } cursor-pointer place-items-center rounded-full border-[1px] border-gray-300 bg-gray-50 p-2 md:grid`}
                >
