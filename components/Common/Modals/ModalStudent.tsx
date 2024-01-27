@@ -13,7 +13,6 @@ const style = {
   height: "70%", // Set height to 100%
   overflowY: "auto",
   bgcolor: "#fff",
-  border: "1px solid #000",
   boxShadow: 24,
   p: 4,
 };
