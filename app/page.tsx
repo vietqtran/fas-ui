@@ -27,6 +27,13 @@ export default function Home() {
             <div className='cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline'>
                <h2>Attendance Report</h2>
             </div>
+
+            <div className='cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline'>
+               <h2>View Schedule</h2>
+            </div>
+            <div className='cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline'>
+               <h2>Attendance Report</h2>
+            </div>
          </div>
       </div>
    )
