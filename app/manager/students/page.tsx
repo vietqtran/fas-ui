@@ -7,7 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModalStudent from "@/components/Common/Modals/ModalStudent";
 import AddIcon from "@mui/icons-material/Add";
-import AdminLayout from "@/components/Common/Layouts/AdminLayout";
+import ManagerLayout from "@/components/Common/Layouts/ManagerLayout";
 export default function page() {
   const {
     students,
@@ -129,7 +129,7 @@ export default function page() {
   console.log(students);
 
   return (
-    <AdminLayout>
+    <ManagerLayout>
       <div className="container">
         <h1 className="text-3xl font-bold my-8">List of Students</h1>
         <div className="flex justify-end">
@@ -167,6 +167,6 @@ export default function page() {
           />
         </div>
       </div>
-    </AdminLayout>
+    </ManagerLayout>
   );
 }
