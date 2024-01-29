@@ -1,9 +1,15 @@
+"use client";
+
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import useMajor from "@/hooks/Major";
+import useStudent from "@/hooks/Student";
+import { log } from "util";
+import { uploadToCloudinary } from "@/utils/uploadToCloudinary";
+import { getStudentById } from "@/helpers/api/student";
+import { FormControl, MenuItem, TextField } from "@mui/material";
+
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -20,10 +26,80 @@ interface Props {
   children?: React.ReactNode;
   open: boolean;
   handleClose: () => void;
+  id: string;
+  action: string;
 }
 
 export default function ModalStudent(props: Props) {
-  const { open, handleClose } = props;
+  const { open, handleClose, id, action} = props;
+  const { majors } = useMajor();
+  const [image, setImage] = React.useState("");
+
+  const {
+    firstName,
+    setFirstName,
+    middleName,
+    setMiddleName,
+    lastName,
+    setLastName,
+    birthDay,
+    setBirthDay,
+    phone,
+    setPhone,
+    majorId,
+    setMajorId,
+    email,
+    setEmail,
+    studentCode,
+    setStudentCode,
+    username,
+    setUsername,
+    address,
+    setAddress,
+    profileImage,
+    setProfileImage,
+    createStudent,
+    fetchStudents,
+    getStudent,
+    setId,
+    handleUpdateStudent,
+  } = useStudent();
+
+  const getStudentById = async (id) => {
+    const data = await getStudent(id);
+    setId(data?.id);
+    setFirstName(data?.firstName);
+    setMiddleName(data?.middleName);
+    setLastName(data?.lastName);
+    setBirthDay(data?.birthDay.split("T")[0]);
+    setPhone(data?.phone);
+    setMajorId(data?.major.id);
+    setEmail(data?.email);
+    setStudentCode(data?.studentCode);
+    setUsername(data?.username);
+    setAddress(data?.address);
+    setProfileImage(data?.profileImage);
+    setImage(data?.profileImage);
+  };
+  React.useEffect(() => {
+    getStudentById(id);
+  }, [id]);
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    const upload = await uploadToCloudinary(e.target.files[0], "image");
+    const imageUrl = URL.createObjectURL(file);
+    setImage(imageUrl);
+    setProfileImage(upload);
+  };
+
+  const handleSubmit = async (e) => {
+    createStudent(e);
+  };
+
+  const handleUpdate = async (e) => {
+    handleUpdateStudent(e);
+  };
 
   return (
     <div>
@@ -38,228 +114,235 @@ export default function ModalStudent(props: Props) {
             <div className="space-y-12">
               <div className="border-b border-gray-900/10 pb-12">
                 <h2 className="text-base font-semibold leading-7 text-gray-900">
-                  Personal Information
+                  Student Information
                 </h2>
-                <p className="mt-1 text-sm leading-6 text-gray-600">
-                  Use a permanent address where you can receive mail.
-                </p>
-
                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                   <div className="sm:col-span-2">
-                    <label
-                      htmlFor="first-name"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      First name
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        type="text"
-                        name="first-name"
-                        id="first-name"
-                        autoComplete="given-name"
-                        className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="sm:col-span-2">
-                    <label
-                      htmlFor="middle-name"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Middle name
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        type="text"
-                        name="middle-name"
-                        id="middle-name"
-                        autoComplete="family-name"
-                        className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="sm:col-span-2">
-                    <label
-                      htmlFor="last-name"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Last name
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        type="text"
-                        name="last-name"
-                        id="last-name"
-                        autoComplete="family-name"
-                        className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
-                  <div className="sm:col-span-2">
-                    <label
-                      htmlFor="birth-day"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Birth Day
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        type="date"
-                        name="birth-day"
-                        id="birth-day"
-                        autoComplete="family-name"
-                        className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
-                  <div className="sm:col-span-2">
-                    <label
-                      htmlFor="phone"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Phone
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        type="text"
-                        name="phone"
-                        id="phone"
-                        autoComplete="family-name"
-                        className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
-                  <div className="sm:col-span-2">
-                    <label
-                      htmlFor="major"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Major
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        type="text"
-                        name="major"
-                        id="major"
-                        autoComplete="family-name"
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="sm:col-span-3">
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Email address
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        autoComplete="email"
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="sm:col-span-3">
-                    <label
-                      htmlFor="country"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Country
-                    </label>
-                    <div className="mt-2">
-                      <select
-                        id="country"
-                        name="country"
-                        autoComplete="country-name"
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="first-name"
+                        className="block text-sm font-medium leading-6 text-gray-900"
                       >
-                        <option>United States</option>
-                        <option>Canada</option>
-                        <option>Mexico</option>
-                      </select>
-                    </div>
+                        First Name
+                      </label>
+
+                      <TextField
+                        size="small"
+                        className="mt-2"
+                        type="text"
+                        value={firstName}
+                        disabled={action === "view"}
+                        onChange={(e) => setFirstName(e.target.value)}
+                      />
+                    </FormControl>
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="middle-name"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Middle Name
+                      </label>
+                      <TextField
+                        size="small"
+                        className="mt-2"
+                        type="text"
+                        value={middleName}
+                        disabled={action === "view"}
+                        onChange={(e) => setMiddleName(e.target.value)}
+                      />
+                    </FormControl>
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="last-name"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Last Name
+                      </label>
+                      <TextField
+                        size="small"
+                        className="mt-2"
+                        type="text"
+                        value={lastName}
+                        disabled={action === "view"}
+                        onChange={(e) => setLastName(e.target.value)}
+                      />
+                    </FormControl>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="birth-day"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Birth Day
+                      </label>
+
+                      <TextField
+                        size="small"
+                        className="mt-2"
+                        type="date"
+                        value={birthDay}
+                        disabled={action === "view"}
+                        onChange={(e) => setBirthDay(e.target.value)}
+                      />
+                    </FormControl>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="phone"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Phone
+                      </label>
+
+                      <TextField
+                        size="small"
+                        className="mt-2"
+                        type="text"
+                        value={phone}
+                        disabled={action === "view"}
+                        onChange={(e) => setPhone(e.target.value)}
+                      />
+                    </FormControl>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="major"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Major
+                      </label>
+                      <TextField
+                        className="mt-2"
+                        select
+                        size="small"
+                        value={majorId}
+                        disabled={action === "view"}
+                        onChange={(e) => setMajorId(e.target.value)}
+                      >
+                        {majors &&
+                          majors.map((item, index) => (
+                            <MenuItem
+                              key={item.id}
+                              value={item.id}
+                              selected={majorId == item.id}
+                            >
+                              {item.name}
+                            </MenuItem>
+                          ))}
+                      </TextField>
+                    </FormControl>
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="email"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Email address
+                      </label>
+
+                      <TextField
+                        size="small"
+                        className="mt-2"
+                        type="text"
+                        value={email}
+                        disabled={action === "view"}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                    </FormControl>
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="code"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Student Code
+                      </label>
+
+                      <TextField
+                        size="small"
+                        className="mt-2"
+                        type="text"
+                        value={studentCode}
+                        disabled={action === "view"}
+                        onChange={(e) => setStudentCode(e.target.value)}
+                      />
+                    </FormControl>
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="username"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Username
+                      </label>
+                      <TextField
+                        size="small"
+                        className="mt-2"
+                        type="text"
+                        value={username}
+                        disabled={action === "view"}
+                        onChange={(e) => setUsername(e.target.value)}
+                      />
+                    </FormControl>
+                  </div>
+
+                  <div className="col-span-full">
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="street-address"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Street address
+                      </label>
+                      <TextField
+                        size="small"
+                        className="mt-2"
+                        type="text"
+                        value={address}
+                        disabled={action === "view"}
+                        onChange={(e) => setAddress(e.target.value)}
+                      />
+                    </FormControl>
                   </div>
 
                   <div className="col-span-full">
                     <label
-                      htmlFor="street-address"
+                      htmlFor="photo"
                       className="block text-sm font-medium leading-6 text-gray-900"
                     >
-                      Street address
+                      Photo
                     </label>
-                    <div className="mt-2">
+                    <div className="mt-2 flex items-center gap-x-3">
                       <input
-                        type="text"
-                        name="street-address"
-                        id="street-address"
-                        autoComplete="street-address"
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        type="file"
+                        disabled={action === "view"}
+                        accept="image/*" // Limit file types to images
+                        onChange={handleImageUpload} // Handle file upload in a function // Hide the input visually
+                        id="upload-image-input" // Assign an ID for the label to refer to
+                        className="block w-full text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
                   </div>
-
-                  <div className="sm:col-span-2 sm:col-start-1">
-                    <label
-                      htmlFor="city"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      City
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        type="text"
-                        name="city"
-                        id="city"
-                        autoComplete="address-level2"
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
+                  {image && (
+                    <div className="col-span-full">
+                      <img src={image} width={180} height={200} />
                     </div>
-                  </div>
-
-                  <div className="sm:col-span-2">
-                    <label
-                      htmlFor="region"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      State / Province
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        type="text"
-                        name="region"
-                        id="region"
-                        autoComplete="address-level1"
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="sm:col-span-2">
-                    <label
-                      htmlFor="postal-code"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      ZIP / Postal code
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        type="text"
-                        name="postal-code"
-                        id="postal-code"
-                        autoComplete="postal-code"
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -268,15 +351,19 @@ export default function ModalStudent(props: Props) {
               <button
                 type="button"
                 className="text-sm font-semibold leading-6 text-gray-900"
+                onClick={handleClose}
               >
                 Cancel
               </button>
-              <button
-                type="submit"
-                className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Save
-              </button>
+              {action != "view" && (
+                <button
+                  type="button"
+                  onClick={id ? handleUpdate : handleSubmit}
+                  className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  Save
+                </button>
+              )}
             </div>
           </form>
         </Box>
