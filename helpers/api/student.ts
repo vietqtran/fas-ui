@@ -16,6 +16,14 @@ export const deleteStudentById = (id: string) => {
    return instance.put(`/${END_POINT.DELETE_STUDENT}/${id}`)
 }
 
-export const getStudent = (id: string) => {
-    return instance.get(`/${END_POINT.GET_STUDENT}/${id}`)
- }
+export const getStudentById = (id: string) => {
+   return instance.get(`/${END_POINT.GET_STUDENT}/${id}`)
+}
+
+export const addStudent = (studentData: Student) => {
+   return instance.post(`/${END_POINT.CREATE_STUDENT}`, studentData)
+}
+
+export const updateStudent = (id: string, studentData: Student) => {
+   return instance.put(`/${END_POINT.UPDATE_STUDENT}/${id}`, studentData)
+}

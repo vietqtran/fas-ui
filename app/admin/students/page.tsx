@@ -6,17 +6,47 @@ import useStudent from "@/hooks/Student";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModalStudent from "@/components/Common/Modals/ModalStudent";
-import AddIcon from '@mui/icons-material/Add';
-
+import AddIcon from "@mui/icons-material/Add";
 export default function page() {
-  const { students, setStudents, deleteStudent } = useStudent();
+  const {
+    students,
+    setStudents,
+    deleteStudent,
+    getStudent,
+    setFirstName,
+    setMiddleName,
+    setLastName,
+    setBirthDay,
+    setPhone,
+    setMajorId,
+    setEmail,
+    setStudentCode,
+    setUsername,
+    setAddress,
+    setProfileImage,
+    firstName,
+  } = useStudent();
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = () => {
+    setOpen(true);
+    setAction("create");
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const [student, setStudent] = React.useState({});
+  const [id, setId] = React.useState("");
+  const [action, setAction] = React.useState("");
+  const handleView = async (idStudent: string) => {
+    setAction("view");
+    setId(idStudent);
+    setOpen(true);
+  };
 
-  const handleUpdate = (id: string) => {
-    // Handle update logic here
-    console.log(`Update button clicked for row with ID: ${id}`);
+  const handleUpdate = async (idStudent: string) => {
+    setAction("update");
+    setId(idStudent);
+    setOpen(true);
   };
 
   const handleDelete = (id: string) => {
@@ -27,8 +57,17 @@ export default function page() {
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 100 },
+    {
+      field: "studentCode",
+      headerName: "Code",
+      width: 100,
+      renderCell: (params) => (
+        <div color="primary" onClick={() => handleView(params.row.id)}>
+          {params.row.studentCode}
+        </div>
+      ),
+    },
     { field: "email", headerName: "Email", width: 200 },
-    { field: "studentCode", headerName: "Code", width: 100 },
     { field: "firstName", headerName: "First Name", width: 100 },
     { field: "middleName", headerName: "Middle Name", width: 150 },
     { field: "lastName", headerName: "Last Name", width: 100 },
@@ -61,11 +100,12 @@ export default function page() {
       field: "major",
       headerName: "Major",
       width: 70,
+      valueGetter: (params: GridValueGetterParams) => params.row.major?.code,
     },
     {
       field: "action",
       headerName: "Action",
-      width: 100,
+      width: 110,
       disableColumnMenu: true,
       renderCell: (params) => (
         <div className="flex gap-3">
@@ -85,8 +125,8 @@ export default function page() {
       ),
     },
   ];
-
   console.log(students);
+
   return (
     <div className="container">
       <h1 className="text-3xl font-bold my-8">List of Students</h1>
@@ -95,7 +135,7 @@ export default function page() {
           className="flex items-center gap-2 mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md"
           onClick={() => handleOpen()}
         >
-          <AddIcon/>
+          <AddIcon />
           Add new student
         </button>
       </div>
@@ -109,8 +149,20 @@ export default function page() {
             },
           }}
           pageSizeOptions={[5, 10]}
+          sx={{
+            ".MuiDataGrid-columnHeader": {
+              outline: "none !important",
+            },
+          }}
+          showColumnVerticalBorder={true}
+          showCellVerticalBorder={true}
         />
-        <ModalStudent open={open} handleClose={handleClose} />
+        <ModalStudent
+          open={open}
+          handleClose={handleClose}
+          id={id}
+          action={action}
+        />
       </div>
     </div>
   );
