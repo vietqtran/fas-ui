@@ -1,13 +1,16 @@
 import { Bounce, toast } from 'react-toastify'
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { login, loginWithGoogleAPI } from '@/helpers/api/login'
 import { use, useEffect, useState } from 'react'
 
 import { auth } from '@/helpers/firebase'
 import { getAllCampuses } from '@/helpers/api/campus'
 import { getAllRoles } from '@/helpers/api/role'
-import { login } from '@/helpers/api/login'
+import { useRouter } from 'next/navigation'
 
 export const useLogin = () => {
+   const router = useRouter()
+
    const [roles, setRoles] = useState([])
    const [campuses, setCampuses] = useState([])
 
@@ -62,20 +65,41 @@ export const useLogin = () => {
       if (!loginResponse) {
          toast.error('Login failed')
       } else {
+         localStorage.setItem('accessToken', loginResponse.data.accessToken)
          console.log(loginResponse)
+         router.push('/')
       }
    }
 
-   const loginWithGoogle = () => {
-      const provider = new GoogleAuthProvider()
-      signInWithPopup(auth, provider)
-         .then((result) => {
-            const email = result.user.email
-            toast.info(email)
+   const loginWithGoogle = async () => {
+      try {
+         if (!campusId) {
+            toast.error('Please select a campus')
+            return
+         }
+
+         const provider = new GoogleAuthProvider()
+         const result = await signInWithPopup(auth, provider)
+         const email = result.user.email
+
+         const loginResponse = await loginWithGoogleAPI({
+            campusId: campusId,
+            email: email
          })
-         .catch((error) => {
-            toast.error(error.message)
-         })
+
+         if (!loginResponse) {
+            toast.error('Login failed')
+         } else {
+            localStorage.setItem('accessToken', loginResponse.data.accessToken)
+            console.log(loginResponse)
+            router.push('/')
+         }
+      } catch (error) {
+         console.error('Error during Google login:', error)
+         toast.error(
+            'An error occurred during Google login. Please check again.'
+         )
+      }
    }
 
    console.log(roles)

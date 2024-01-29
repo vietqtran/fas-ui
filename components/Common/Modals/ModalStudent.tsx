@@ -4,11 +4,10 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import useMajor from "@/hooks/Major";
-import useStudent from "@/hooks/Student";
-import { log } from "util";
+
 import { uploadToCloudinary } from "@/utils/uploadToCloudinary";
-import { getStudentById } from "@/helpers/api/student";
 import { FormControl, MenuItem, TextField } from "@mui/material";
+import useStudent from "@/hooks/Student";
 
 const style = {
   position: "absolute" as "absolute",
@@ -71,6 +70,8 @@ export default function ModalStudent(props: Props) {
   } = useStudent();
 
   const getStudentById = async (id) => {
+    console.log(campuses);
+    
     const data = await getStudent(id);
     setId(data?.id);
     setFirstName(data?.firstName);
