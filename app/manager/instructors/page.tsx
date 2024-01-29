@@ -10,7 +10,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import ModalInstructor from "@/components/Common/Modals/ModalInsturctor";
-import AdminLayout from "@/components/Common/Layouts/AdminLayout";
+import ManagerLayout from "@/components/Common/Layouts/ManagerLayout";
 
 interface Props { }
 
@@ -111,7 +111,7 @@ export default function page(props: Props) {
   }
 
   return (
-    <AdminLayout>
+    <ManagerLayout>
       <div className="container p-5">
         <h1 className="text-3xl font-semibold text-gray-800">List Of Instructors</h1>
 
@@ -182,6 +182,6 @@ export default function page(props: Props) {
         {/* Modal Instructor */}
         <ModalInstructor open={open} handleClose={handleClose} />
       </div>
-    </AdminLayout>
+    </ManagerLayout>
   );
 }

@@ -1,13 +1,13 @@
-import AdminLayout from '@/components/Common/Layouts/AdminLayout'
+import ManagerLayout from '@/components/Common/Layouts/ManagerLayout'
 import React from 'react'
 
-interface Props {}
+interface Props { }
 
 const AdminPage = (props: Props) => {
    return (
-      <AdminLayout>
+      <ManagerLayout>
          <div>Admin Page</div>
-      </AdminLayout>
+      </ManagerLayout>
    )
 }
 
