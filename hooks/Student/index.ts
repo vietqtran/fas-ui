@@ -73,8 +73,6 @@ const useStudent = () => {
 
     const getStudent = async (id: string) => {
         const response = await getStudentById(id).then((res) => res);
-        console.log(response.data);
-
         if (response && response?.code === "SUCCESS") {
             toast.success(response?.message);
             return response.data;

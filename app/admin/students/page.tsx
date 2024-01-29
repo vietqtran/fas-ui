@@ -7,6 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModalStudent from "@/components/Common/Modals/ModalStudent";
 import AddIcon from "@mui/icons-material/Add";
+import AdminLayout from "@/components/Common/Layouts/AdminLayout";
 export default function page() {
   const {
     students,
@@ -128,42 +129,44 @@ export default function page() {
   console.log(students);
 
   return (
-    <div className="container">
-      <h1 className="text-3xl font-bold my-8">List of Students</h1>
-      <div className="flex justify-end">
-        <button
-          className="flex items-center gap-2 mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md"
-          onClick={() => handleOpen()}
-        >
-          <AddIcon />
-          Add new student
-        </button>
+    <AdminLayout>
+      <div className="container">
+        <h1 className="text-3xl font-bold my-8">List of Students</h1>
+        <div className="flex justify-end">
+          <button
+            className="flex items-center gap-2 mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md"
+            onClick={() => handleOpen()}
+          >
+            <AddIcon />
+            Add new student
+          </button>
+        </div>
+        <div style={{ height: "100%", width: "100%" }}>
+          <DataGrid
+            rows={students}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 10 },
+              },
+            }}
+            pageSizeOptions={[5, 10]}
+            sx={{
+              ".MuiDataGrid-columnHeader": {
+                outline: "none !important",
+              },
+            }}
+            showColumnVerticalBorder={true}
+            showCellVerticalBorder={true}
+          />
+          <ModalStudent
+            open={open}
+            handleClose={handleClose}
+            id={id}
+            action={action}
+          />
+        </div>
       </div>
-      <div style={{ height: "100%", width: "100%" }}>
-        <DataGrid
-          rows={students}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 10 },
-            },
-          }}
-          pageSizeOptions={[5, 10]}
-          sx={{
-            ".MuiDataGrid-columnHeader": {
-              outline: "none !important",
-            },
-          }}
-          showColumnVerticalBorder={true}
-          showCellVerticalBorder={true}
-        />
-        <ModalStudent
-          open={open}
-          handleClose={handleClose}
-          id={id}
-          action={action}
-        />
-      </div>
-    </div>
+    </AdminLayout>
   );
 }

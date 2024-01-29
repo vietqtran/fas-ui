@@ -31,10 +31,9 @@ interface Props {
 }
 
 export default function ModalStudent(props: Props) {
-  const { open, handleClose, id, action } = props;
+  const { open, handleClose, id, action} = props;
   const { majors } = useMajor();
   const [image, setImage] = React.useState("");
-  const [isLoading, setIsLoading] = React.useState(false);
 
   const {
     firstName,
@@ -95,15 +94,11 @@ export default function ModalStudent(props: Props) {
   };
 
   const handleSubmit = async (e) => {
-    setIsLoading(true);
     createStudent(e);
-    setIsLoading(false);
   };
 
   const handleUpdate = async (e) => {
-    setIsLoading(true);
     handleUpdateStudent(e);
-    setIsLoading(false);
   };
 
   return (
