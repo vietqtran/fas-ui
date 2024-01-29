@@ -8,6 +8,7 @@ import useStudent from "@/hooks/Student";
 import { log } from "util";
 import { uploadToCloudinary } from "@/utils/uploadToCloudinary";
 import { getStudentById } from "@/helpers/api/student";
+import { FormControl, MenuItem, TextField } from "@mui/material";
 
 const style = {
   position: "absolute" as "absolute",
@@ -122,217 +123,206 @@ export default function ModalStudent(props: Props) {
                 </h2>
                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                   <div className="sm:col-span-2">
-                    <label
-                      htmlFor="first-name"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      First Name
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        type="text"
-                        name="first-name"
-                        id="first-name"
-                        value={firstName}
-                        disabled={action === 'view'}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        autoComplete="given-name"
-                        className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="sm:col-span-2">
-                    <label
-                      htmlFor="middle-name"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Middle Name
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        type="text"
-                        name="middle-name"
-                        value={middleName}
-                        disabled={action === 'view'}
-                        onChange={(e) => setMiddleName(e.target.value)}
-                        id="middle-name"
-                        autoComplete="family-name"
-                        className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="sm:col-span-2">
-                    <label
-                      htmlFor="last-name"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Last Name
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        type="text"
-                        name="last-name"
-                        id="last-name"
-                        value={lastName}
-                        disabled={action === 'view'}
-                        onChange={(e) => setLastName(e.target.value)}
-                        autoComplete="family-name"
-                        className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
-                  <div className="sm:col-span-2">
-                    <label
-                      htmlFor="birth-day"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Birth Day
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        type="date"
-                        name="birth-day"
-                        id="birth-day"
-                        value={birthDay}
-                        disabled={action === 'view'}
-                        onChange={(e) => setBirthDay(e.target.value)}
-                        autoComplete="family-name"
-                        className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
-                  <div className="sm:col-span-2">
-                    <label
-                      htmlFor="phone"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Phone
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        type="text"
-                        name="phone"
-                        id="phone"
-                        value={phone}
-                        disabled={action === 'view'}
-                        onChange={(e) => setPhone(e.target.value)}
-                        autoComplete="family-name"
-                        className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
-                  <div className="sm:col-span-2">
-                    <label
-                      htmlFor="major"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Major
-                    </label>
-                    <div className="mt-2">
-                      <select
-                        id="major"
-                        name="major"
-                        autoComplete="major-name"
-                        value={majorId}
-                        disabled={action === 'view'}
-                        onChange={(e) => setMajorId(e.target.value)}
-                        className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="first-name"
+                        className="block text-sm font-medium leading-6 text-gray-900"
                       >
-                        <option value={"Choose"}>Selected</option>
+                        First Name
+                      </label>
+
+                      <TextField
+                        size="small"
+                        className="mt-2"
+                        type="text"
+                        value={firstName}
+                        disabled={action === "view"}
+                        onChange={(e) => setFirstName(e.target.value)}
+                      />
+                    </FormControl>
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="middle-name"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Middle Name
+                      </label>
+                      <TextField
+                        size="small"
+                        className="mt-2"
+                        type="text"
+                        value={middleName}
+                        disabled={action === "view"}
+                        onChange={(e) => setMiddleName(e.target.value)}
+                      />
+                    </FormControl>
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="last-name"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Last Name
+                      </label>
+                      <TextField
+                        size="small"
+                        className="mt-2"
+                        type="text"
+                        value={lastName}
+                        disabled={action === "view"}
+                        onChange={(e) => setLastName(e.target.value)}
+                      />
+                    </FormControl>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="birth-day"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Birth Day
+                      </label>
+
+                      <TextField
+                        size="small"
+                        className="mt-2"
+                        type="date"
+                        value={birthDay}
+                        disabled={action === "view"}
+                        onChange={(e) => setBirthDay(e.target.value)}
+                      />
+                    </FormControl>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="phone"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Phone
+                      </label>
+
+                      <TextField
+                        size="small"
+                        className="mt-2"
+                        type="text"
+                        value={phone}
+                        disabled={action === "view"}
+                        onChange={(e) => setPhone(e.target.value)}
+                      />
+                    </FormControl>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="major"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Major
+                      </label>
+                      <TextField
+                        className="mt-2"
+                        select
+                        size="small"
+                        value={majorId}
+                        disabled={action === "view"}
+                        onChange={(e) => setMajorId(e.target.value)}
+                      >
                         {majors &&
                           majors.map((item, index) => (
-                            <option key={item.id} value={item.id} selected={majorId == item.id}>
+                            <MenuItem
+                              key={item.id}
+                              value={item.id}
+                              selected={majorId == item.id}
+                            >
                               {item.name}
-                            </option>
+                            </MenuItem>
                           ))}
-                      </select>
-                    </div>
+                      </TextField>
+                    </FormControl>
                   </div>
 
                   <div className="sm:col-span-2">
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Email address
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        autoComplete="email"
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="email"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Email address
+                      </label>
+
+                      <TextField
+                        size="small"
+                        className="mt-2"
+                        type="text"
                         value={email}
-                        disabled={action === 'view'}
+                        disabled={action === "view"}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
-                    </div>
+                    </FormControl>
                   </div>
 
                   <div className="sm:col-span-2">
-                    <label
-                      htmlFor="code"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Student Code
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        id="code"
-                        name="code"
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="code"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Student Code
+                      </label>
+
+                      <TextField
+                        size="small"
+                        className="mt-2"
                         type="text"
                         value={studentCode}
-                        disabled={action === 'view'}
+                        disabled={action === "view"}
                         onChange={(e) => setStudentCode(e.target.value)}
-                        autoComplete="code"
-                        className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
-                    </div>
+                    </FormControl>
                   </div>
 
                   <div className="sm:col-span-2">
-                    <label
-                      htmlFor="username"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Username
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        id="username"
-                        name="username"
-                        type="username"
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="username"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Username
+                      </label>
+                      <TextField
+                        size="small"
+                        className="mt-2"
+                        type="text"
                         value={username}
-                        disabled={action === 'view'}
+                        disabled={action === "view"}
                         onChange={(e) => setUsername(e.target.value)}
-                        autoComplete="username"
-                        className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
-                    </div>
+                    </FormControl>
                   </div>
 
                   <div className="col-span-full">
-                    <label
-                      htmlFor="street-address"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Street address
-                    </label>
-                    <div className="mt-2">
-                      <input
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="street-address"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Street address
+                      </label>
+                      <TextField
+                        size="small"
+                        className="mt-2"
                         type="text"
-                        name="street-address"
-                        id="street-address"
-                        autoComplete="street-address"
                         value={address}
-                        disabled={action === 'view'}
+                        disabled={action === "view"}
                         onChange={(e) => setAddress(e.target.value)}
-                        className="block w-full px-2  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
-                    </div>
+                    </FormControl>
                   </div>
 
                   <div className="col-span-full">
@@ -345,7 +335,7 @@ export default function ModalStudent(props: Props) {
                     <div className="mt-2 flex items-center gap-x-3">
                       <input
                         type="file"
-                        disabled={action === 'view'}
+                        disabled={action === "view"}
                         accept="image/*" // Limit file types to images
                         onChange={handleImageUpload} // Handle file upload in a function // Hide the input visually
                         id="upload-image-input" // Assign an ID for the label to refer to
@@ -381,7 +371,6 @@ export default function ModalStudent(props: Props) {
               )}
             </div>
           </form>
-          
         </Box>
       </Modal>
     </div>
