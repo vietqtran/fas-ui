@@ -1,6 +1,6 @@
 import { Bounce, toast } from 'react-toastify'
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-import { login, loginWithGoogleAPI } from '@/helpers/api/login'
+import { checkEmailExist, login, loginWithGoogleAPI } from '@/helpers/api/login'
 import { use, useEffect, useState } from 'react'
 
 import { auth } from '@/helpers/firebase'
@@ -102,8 +102,18 @@ export const useLogin = () => {
       }
    }
 
-   console.log(roles)
-   console.log(campuses)
+   const checkEmail = async (e) => {
+      e.preventDefault();
+      const response = (await checkEmailExist(email).then(
+         (res) => res
+     )) as BaseResponse
+     if (response && response?.code === 'SUCCESS') {
+         toast.success(response?.message)
+         return response.data
+     } else {
+         toast.error(response?.message)
+     }
+   }
 
    return {
       roles,
@@ -117,6 +127,7 @@ export const useLogin = () => {
       email,
       setEmail,
       password,
-      setPassword
+      setPassword,
+      checkEmail
    }
 }

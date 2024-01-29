@@ -31,6 +31,10 @@ const LoginPage = (props: Props) => {
       setPassword
    } = useLogin()
 
+   const forgetPassword = () => {
+      window.location.href = "/login/forgot-password";
+   }
+
    return (
       <div className='bg-white text-black h-[100vh] w-[100vw] grid place-items-center'>
          <div className='w-[600px]'>
@@ -142,6 +146,14 @@ const LoginPage = (props: Props) => {
                      />
                   </svg>
                   <span className='ml-3'>Login with Google</span>
+               </Button>
+
+               <Button
+                  onClick={forgetPassword}
+                  variant='outlined'
+                  className='w-full hover:bg-rose-100  py-3 text-center mt-4 border-2 border-rose-300 '
+               >
+                  <span className='ml-3 text-red-400'>Forget Password?</span>
                </Button>
             </div>
          </div>
