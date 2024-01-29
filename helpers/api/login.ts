@@ -1,7 +1,7 @@
 import instance from '@/helpers/api/_axios_instance'
 
 const END_POINT = {
-   LOGIN: 'signin',
+   LOGIN: 'account/signin',
    LOGIN_WITH_GOOGLE: 'signin/google'
 }
 

@@ -13,7 +13,7 @@ import Image from 'next/image'
 import React from 'react'
 import { useLogin } from '@/hooks/Login'
 
-interface Props {}
+interface Props { }
 
 const LoginPage = (props: Props) => {
    const {
@@ -57,7 +57,7 @@ const LoginPage = (props: Props) => {
                         >
                            {roles?.map((role) => (
                               <MenuItem key={role.id} value={role.id}>
-                                 {role.type}
+                                 {role.name}
                               </MenuItem>
                            ))}
                         </Select>
@@ -73,7 +73,7 @@ const LoginPage = (props: Props) => {
                         >
                            {campuses?.map((campus) => (
                               <MenuItem key={campus.id} value={campus.id}>
-                                 {campus.name}
+                                 {campus.location}
                               </MenuItem>
                            ))}
                         </Select>

@@ -63,19 +63,17 @@ const AdminLayout: FC<Props> = ({ children }) => {
          </div>
 
          <aside
-            className={`fixed z-50 left-0 top-0 h-screen w-[300px] md:top-0 md:left-0 border-r-[1px] border-r-gray-400 transition-transform  ${
-               showSidebar
+            className={`fixed z-50 left-0 top-0 h-screen w-[300px] md:top-0 md:left-0 border-r-[1px] border-r-gray-400 transition-transform  ${showSidebar
                   ? 'translate-x-0'
                   : '-translate-x-[100%] md:-translate-x-[95%]'
-            }`}
+               }`}
             aria-label='Sidebar'
          >
-            <div className='relative h-full bg-white md:py-10'>
+            <div className='relative h-full bg-[#fffbf4] md:py-10'>
                <div
                   onClick={() => setShowSidebar(!showSidebar)}
-                  className={`absolute right-[-15px] top-[100px] hidden aspect-square ${
-                     showSidebar ? 'rotate-90' : '-rotate-90'
-                  } cursor-pointer place-items-center rounded-full border-[1px] border-gray-300 bg-gray-50 p-2 md:grid`}
+                  className={`absolute right-[-15px] top-[100px] hidden aspect-square ${showSidebar ? 'rotate-90' : '-rotate-90'
+                     } cursor-pointer place-items-center rounded-full border-[1px] border-gray-300 bg-gray-50 p-2 md:grid`}
                >
                   <span>
                      <svg
@@ -132,6 +130,12 @@ const AdminLayout: FC<Props> = ({ children }) => {
                   </li>
 
                   <li className='w-[80%]'>
+                     <SidebarLink href='/admin/instructors'>
+                        Instructor Management
+                     </SidebarLink>
+                  </li>
+
+                  <li className='w-[80%]'>
                      <span className='block cursor-pointer p-5 font-semibold text-red-500'>
                         Log out
                      </span>
@@ -142,15 +146,13 @@ const AdminLayout: FC<Props> = ({ children }) => {
 
          <div
             onClick={() => setShowSidebar(false)}
-            className={`fixed inset-0 bg-black z-40 bg-opacity-30 transition-opacity ${
-               showSidebar ? 'block md:hidden' : 'hidden'
-            } `}
+            className={`fixed inset-0 bg-black z-40 bg-opacity-30 transition-opacity ${showSidebar ? 'block md:hidden' : 'hidden'
+               } `}
          ></div>
 
          <main
-            className={`bg-white flex items-start justify-center min-h-[100vh] w-full text-black duration-100 ease-linear ${
-               showSidebar ? 'md:pl-[300px]' : 'md:pl-0'
-            }`}
+            className={`bg-white flex items-start justify-center min-h-[100vh] w-full text-black duration-100 ease-linear ${showSidebar ? 'md:pl-[300px]' : 'md:pl-0'
+               }`}
          >
             {children}
          </main>
