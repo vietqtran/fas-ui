@@ -4,3 +4,8 @@ interface LoginCredentials {
    email: string
    password: string
 }
+
+interface LoginWithGoogleCredentials {
+   campusId: string
+   email: string
+}
