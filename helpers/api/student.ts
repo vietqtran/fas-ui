@@ -20,10 +20,10 @@ export const getStudentById = (id: string) => {
    return instance.get(`/${END_POINT.GET_STUDENT}/${id}`)
 }
 
-export const addStudent = (studentData: Student) => {
+export const addStudent = (studentData: StudentInformation) => {
    return instance.post(`/${END_POINT.CREATE_STUDENT}`, studentData)
 }
 
-export const updateStudent = (id: string, studentData: Student) => {
+export const updateStudent = (id: string, studentData: StudentInformation) => {
    return instance.put(`/${END_POINT.UPDATE_STUDENT}/${id}`, studentData)
 }

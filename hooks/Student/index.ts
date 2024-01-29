@@ -2,6 +2,7 @@
 import { Bounce, toast } from 'react-toastify'
 import React, { useEffect, useState } from 'react'
 import { addStudent, deleteStudentById, getAllStudents, getStudentById, updateStudent } from '@/helpers/api/student'
+import { getAllCampuses } from '@/helpers/api/campus'
 
 type Props = {}
 
@@ -20,12 +21,27 @@ const useStudent = () => {
     const [username, setUsername] = useState("");
     const [address, setAddress] = useState("");
     const [profileImage, setProfileImage] = useState("");
-
+    const [campusId, setCampusId] = useState("");
+    const [campuses, setCampuses] = useState([]);
     const [student, setStudent] = useState({});
 
     useEffect(() => {
         fetchStudents();
     }, []);
+
+    useEffect(() => {
+        fetchCampuses();
+    }, []);
+
+
+    const fetchCampuses = async () => {
+        const response = await getAllCampuses().then((res) => res)
+        if (response) {
+            setCampuses(response.data)
+        } else {
+            toast.error('Fetch campuses failed')
+        }
+    }
 
     const fetchStudents = async () => {
         const response = await getAllStudents().then((res) => res)
@@ -55,12 +71,13 @@ const useStudent = () => {
             birthDay,
             phone,
             majorId,
+            campusId,
             email,
             studentCode,
             username,
             address,
             profileImage
-        } as Student).then((res) => res);
+        } as StudentInformation).then((res) => res);
         console.log(response);
         
         if (response && response?.code === "SUCCESS") {
@@ -90,16 +107,17 @@ const useStudent = () => {
             birthDay,
             phone,
             majorId,
+            campusId,
             email,
             studentCode,
             username,
             address,
             profileImage
-        } as Student).then((res) => res);
+        } as StudentInformation).then((res) => res);
 
         if (response && response?.code === "SUCCESS") {
             toast.success(response?.message);
-            await fetchStudents();
+            fetchStudents();
         } else {
             toast.error('update students failed')
         }
@@ -137,7 +155,11 @@ const useStudent = () => {
         getStudent,
         student,
         setId,
-        handleUpdateStudent, id
+        campusId, 
+        setCampusId,
+        handleUpdateStudent, 
+        id,
+        campuses
     }
 }
 

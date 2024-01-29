@@ -35,6 +35,8 @@ export default function ModalStudent(props: Props) {
   const { majors } = useMajor();
   const [image, setImage] = React.useState("");
 
+
+
   const {
     firstName,
     setFirstName,
@@ -63,6 +65,9 @@ export default function ModalStudent(props: Props) {
     getStudent,
     setId,
     handleUpdateStudent,
+    campusId,
+    setCampusId,
+    campuses
   } = useStudent();
 
   const getStudentById = async (id) => {
@@ -80,6 +85,7 @@ export default function ModalStudent(props: Props) {
     setAddress(data?.address);
     setProfileImage(data?.profileImage);
     setImage(data?.profileImage);
+    setCampusId(data?.campus.id);
   };
   React.useEffect(() => {
     getStudentById(id);
@@ -193,7 +199,7 @@ export default function ModalStudent(props: Props) {
                       />
                     </FormControl>
                   </div>
-                  <div className="sm:col-span-2">
+                  <div className="sm:col-span-1">
                     <FormControl fullWidth>
                       <label
                         htmlFor="phone"
@@ -242,6 +248,36 @@ export default function ModalStudent(props: Props) {
                     </FormControl>
                   </div>
 
+                  <div className="sm:col-span-1">
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="campus"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Campus
+                      </label>
+                      <TextField
+                        className="mt-2"
+                        select
+                        size="small"
+                        value={campusId}
+                        disabled={action === "view"}
+                        onChange={(e) => setCampusId(e.target.value)}
+                      >
+                        {campuses &&
+                          campuses.map((item, index) => (
+                            <MenuItem
+                              key={item.id}
+                              value={item.id}
+                              selected={campusId == item.id}
+                            >
+                              {item.name}
+                            </MenuItem>
+                          ))}
+                      </TextField>
+                    </FormControl>
+                  </div>
+
                   <div className="sm:col-span-2">
                     <FormControl fullWidth>
                       <label
@@ -256,7 +292,7 @@ export default function ModalStudent(props: Props) {
                         className="mt-2"
                         type="text"
                         value={email}
-                        disabled={action === "view"}
+                        disabled={action === "view" || action === "update"}
                         onChange={(e) => setEmail(e.target.value)}
                       />
                     </FormControl>

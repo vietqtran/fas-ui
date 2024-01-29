@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridToolbarContainer, GridToolbarExport, GridValueGetterParams } from "@mui/x-data-grid";
 import useStudent from "@/hooks/Student";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -26,6 +26,7 @@ export default function page() {
     setAddress,
     setProfileImage,
     firstName,
+
   } = useStudent();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
@@ -61,16 +62,16 @@ export default function page() {
     {
       field: "studentCode",
       headerName: "Code",
-      width: 100,
+      width: 80,
       renderCell: (params) => (
         <div color="primary" onClick={() => handleView(params.row.id)}>
           {params.row.studentCode}
         </div>
       ),
     },
-    { field: "email", headerName: "Email", width: 200 },
+    { field: "email", headerName: "Email", width: 170 },
     { field: "firstName", headerName: "First Name", width: 100 },
-    { field: "middleName", headerName: "Middle Name", width: 150 },
+    { field: "middleName", headerName: "Middle Name", width: 130 },
     { field: "lastName", headerName: "Last Name", width: 100 },
     {
       field: "birthDay",
@@ -84,7 +85,7 @@ export default function page() {
     {
       field: "phone",
       headerName: "Phone",
-      width: 100,
+      width: 120,
     },
     {
       field: "status",
@@ -100,8 +101,14 @@ export default function page() {
     {
       field: "major",
       headerName: "Major",
-      width: 70,
+      width: 50,
       valueGetter: (params: GridValueGetterParams) => params.row.major?.code,
+    },
+    {
+      field: "campus",
+      headerName: "Campus",
+      width: 70,
+      valueGetter: (params: GridValueGetterParams) => params.row.campus?.name,
     },
     {
       field: "action",
@@ -127,6 +134,14 @@ export default function page() {
     },
   ];
   console.log(students);
+
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarExport />
+      </GridToolbarContainer>
+    );
+  }
 
   return (
     <ManagerLayout>
@@ -158,6 +173,9 @@ export default function page() {
             }}
             showColumnVerticalBorder={true}
             showCellVerticalBorder={true}
+            slots={{
+              toolbar: CustomToolbar,
+            }}
           />
           <ModalStudent
             open={open}
