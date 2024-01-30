@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridToolbarContainer, GridToolbarExport, GridValueGetterParams } from "@mui/x-data-grid";
 import useStudent from "@/hooks/Student";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -11,21 +11,8 @@ import ManagerLayout from "@/components/Common/Layouts/ManagerLayout";
 export default function page() {
   const {
     students,
-    setStudents,
     deleteStudent,
-    getStudent,
-    setFirstName,
-    setMiddleName,
-    setLastName,
-    setBirthDay,
-    setPhone,
-    setMajorId,
-    setEmail,
-    setStudentCode,
-    setUsername,
-    setAddress,
-    setProfileImage,
-    firstName,
+    fetchStudents
   } = useStudent();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
@@ -33,9 +20,10 @@ export default function page() {
     setAction("create");
   };
   const handleClose = () => {
+    fetchStudents();
     setOpen(false);
   };
-  const [student, setStudent] = React.useState({});
+
   const [id, setId] = React.useState("");
   const [action, setAction] = React.useState("");
   const handleView = async (idStudent: string) => {
@@ -52,25 +40,24 @@ export default function page() {
 
   const handleDelete = (id: string) => {
     deleteStudent(id);
-    // Handle delete logic here
     console.log(`Delete button clicked for row with ID: ${id}`);
   };
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 100 },
+    { field: "id", headerName: "ID", width: 70 },
     {
       field: "studentCode",
       headerName: "Code",
-      width: 100,
+      width: 80,
       renderCell: (params) => (
         <div color="primary" onClick={() => handleView(params.row.id)}>
           {params.row.studentCode}
         </div>
       ),
     },
-    { field: "email", headerName: "Email", width: 200 },
+    { field: "email", headerName: "Email", width: 190 },
     { field: "firstName", headerName: "First Name", width: 100 },
-    { field: "middleName", headerName: "Middle Name", width: 150 },
+    { field: "middleName", headerName: "Middle Name", width: 110 },
     { field: "lastName", headerName: "Last Name", width: 100 },
     {
       field: "birthDay",
@@ -84,24 +71,30 @@ export default function page() {
     {
       field: "phone",
       headerName: "Phone",
-      width: 100,
+      width: 110,
     },
     {
       field: "status",
       headerName: "Status",
-      width: 100,
+      width: 80,
       renderCell: (params) => (
         <div style={{ color: params.row.status ? "green" : "red" }}>
           {params.row.status ? "Active" : "Inactive"}
         </div>
       ),
     },
-    { field: "address", headerName: "Address", width: 300 },
+    { field: "address", headerName: "Address", width: 320 },
     {
       field: "major",
       headerName: "Major",
-      width: 70,
+      width: 60,
       valueGetter: (params: GridValueGetterParams) => params.row.major?.code,
+    },
+    {
+      field: "campus",
+      headerName: "Campus",
+      width: 100,
+      valueGetter: (params: GridValueGetterParams) => params.row.campus?.name,
     },
     {
       field: "action",
@@ -126,7 +119,14 @@ export default function page() {
       ),
     },
   ];
-  console.log(students);
+
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarExport />
+      </GridToolbarContainer>
+    );
+  }
 
   return (
     <ManagerLayout>
@@ -158,6 +158,9 @@ export default function page() {
             }}
             showColumnVerticalBorder={true}
             showCellVerticalBorder={true}
+            slots={{
+              toolbar: CustomToolbar,
+            }}
           />
           <ModalStudent
             open={open}
