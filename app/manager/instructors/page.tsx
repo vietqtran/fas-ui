@@ -1,13 +1,9 @@
 "use client";
 
 import * as React from "react";
-import {
-  DataGrid,
-  GridColDef,
-  GridToolbar,
-  GridToolbarContainer,
-  GridToolbarExport,
-} from "@mui/x-data-grid";
+
+import { DataGrid, GridColDef, GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
+
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
@@ -21,22 +17,37 @@ import ManagerLayout from "@/components/Common/Layouts/ManagerLayout";
 interface Props {}
 
 export default function page(props: Props) {
-  const { instructors, setInstructors, handleDeleteInstructor } =
-    useInstructor();
+
+  const { instructors, setId, id, handleDeleteInstructor, fetchInstructors } = useInstructor();
+
 
   const [searchText, setSearchText] = React.useState("");
   const [results, setResults] = React.useState([]);
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [action, setAction] = React.useState("");
 
-  const handleUpdate = (id: string) => {
-    // Handle update logic here
+  const handleOpen = () => {
+    setAction("create");
+    setOpen(true);
+  };
+  const handleClose = () => {
+    fetchInstructors();
+    setOpen(false);
   };
 
-  const handleDelete = (id: string) => {
+
+  const handleUpdate = (instructorId: string) => {
+    // Handle update logic here
+    console.log(`Update button clicked for row with ID: ${instructorId}`);
+    setId(instructorId);
+    setAction("update");
+    setOpen(true)
+  };
+
+  const handleDelete = (instructorId: string) => {
     // Handle delete logic here
-    handleDeleteInstructor(id);
+    console.log(`Delete button clicked for row with ID: ${instructorId}`);
+    handleDeleteInstructor(instructorId);
   };
 
   const searchInstructors = (searchValue: string) => {
@@ -185,7 +196,7 @@ export default function page(props: Props) {
         />
 
         {/* Modal Instructor */}
-        <ModalInstructor open={open} handleClose={handleClose} />
+        <ModalInstructor open={open} handleClose={handleClose} id={id} action={action} />
       </div>
     </ManagerLayout>
   );

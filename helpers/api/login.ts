@@ -14,6 +14,6 @@ export const loginWithGoogleAPI = (loginData: LoginWithGoogleCredentials) => {
    return instance.post(`/${END_POINT.LOGIN_WITH_GOOGLE}`, loginData)
 }
 
-export const checkEmailExist = (email: string) => {
+export const forgotPassword = (email: string) => {
    return instance.get(`/${END_POINT.FORGOT_PASSWORD}`, { params: { email: email } })
 }

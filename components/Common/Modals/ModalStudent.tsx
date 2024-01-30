@@ -4,7 +4,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import useMajor from "@/hooks/Major";
-
+import CloseIcon from '@mui/icons-material/Close';
 import { uploadToCloudinary } from "@/utils/uploadToCloudinary";
 import { FormControl, MenuItem, TextField } from "@mui/material";
 import useStudent from "@/hooks/Student";
@@ -14,7 +14,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "50%",
+  width: "60%",
   height: "70%", // Set height to 100%
   overflowY: "auto",
   bgcolor: "#fff",
@@ -65,7 +65,7 @@ export default function ModalStudent(props: Props) {
     campusId,
     setCampusId,
     campuses,
-    idcard,
+    idCard,
     setIdCard,
     gender,
     setGender,
@@ -87,7 +87,7 @@ export default function ModalStudent(props: Props) {
     setProfileImage(data?.profileImage);
     setImage(data?.profileImage);
     setCampusId(data?.campus.id);
-    setIdCard(data?.idcard);
+    setIdCard(data?.idCard);
     setGender(data?.gender);
   };
   React.useEffect(() => {
@@ -96,27 +96,23 @@ export default function ModalStudent(props: Props) {
 
   React.useEffect(() => {
     if (action === "create") {
-      clearFormData();
+      setFirstName("");
+      setMiddleName("");
+      setLastName("");
+      setBirthDay("");
+      setPhone("");
+      setMajorId("");
+      setEmail("");
+      setStudentCode("");
+      setUsername("");
+      setAddress("");
+      setProfileImage("");
+      setImage("");
+      setCampusId("");
+      setIdCard("");
+      setGender(Boolean);
     }
   }, [action]);
-
-  const clearFormData = () => {
-    setFirstName("");
-    setMiddleName("");
-    setLastName("");
-    setBirthDay("");
-    setPhone("");
-    setMajorId("");
-    setEmail("");
-    setStudentCode("");
-    setUsername("");
-    setAddress("");
-    setProfileImage("");
-    setImage("");
-    setCampusId("");
-    setIdCard("");
-    setGender(Boolean);
-  };
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
@@ -140,7 +136,6 @@ export default function ModalStudent(props: Props) {
     <div>
       <Modal
         open={open}
-        onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -148,9 +143,17 @@ export default function ModalStudent(props: Props) {
           <form>
             <div className="space-y-12">
               <div className="border-b border-gray-900/10 pb-12">
+                <div className="flex justify-between">
                 <h2 className="text-base font-semibold leading-7 text-gray-900">
                   Student Information
                 </h2>
+                <button
+                    className="text-gray-400 hover:text-gray-600 transition duration-200 ease-in-out"
+                    onClick={handleClose}
+                  >
+                    <CloseIcon />
+                  </button>
+                </div>
                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                   <div className="sm:col-span-2">
                     <FormControl fullWidth>
@@ -242,7 +245,7 @@ export default function ModalStudent(props: Props) {
                         size="small"
                         className="mt-2"
                         type="text"
-                        value={idcard}
+                        value={idCard}
                         disabled={action === "view"}
                         onChange={(e) => setIdCard(e.target.value)}
                       />

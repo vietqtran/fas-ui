@@ -1,16 +1,15 @@
-interface StudentInformation {
+interface InstructorCredentials {
+    id: string
     firstName: string
     middleName: string
     lastName: string
-    birthDay: string
-    phone: string
-    majorId: string
-    campusId: string
     email: string
-    studentCode: string
+    birthDay: string
     username: string
+    phone: string
     address: string
     profileImage: string
+    campusId: string
     gender: boolean
     idCard: string
 }

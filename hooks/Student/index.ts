@@ -30,7 +30,7 @@ const useStudent = () => {
   const [address, setAddress] = useState("");
   const [profileImage, setProfileImage] = useState("");
   const [campusId, setCampusId] = useState("");
-  const [idcard, setIdCard] = useState("");
+  const [idCard, setIdCard] = useState("");
   const [gender, setGender] = useState(Boolean);
   const [campuses, setCampuses] = useState([]);
   const [student, setStudent] = useState({});
@@ -91,8 +91,10 @@ const useStudent = () => {
       address,
       profileImage,
       gender,
-      idcard,
-    } as StudentInformation).then((res) => res)) as BaseResponse;
+      idCard
+    } as StudentInformation).then((res) => res) as BaseResponse;
+    console.log(response);
+
 
     if (response && response?.code === "SUCCESS") {
       toast.success(response?.message);
@@ -118,8 +120,9 @@ const useStudent = () => {
       address,
       profileImage,
       gender,
-      idcard,
-    } as StudentInformation).then((res) => res)) as BaseResponse;
+
+      idCard
+    } as StudentInformation).then((res) => res) as BaseResponse;
 
     if (response && response?.code === "SUCCESS") {
       toast.success(response?.message);
@@ -190,7 +193,7 @@ const useStudent = () => {
     id,
     gender,
     setGender,
-    idcard,
+    idCard,
     setIdCard,
     campuses,
     fetchStudentByEmail,

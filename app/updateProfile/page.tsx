@@ -9,7 +9,7 @@ type Props = {};
 
 const page = (props: Props) => {
   const {
-    idcard,
+    idCard,
     setIdCard,
     gender,
     setGender,
@@ -63,7 +63,7 @@ const page = (props: Props) => {
     id: "",
     email: "",
     gender: true,
-    idcard: "",
+    idCard: "",
   });
 
   let emailStudent = localStorage.getItem("email");
@@ -85,11 +85,12 @@ const page = (props: Props) => {
     setAddress(data?.address);
     setImage(data?.profileImage);
     setId(data?.id);
-    setIdCard(data?.idcard);
+    setIdCard(data?.idCard);
     setCampusId(data?.campus?.id);
     setMajorId(data?.major?.id);
 
     setStudent(data);
+
   };
   // set data from local storage
 
@@ -249,7 +250,7 @@ const page = (props: Props) => {
                         size="small"
                         className="mt-2"
                         type="text"
-                        value={idcard}
+                        value={idCard}
                         onChange={(e) => setIdCard(e.target.value)}
                       />
                     </FormControl>

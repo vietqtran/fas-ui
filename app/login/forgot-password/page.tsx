@@ -3,6 +3,7 @@
 import { useLogin } from '@/hooks/Login';
 import { Box, Button, Card, CardActions, CardContent, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material'
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react'
 
 type Props = {}
@@ -19,8 +20,6 @@ const bull = (
 
 const page = (props: Props) => {
     const {email , setEmail, checkEmail} = useLogin();
-
-
     return (
 
         <div className='bg-white text-black h-[100vh] w-[100vw] grid place-items-center'>
@@ -51,11 +50,14 @@ const page = (props: Props) => {
                         >
                             Send Email
                         </Button>
+
+                        <Link href={'/login'} className='text-right text-red-300 hover:cursor-pointer  hover:text-red-600 '>
+                            Back To Login Page
+                        </Link>
                     </div>
                 </form>
-            </div>
+            </div>  
         </div>
-
     )
 }
 
