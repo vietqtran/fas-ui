@@ -1,12 +1,19 @@
-'use client'
+"use client";
 
-import { Bounce, toast } from 'react-toastify'
-import React, { useEffect, useState } from 'react'
-import { addStudent, deleteStudentById, getAllStudents, getStudentById, updateStudent } from '@/helpers/api/student'
-import { getAllCampuses } from '@/helpers/api/campus'
-import { log } from 'console'
+import { Bounce, toast } from "react-toastify";
+import React, { useEffect, useState } from "react";
+import {
+  addStudent,
+  deleteStudentById,
+  getAllStudents,
+  getStudentByEmail,
+  getStudentById,
+  updateStudent,
+} from "@/helpers/api/student";
+import { getAllCampuses } from "@/helpers/api/campus";
+import { log } from "console";
 
-type Props = {}
+type Props = {};
 
 const useStudent = () => {
     const [students, setStudents] = useState([])
@@ -55,18 +62,17 @@ const useStudent = () => {
             toast.error('Fetch students failed')
         }
     }
+  };
 
-
-    const deleteStudent = async (id: string) => {
-        const response = (await deleteStudentById(id).then(
-            (res) => res
-        )) as BaseResponse
-        if (response && response?.code === 'SUCCESS') {
-            toast.success(response?.message)
-            fetchStudents()
-        } else {
-            toast.error('Fetch students failed')
-        }
+  const deleteStudent = async (id: string) => {
+    const response = (await deleteStudentById(id).then(
+      (res) => res
+    )) as BaseResponse;
+    if (response && response?.code === "SUCCESS") {
+      toast.success(response?.message);
+      fetchStudents();
+    } else {
+      toast.error("Fetch students failed");
     }
 
     const createStudent = async (e) => {
@@ -123,60 +129,75 @@ const useStudent = () => {
             toast.error('update students failed')
         }
     }
+  };
 
-    const getStudent = async (id: string) => {
-        const response = (await getStudentById(id).then(
-            (res) => res
-        )) as BaseResponse
-        if (response && response?.code === 'SUCCESS') {
-            toast.success(response?.message)
-            return response.data
-        } else {
-            toast.error(response?.message)
-        }
+  const getStudent = async (id: string) => {
+    const response = (await getStudentById(id).then(
+      (res) => res
+    )) as BaseResponse;
+    if (response && response?.code === "SUCCESS") {
+      toast.success(response?.message);
+      return response.data;
+    } else {
+      toast.error(response?.message);
     }
+  };
 
+  const fetchStudentByEmail = async (email: string) => {
+    const response = (await getStudentByEmail(email).then(
+      (res) => res
+    )) as BaseResponse;
+    if (response && response?.code === "SUCCESS") {
+      console.log(response?.data);
 
-    return {
-        students,
-        setStudents,
-        deleteStudent,
-        firstName,
-        setFirstName,
-        middleName,
-        setMiddleName,
-        lastName,
-        setLastName,
-        birthDay,
-        setBirthDay,
-        phone,
-        setPhone,
-        majorId,
-        setMajorId,
-        email,
-        setEmail,
-        studentCode,
-        setStudentCode,
-        username,
-        setUsername,
-        address,
-        setAddress,
-        profileImage,
-        setProfileImage,
-        createStudent,
-        fetchStudents,
-        getStudent,
-        student,
-        setId,
-        campusId,
-        setCampusId,
-        handleUpdateStudent,
-        id,
-        campuses,
-        idcard,
-        setIdCard,
-        gender,
-        setGender
+      toast.success(response?.message);
+      return response.data;
+    } else {
+      toast.error(response?.message);
     }
-}
-export default useStudent
+  };
+
+  return {
+    students,
+    setStudents,
+    deleteStudent,
+    firstName,
+    setFirstName,
+    middleName,
+    setMiddleName,
+    lastName,
+    setLastName,
+    birthDay,
+    setBirthDay,
+    phone,
+    setPhone,
+    majorId,
+    setMajorId,
+    email,
+    setEmail,
+    studentCode,
+    setStudentCode,
+    username,
+    setUsername,
+    address,
+    setAddress,
+    profileImage,
+    setProfileImage,
+    createStudent,
+    fetchStudents,
+    getStudent,
+    student,
+    setId,
+    campusId,
+    setCampusId,
+    handleUpdateStudent,
+    id,
+    gender,
+    setGender,
+    idcard,
+    setIdCard,
+    campuses,
+    fetchStudentByEmail,
+  };
+};
+export default useStudent;
