@@ -116,7 +116,7 @@ const page = (props: Props) => {
 
   return (
     <div className="bg-white text-black h-[100%] w-[100vw] ">
-      <div className="container mx-auto  text-gray-600">
+      <div className="container mx-auto py-5 text-gray-600">
         <Header />
         <div className="mt-5 bg-gray-200 p-3">
           <h4 className="text-xl text-center my-3 font-bold">Update Profile</h4>
