@@ -9,8 +9,10 @@ import {
   Select,
   TextField,
 } from "@mui/material";
+
 import { useInstructor } from "@/hooks/Instructor";
 import { uploadToCloudinary } from "@/utils/uploadToCloudinary";
+
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -129,7 +131,6 @@ export default function ModalInstructor(props: Props) {
   };
 
   console.log(campuses);
-
   return (
     <div>
       <Modal
@@ -210,7 +211,6 @@ export default function ModalInstructor(props: Props) {
                       />
                     </FormControl>
                   </div>
-
                   <div className="sm:col-span-2">
                     <FormControl fullWidth>
                       <label
@@ -298,6 +298,7 @@ export default function ModalInstructor(props: Props) {
                         htmlFor="email"
                         className="block text-sm font-medium leading-6 text-gray-900"
                       >
+
                         Email Address:{" "}
                       </label>
                       <TextField
@@ -310,6 +311,7 @@ export default function ModalInstructor(props: Props) {
                       />
                     </FormControl>
                   </div>
+
 
                   <div className="sm:col-span-2">
                     <FormControl fullWidth>
@@ -332,6 +334,7 @@ export default function ModalInstructor(props: Props) {
 
                   <div className="sm:col-span-2">
                     <FormControl fullWidth>
+
                       <label
                         htmlFor="campus"
                         className="block text-sm font-medium leading-6 text-gray-900"
@@ -378,7 +381,6 @@ export default function ModalInstructor(props: Props) {
                       />
                     </FormControl>
                   </div>
-
                   <div className="col-span-full">
                     <label className="block text-sm font-medium leading-6 text-gray-900">
                       Photo

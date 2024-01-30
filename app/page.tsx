@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <div className="container mx-auto flex min-h-screen flex-col py-5 items-center justify-start bg-white text-black">
       <Header />
-      <div className="h-[500px] w-full">
+      {/* <div className="h-[100px] w-full">
         <Swiper
           id="1"
           spaceBetween={50}
@@ -35,14 +35,17 @@ export default function Home() {
             <SlideItem src="/images/slide/4.png" />
           </SwiperSlide>
         </Swiper>
-      </div>
+      </div> */}
 
+      <div className="w-full pt-20">
+        <Contributors />
+      </div>
       <div className="grid w-full grid-cols-4 gap-5 py-[30px]">
         <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
-          <h2> View Profile Detail</h2>
+          <Link href={"/viewProfile"}> View Profile Detail</Link>
         </div>
         <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
-          <h2>Update Profile Detail</h2>
+          <Link href={"/updateProfile"}> Update Profile Detail</Link>
         </div>
         <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
           <h2>Attendance Report</h2>
@@ -54,11 +57,6 @@ export default function Home() {
         <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
           <h2>Attendance Report</h2>
         </div>
-      </div>
-
-      <div className="w-full pt-20">
-        <h2 className="mb-10 block text-center text-3xl">Event</h2>
-        <Contributors />
       </div>
     </div>
   );

@@ -67,13 +67,10 @@ const page = (props: Props) => {
   });
 
   let emailStudent = localStorage.getItem("email");
-  console.log(emailStudent);
 
   useEffect(() => {
     handleGetStudent(emailStudent);
   }, []);
-
-  console.log(student);
 
   const handleGetStudent = async (emailStudent) => {
     let data = await fetchStudentByEmail(emailStudent);
@@ -93,9 +90,9 @@ const page = (props: Props) => {
     setMajorId(data?.major?.id);
 
     setStudent(data);
-    console.log(data);
-    console.log(idCard);
+
   };
+  // set data from local storage
 
   const [image, setImage] = React.useState("");
 
