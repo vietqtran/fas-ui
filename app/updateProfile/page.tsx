@@ -1,4 +1,5 @@
 "use client";
+import Header from "@/components/Common/Header";
 import useStudent from "@/hooks/Student";
 import { uploadToCloudinary } from "@/utils/uploadToCloudinary";
 import { FormControl, MenuItem, TextField } from "@mui/material";
@@ -114,8 +115,9 @@ const page = (props: Props) => {
   };
 
   return (
-    <div className="bg-white text-black h-[100vh] w-[100vw] ">
-      <div className="container mx-auto py-5 text-gray-600">
+    <div className="bg-white text-black h-[100%] w-[100vw] ">
+      <div className="container mx-auto  text-gray-600">
+        <Header />
         <div className="mt-5 bg-gray-200 p-3">
           <h4 className="text-xl text-center my-3 font-bold">Update Profile</h4>
           <p className="text-center">
@@ -269,10 +271,16 @@ const page = (props: Props) => {
                         select
                         size="small"
                         value={gender}
-                        onChange={(e) => setGender(e.target.value === "true" ? true : false)}
+                        onChange={(e) =>
+                          setGender(e.target.value === "true" ? true : false)
+                        }
                       >
-                        <MenuItem value="true" selected={gender == true}>Male</MenuItem>
-                        <MenuItem value="false" selected={gender == false}>Female</MenuItem>
+                        <MenuItem value="true" selected={gender == true}>
+                          Male
+                        </MenuItem>
+                        <MenuItem value="false" selected={gender == false}>
+                          Female
+                        </MenuItem>
                       </TextField>
                     </FormControl>
                   </div>

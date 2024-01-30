@@ -1,4 +1,5 @@
 "use client";
+import Header from "@/components/Common/Header";
 import useStudent from "@/hooks/Student";
 import React, { useEffect, useState } from "react";
 
@@ -41,8 +42,9 @@ const Profile = () => {
   };
 
   return (
-    <div className="bg-white text-black h-[100vh] w-[100vw] grid place-items-center">
-      <div className="container mx-auto py-5 text-gray-600">
+    <div className="bg-white text-black h-[100%] w-[100vw] grid place-items-center">
+      <div className="container mx-auto text-gray-600">
+        <Header />
         <div className="mt-5">
           <h1 className="text-3xl">Student information</h1>
           <img
