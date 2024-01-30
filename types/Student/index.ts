@@ -12,5 +12,5 @@ interface StudentInformation {
     address: string
     profileImage: string
     gender: boolean
-    idcard: string
+    idCard: string
 }

@@ -23,7 +23,7 @@ const Profile = () => {
     id: "",
     email: "",
     gender: true,
-    idcard: "",
+    idCard: "",
   });
 
   let email = localStorage.getItem("email");
@@ -82,7 +82,7 @@ const Profile = () => {
                             label="Gender"
                             value={student.gender ? "Male" : "Female"}
                           />
-                          <TableRow label="ID Card" value={student.idcard} />
+                          <TableRow label="ID Card" value={student.idCard} />
                           <TableRow label="Address" value={student.address} />
                           <TableRow
                             label="Phone number"

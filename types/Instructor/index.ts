@@ -10,4 +10,6 @@ interface InstructorCredentials {
     address: string
     profileImage: string
     campusId: string
+    gender: boolean
+    idCard: string
 }
