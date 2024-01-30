@@ -1,6 +1,6 @@
 import { Bounce, toast } from 'react-toastify'
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-import { checkEmailExist, login, loginWithGoogleAPI } from '@/helpers/api/login'
+import { forgotPassword, login, loginWithGoogleAPI } from '@/helpers/api/login'
 import { use, useEffect, useState } from 'react'
 
 import { auth } from '@/helpers/firebase'
@@ -104,11 +104,14 @@ export const useLogin = () => {
 
    const checkEmail = async (e) => {
       e.preventDefault();
-      const response = (await checkEmailExist(email).then(
+      const response = (await forgotPassword(email).then(
          (res) => res
      )) as BaseResponse
      if (response && response?.code === 'SUCCESS') {
          toast.success(response?.message)
+         setTimeout(() => {
+            window.location.href = "/login";
+        }, 3000);
          return response.data
      } else {
          toast.error(response?.message)
