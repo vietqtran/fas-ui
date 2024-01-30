@@ -11,21 +11,7 @@ import ManagerLayout from "@/components/Common/Layouts/ManagerLayout";
 export default function page() {
   const {
     students,
-    setStudents,
     deleteStudent,
-    getStudent,
-    setFirstName,
-    setMiddleName,
-    setLastName,
-    setBirthDay,
-    setPhone,
-    setMajorId,
-    setEmail,
-    setStudentCode,
-    setUsername,
-    setAddress,
-    setProfileImage,
-    firstName,
     fetchStudents
   } = useStudent();
   const [open, setOpen] = React.useState(false);

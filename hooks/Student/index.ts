@@ -23,6 +23,8 @@ const useStudent = () => {
     const [address, setAddress] = useState("");
     const [profileImage, setProfileImage] = useState("");
     const [campusId, setCampusId] = useState("");
+    const [idcard, setIdCard] = useState("");
+    const [gender, setGender] = useState(Boolean);
     const [campuses, setCampuses] = useState([]);
     const [student, setStudent] = useState({});
 
@@ -46,7 +48,7 @@ const useStudent = () => {
     }
 
     const fetchStudents = async () => {
-        const response = await getAllStudents().then((res) => res)
+        const response = await getAllStudents().then((res) => res) as BaseResponse
         if (response && response?.code === "SUCCESS") {
             setStudents(response.data)
         } else {
@@ -81,8 +83,10 @@ const useStudent = () => {
             studentCode,
             username,
             address,
-            profileImage
-        } as StudentInformation).then((res) => res);
+            profileImage,
+            gender,
+            idcard
+        } as StudentInformation).then((res) => res) as BaseResponse;
         console.log(response);
 
         if (response && response?.code === "SUCCESS") {
@@ -107,8 +111,10 @@ const useStudent = () => {
             studentCode,
             username,
             address,
-            profileImage
-        } as StudentInformation).then((res) => res);
+            profileImage,
+            gender,
+            idcard
+        } as StudentInformation).then((res) => res) as BaseResponse;
 
         if (response && response?.code === "SUCCESS") {
             toast.success(response?.message);
@@ -129,8 +135,6 @@ const useStudent = () => {
             toast.error(response?.message)
         }
     }
-
-
 
 
     return {
@@ -168,7 +172,11 @@ const useStudent = () => {
         setCampusId,
         handleUpdateStudent,
         id,
-        campuses
+        campuses,
+        idcard,
+        setIdCard,
+        gender,
+        setGender
     }
 }
 export default useStudent
