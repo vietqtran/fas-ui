@@ -58,17 +58,20 @@ export const useLogin = () => {
       toast.error("Please fill all fields");
       return;
     }
-
+    console.log(email);
+    
     const loginResponse = await login({
       campusId,
       roleId,
       email,
       password,
     } as LoginCredentials).then((res) => res);
-
+    console.log(loginResponse);
+    
     if (!loginResponse) {
       toast.error("Login failed");
     } else {
+      
       // localStorage.setItem("accessToken", loginResponse.data.accessToken);
       localStorage.setItem("email", loginResponse.data.email);
 
@@ -98,7 +101,6 @@ export const useLogin = () => {
       } else {
         console.log(loginResponse);
 
-        //   localStorage.setItem("accessToken", loginResponse.data.accessToken);
         localStorage.setItem("email", loginResponse.data.email);
         console.log(loginResponse);
         router.push("/");

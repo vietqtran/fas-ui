@@ -1,7 +1,7 @@
 "use client";
 import useStudent from "@/hooks/Student";
 import { uploadToCloudinary } from "@/utils/uploadToCloudinary";
-import { FormControl, TextField } from "@mui/material";
+import { FormControl, MenuItem, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
 type Props = {};
@@ -239,7 +239,7 @@ const page = (props: Props) => {
                     </FormControl>
                   </div>
 
-                  <div className="sm:col-span-2">
+                  <div className="sm:col-span-1">
                     <FormControl fullWidth>
                       <label
                         htmlFor="street-address"
@@ -256,7 +256,26 @@ const page = (props: Props) => {
                       />
                     </FormControl>
                   </div>
-
+                  <div className="sm:col-span-1">
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="gender"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Gender
+                      </label>
+                      <TextField
+                        className="mt-2"
+                        select
+                        size="small"
+                        value={gender}
+                        onChange={(e) => setGender(e.target.value === "true" ? true : false)}
+                      >
+                        <MenuItem value="true" selected={gender == true}>Male</MenuItem>
+                        <MenuItem value="false" selected={gender == false}>Female</MenuItem>
+                      </TextField>
+                    </FormControl>
+                  </div>
                   <div className="col-span-full">
                     <label
                       htmlFor="photo"
