@@ -3,6 +3,8 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import CloseIcon from '@mui/icons-material/Close';
 import { FormControl, MenuItem, OutlinedInput, Select, TextField } from "@mui/material";
+import { useInstructor } from "@/hooks/Instructor";
+import { uploadToCloudinary } from "@/utils/uploadToCloudinary";
 const style = {
     position: "absolute" as "absolute",
     top: "50%",
@@ -20,10 +22,90 @@ interface Props {
     children?: React.ReactNode;
     open: boolean;
     handleClose: () => void;
+    id: string;
+    action: string;
 }
 
 export default function ModalInstructor(props: Props) {
-    const { open, handleClose } = props;
+    const { open, handleClose, id, action } = props;
+    const [image, setImage] = React.useState("");
+
+    React.useEffect(() => {
+        if (id) {
+            getInstructor();
+        }
+    }, [id])
+
+    const getInstructor = async () => {
+        let data = await fetchInstructor(id);
+
+        console.log(data);
+
+
+        setId(data?.id);
+        setFirstName(data?.firstName);
+        setMiddleName(data?.middleName);
+        setLastName(data?.lastName);
+        setBirthDay(data?.birthDay.split("T")[0]);
+        setPhone(data?.phone);
+        setEmail(data?.email);
+        setUsername(data?.username);
+        setAddress(data?.address);
+        setCampusId(data?.campus?.id);
+        setProfileImage(data?.profileImage);
+        setImage(data?.profileImage);
+    }
+
+    const {
+        setId,
+        firstName,
+        setFirstName,
+        middleName,
+        setMiddleName,
+        lastName,
+        setLastName,
+        phone,
+        setPhone,
+        email,
+        setEmail,
+        birthDay,
+        setBirthDay,
+        username,
+        setUsername,
+        address,
+        setAddress,
+        campusId,
+        setCampusId,
+        profileImage,
+        setProfileImage,
+        campuses,
+        setCampuses,
+        handleCreateInstructor,
+        handleUpdateInstructor,
+        fetchInstructor
+    } = useInstructor();
+
+    console.log(campusId);
+
+
+    const handleImageUpload = async (e) => {
+        const file = e.target.files[0];
+        const upload = await uploadToCloudinary(e.target.files[0], "image");
+        const imageUrl = URL.createObjectURL(file);
+        setImage(imageUrl);
+        setProfileImage(upload);
+    };
+
+    const handleSubmit = async (e) => {
+        handleCreateInstructor(e);
+    };
+
+    const handleUpdate = async (e) => {
+        handleUpdateInstructor(e);
+    }
+
+    console.log(campuses);
+
 
     return (
         <div>
@@ -46,104 +128,104 @@ export default function ModalInstructor(props: Props) {
                                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                     <div className="sm:col-span-2">
                                         <FormControl fullWidth>
-                                            <label>Email: </label>
-                                            <TextField size='small' className="mt-2" type="text" variant='outlined' />
+                                            <label>First Name: </label>
+                                            <TextField onChange={(e) => setFirstName(e.target.value)} value={firstName} size='small' className="mt-2" type="text" variant='outlined' />
                                         </FormControl>
                                     </div>
 
                                     <div className="sm:col-span-2">
                                         <FormControl fullWidth>
-                                            <label>Email: </label>
-                                            <TextField size='small' className="mt-2" type="text" variant='outlined' />
+                                            <label>Middle Name: </label>
+                                            <TextField onChange={(e) => setMiddleName(e.target.value)} value={middleName} size='small' className="mt-2" type="text" variant='outlined' />
                                         </FormControl>
                                     </div>
 
                                     <div className="sm:col-span-2">
                                         <FormControl fullWidth>
-                                            <label>Email: </label>
-                                            <TextField size='small' className="mt-2" type="text" variant='outlined' />
+                                            <label>Last Name: </label>
+                                            <TextField onChange={(e) => setLastName(e.target.value)} value={lastName} size='small' className="mt-2" type="text" variant='outlined' />
+                                        </FormControl>
+                                    </div>
+
+                                    <div className="sm:col-span-2">
+                                        <FormControl fullWidth>
+                                            <label>Birth Day: </label>
+                                            <TextField onChange={(e) => setBirthDay(e.target.value)} value={birthDay} size='small' className="mt-2" type="date" variant='outlined' />
                                         </FormControl>
                                     </div>
                                     <div className="sm:col-span-2">
                                         <FormControl fullWidth>
-                                            <label>Email: </label>
-                                            <TextField size='small' className="mt-2" type="text" variant='outlined' />
+                                            <label>Phone: </label>
+                                            <TextField onChange={(e) => setPhone(e.target.value)} value={phone} size='small' className="mt-2" type="text" variant='outlined' />
                                         </FormControl>
                                     </div>
                                     <div className="sm:col-span-2">
                                         <FormControl fullWidth>
-                                            <label>Email: </label>
-                                            <TextField size='small' className="mt-2" type="text" variant='outlined' />
-                                        </FormControl>
-                                    </div>
-                                    <div className="sm:col-span-2">
-                                        <FormControl fullWidth>
-                                            <label>Email: </label>
-                                            <TextField size='small' className="mt-2" type="text" variant='outlined' />
+                                            <label>Email Address: </label>
+                                            <TextField onChange={(e) => setEmail(e.target.value)} value={email} size='small' className="mt-2" type="text" variant='outlined' />
                                         </FormControl>
                                     </div>
 
                                     <div className="sm:col-span-3">
                                         <FormControl fullWidth>
-                                            <label>Email: </label>
-                                            <TextField size='small' className="mt-2" type="text" variant='outlined' />
+                                            <label>Username: </label>
+                                            <TextField onChange={(e) => setUsername(e.target.value)} value={username} size='small' className="mt-2" type="text" variant='outlined' />
                                         </FormControl>
                                     </div>
 
                                     <div className="sm:col-span-3">
                                         <FormControl fullWidth>
                                             <label
-                                                htmlFor="email"
                                                 className="block text-sm font-medium leading-6 text-gray-900"
                                             >
-                                                City
+                                                Campus
                                             </label>
                                             <TextField
                                                 className="mt-2"
                                                 select
                                                 size='small'
-                                                SelectProps={{
-                                                    value: "",
-                                                }}
+                                                value={campusId}
                                                 onChange={(e) => {
-                                                    console.log(e.target.value);
+                                                    setCampusId(e.target.value);
                                                 }}
                                             >
-
-                                                <MenuItem value="option1">Option 1</MenuItem>
-                                                <MenuItem value="option2">Option 2</MenuItem>
-                                                <MenuItem value="option3">Option 3</MenuItem>
+                                                {campuses?.map((campus) => (
+                                                    <MenuItem key={campus.id} selected={campusId == campus.id} value={campus.id}>
+                                                        {campus.location}
+                                                    </MenuItem>
+                                                ))}
                                             </TextField>
                                         </FormControl>
                                     </div>
 
                                     <div className="col-span-full">
                                         <FormControl fullWidth>
-                                            <label>Email: </label>
-                                            <TextField size='small' className="mt-2" type="text" variant='outlined' />
+                                            <label>Address: </label>
+                                            <TextField onChange={(e) => setAddress(e.target.value)} value={address} size='small' className="mt-2" type="text" variant='outlined' />
                                         </FormControl>
                                     </div>
 
-                                    <div className="sm:col-span-2 sm:col-start-1">
-                                        <FormControl fullWidth>
-                                            <label>Email: </label>
-                                            <TextField size='small' className="mt-2" type="text" variant='outlined' />
-                                        </FormControl>
+                                    <div className="col-span-full">
+                                        <label
+                                            className="block text-sm font-medium leading-6 text-gray-900"
+                                        >
+                                            Photo
+                                        </label>
+                                        <div className="mt-2 flex items-center gap-x-3">
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={handleImageUpload}
+                                                id="upload-image-input"
+                                                className="block w-full text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            />
+                                        </div>
                                     </div>
-
-                                    <div className="sm:col-span-2">
-                                        <FormControl fullWidth>
-                                            <label>Email: </label>
-                                            <TextField size='small' className="mt-2" type="text" variant='outlined' defaultValue="Outlined" />
-                                        </FormControl>
-                                    </div>
-
-                                    <div className="sm:col-span-2">
-                                        <FormControl fullWidth>
-                                            <label>Email: </label>
-                                            <TextField size='small' className="mt-2" type="text" variant='outlined' />
-                                        </FormControl>
-                                    </div>
+                                    {image && (
+                                        <div className="col-span-full">
+                                            <img src={image} width={180} height={200} />
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -157,6 +239,7 @@ export default function ModalInstructor(props: Props) {
                                 Cancel
                             </button>
                             <button
+                                onClick={id ? handleUpdate : handleSubmit}
                                 type="submit"
                                 className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
