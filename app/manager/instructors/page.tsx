@@ -15,17 +15,22 @@ import ManagerLayout from "@/components/Common/Layouts/ManagerLayout";
 interface Props { }
 
 export default function page(props: Props) {
-  const { instructors, setId, id, handleDeleteInstructor } = useInstructor();
+  const { instructors, setId, id, handleDeleteInstructor, fetchInstructors } = useInstructor();
 
   const [searchText, setSearchText] = React.useState("");
   const [results, setResults] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const [action, setAction] = React.useState("");
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = () => {
+    setAction("create");
+    setOpen(true);
+  };
+  const handleClose = () => {
+    fetchInstructors();
+    setOpen(false);
+  };
 
-  console.log(instructors);
 
   const handleUpdate = (instructorId: string) => {
     // Handle update logic here
@@ -185,7 +190,7 @@ export default function page(props: Props) {
         />
 
         {/* Modal Instructor */}
-        <ModalInstructor open={open} handleClose={handleClose} id={id} listInstructors={instructors} action={action} />
+        <ModalInstructor open={open} handleClose={handleClose} id={id} action={action} />
       </div>
     </ManagerLayout>
   );

@@ -23,6 +23,8 @@ export const useInstructor = () => {
    const [profileImage, setProfileImage] = useState("");
    const [campuses, setCampuses] = useState([]);
    const [campusId, setCampusId] = useState("");
+   const [idCard, setIdCard] = useState("");
+   const [gender, setGender] = useState(Boolean);
 
    useEffect(() => {
       fetchInstructors();
@@ -84,7 +86,9 @@ export const useInstructor = () => {
          username,
          address,
          profileImage,
-         campusId
+         campusId,
+         gender,
+    idCard
       } as InstructorCredentials).then((res) => res) as BaseResponse;
 
       if (response && response?.code === "SUCCESS") {
@@ -120,7 +124,9 @@ export const useInstructor = () => {
          username,
          address,
          profileImage,
-         campusId
+         campusId,
+         gender,
+         idCard
       } as InstructorCredentials).then((res) => res) as BaseResponse;
 
       if (response && response?.code === "SUCCESS") {
@@ -162,6 +168,10 @@ export const useInstructor = () => {
       handleCreateInstructor,
       handleUpdateInstructor,
       fetchInstructors,
-      fetchInstructor
+      fetchInstructor,
+      gender,
+      setGender,
+      idCard,
+      setIdCard,
    };
 };
