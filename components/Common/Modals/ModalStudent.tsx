@@ -31,7 +31,7 @@ interface Props {
 }
 
 export default function ModalStudent(props: Props) {
-  const { open, handleClose, id, action} = props;
+  const { open, handleClose, id, action } = props;
   const { majors } = useMajor();
   const [image, setImage] = React.useState("");
 
@@ -85,7 +85,7 @@ export default function ModalStudent(props: Props) {
     getStudentById(id);
   }, [id]);
 
-  const handleImageUpload = async (e) => {
+  const handleImageUpload = async (e: any) => {
     const file = e.target.files[0];
     const upload = await uploadToCloudinary(e.target.files[0], "image");
     const imageUrl = URL.createObjectURL(file);
