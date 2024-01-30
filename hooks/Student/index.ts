@@ -16,48 +16,51 @@ import { log } from "console";
 type Props = {};
 
 const useStudent = () => {
-  const [students, setStudents] = useState([]);
-  const [id, setId] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [middleName, setMiddleName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [birthDay, setBirthDay] = useState("");
-  const [phone, setPhone] = useState("");
-  const [majorId, setMajorId] = useState("");
-  const [email, setEmail] = useState("");
-  const [studentCode, setStudentCode] = useState("");
-  const [username, setUsername] = useState("");
-  const [address, setAddress] = useState("");
-  const [profileImage, setProfileImage] = useState("");
-  const [campusId, setCampusId] = useState("");
-  const [campuses, setCampuses] = useState([]);
-  const [student, setStudent] = useState({});
-  const [idcard, setIdCard] = useState("");
-  const [gender, setGender] = useState(true);
+    const [students, setStudents] = useState([])
+    const [id, setId] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [middleName, setMiddleName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [birthDay, setBirthDay] = useState("");
+    const [phone, setPhone] = useState("");
+    const [majorId, setMajorId] = useState("");
+    const [email, setEmail] = useState("");
+    const [studentCode, setStudentCode] = useState("");
+    const [username, setUsername] = useState("");
+    const [address, setAddress] = useState("");
+    const [profileImage, setProfileImage] = useState("");
+    const [campusId, setCampusId] = useState("");
+    const [idcard, setIdCard] = useState("");
+    const [gender, setGender] = useState(Boolean);
+    const [campuses, setCampuses] = useState([]);
+    const [student, setStudent] = useState({});
 
-  useEffect(() => {
-    fetchStudents();
-  }, []);
 
-  useEffect(() => {
-    fetchCampuses();
-  }, []);
+    useEffect(() => {
+        fetchStudents()
+    }, [])
 
-  const fetchCampuses = async () => {
-    const response = await getAllCampuses().then((res) => res);
-    if (response) {
-      setCampuses(response.data);
-    } else {
-      toast.error("Fetch campuses failed");
+    useEffect(() => {
+        fetchCampuses();
+    }, []);
+
+
+    const fetchCampuses = async () => {
+        const response = await getAllCampuses().then((res) => res)
+        if (response) {
+            setCampuses(response.data)
+        } else {
+            toast.error('Fetch campuses failed')
+        }
     }
-  };
 
-  const fetchStudents = async () => {
-    const response = await getAllStudents().then((res) => res);
-    if (response && response?.code === "SUCCESS") {
-      setStudents(response.data);
-    } else {
-      toast.error("Fetch students failed");
+    const fetchStudents = async () => {
+        const response = await getAllStudents().then((res) => res) as BaseResponse
+        if (response && response?.code === "SUCCESS") {
+            setStudents(response.data)
+        } else {
+            toast.error('Fetch students failed')
+        }
     }
   };
 
@@ -71,56 +74,60 @@ const useStudent = () => {
     } else {
       toast.error("Fetch students failed");
     }
-  };
 
-  const createStudent = async (e) => {
-    e.preventDefault();
-    const response = await addStudent({
-      firstName,
-      middleName,
-      lastName,
-      birthDay,
-      phone,
-      majorId,
-      campusId,
-      email,
-      studentCode,
-      username,
-      address,
-      profileImage,
-    } as StudentInformation).then((res) => res);
-    console.log(response);
+    const createStudent = async (e) => {
+        e.preventDefault();
+        const response = await addStudent({
+            firstName,
+            middleName,
+            lastName,
+            birthDay,
+            phone,
+            majorId,
+            campusId,
+            email,
+            studentCode,
+            username,
+            address,
+            profileImage,
+            gender,
+            idcard
+        } as StudentInformation).then((res) => res) as BaseResponse;
+        console.log(response);
 
-    if (response && response?.code === "SUCCESS") {
-      toast.success(response?.message);
-      await fetchStudents();
-    } else {
-      toast.error("Add students failed");
+        if (response && response?.code === "SUCCESS") {
+            toast.success(response?.message);
+            await fetchStudents();
+        } else {
+            toast.error('Add students failed')
+        }
     }
-  };
 
-  const handleUpdateStudent = async (e) => {
-    e.preventDefault();
-    const response = await updateStudent(id, {
-      firstName,
-      middleName,
-      lastName,
-      birthDay,
-      phone,
-      majorId,
-      campusId,
-      email,
-      studentCode,
-      username,
-      address,
-      profileImage,
-    } as StudentInformation).then((res) => res);
+    const handleUpdateStudent = async (e) => {
+        e.preventDefault();
+        const response = await updateStudent(id, {
+            firstName,
+            middleName,
+            lastName,
+            birthDay,
+            phone,
+            majorId,
+            campusId,
+            email,
+            studentCode,
+            username,
+            address,
+            profileImage,
+            gender,
+            idcard
+        } as StudentInformation).then((res) => res) as BaseResponse;
 
-    if (response && response?.code === "SUCCESS") {
-      toast.success(response?.message);
-      fetchStudents();
-    } else {
-      toast.error("update students failed");
+        if (response && response?.code === "SUCCESS") {
+            toast.success(response?.message);
+            fetchStudents();
+        } else {
+            toast.error('update students failed')
+        }
     }
   };
 

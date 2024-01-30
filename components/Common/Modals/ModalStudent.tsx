@@ -30,11 +30,9 @@ interface Props {
 }
 
 export default function ModalStudent(props: Props) {
-  const { open, handleClose, id, action} = props;
+  const { open, handleClose, id, action } = props;
   const { majors } = useMajor();
   const [image, setImage] = React.useState("");
-
-
 
   const {
     firstName,
@@ -66,13 +64,16 @@ export default function ModalStudent(props: Props) {
     handleUpdateStudent,
     campusId,
     setCampusId,
-    campuses
+    campuses,
+    idcard,
+    setIdCard,
+    gender,
+    setGender,
   } = useStudent();
 
   const getStudentById = async (id) => {
-    console.log(campuses);
-    
     const data = await getStudent(id);
+    console.log(data);
     setId(data?.id);
     setFirstName(data?.firstName);
     setMiddleName(data?.middleName);
@@ -87,17 +88,49 @@ export default function ModalStudent(props: Props) {
     setProfileImage(data?.profileImage);
     setImage(data?.profileImage);
     setCampusId(data?.campus.id);
+    setIdCard(data?.idcard);
+    setGender(data?.gender);
   };
   React.useEffect(() => {
     getStudentById(id);
   }, [id]);
 
+  React.useEffect(() => {
+    console.log(action);
+
+    if (action === "create") {
+      clearFormData();
+    }
+  }, [action]);
+
+  const clearFormData = () => {
+    console.log(1);
+
+    setFirstName("");
+    setMiddleName("");
+    setLastName("");
+    setBirthDay("");
+    setPhone("");
+    setMajorId("");
+    setEmail("");
+    setStudentCode("");
+    setUsername("");
+    setAddress("");
+    setProfileImage("");
+    setImage("");
+    setCampusId("");
+    setIdCard("");
+    setGender(Boolean);
+  };
+
   const handleImageUpload = async (e) => {
-    const file = e.target.files[0]
-    const upload = await uploadToCloudinary(e.target.files[0], "image");
-    const imageUrl = URL.createObjectURL(file);
-    setImage(imageUrl);
-    setProfileImage(upload);
+    const file = e.target.files[0];
+    if (file) {
+      const upload = await uploadToCloudinary(e.target.files[0], "image");
+      const imageUrl = URL.createObjectURL(file);
+      setImage(imageUrl);
+      setProfileImage(upload);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -200,6 +233,49 @@ export default function ModalStudent(props: Props) {
                       />
                     </FormControl>
                   </div>
+
+                  <div className="sm:col-span-2">
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="card-id"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Card ID
+                      </label>
+
+                      <TextField
+                        size="small"
+                        className="mt-2"
+                        type="text"
+                        value={idcard}
+                        disabled={action === "view"}
+                        onChange={(e) => setIdCard(e.target.value)}
+                      />
+                    </FormControl>
+                  </div>
+
+                  <div className="sm:col-span-1">
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="gender"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Gender
+                      </label>
+                      <TextField
+                        className="mt-2"
+                        select
+                        size="small"
+                        value={gender}
+                        disabled={action === "view"}
+                        onChange={(e) => setGender(e.target.value === "true" ? true : false)}
+                      >
+                        <MenuItem value="true" selected={gender == true}>Male</MenuItem>
+                        <MenuItem value="false" selected={gender == false}>Female</MenuItem>
+                      </TextField>
+                    </FormControl>
+                  </div>
+
                   <div className="sm:col-span-1">
                     <FormControl fullWidth>
                       <label
@@ -219,6 +295,7 @@ export default function ModalStudent(props: Props) {
                       />
                     </FormControl>
                   </div>
+
                   <div className="sm:col-span-2">
                     <FormControl fullWidth>
                       <label
@@ -279,27 +356,7 @@ export default function ModalStudent(props: Props) {
                     </FormControl>
                   </div>
 
-                  <div className="sm:col-span-2">
-                    <FormControl fullWidth>
-                      <label
-                        htmlFor="email"
-                        className="block text-sm font-medium leading-6 text-gray-900"
-                      >
-                        Email address
-                      </label>
-
-                      <TextField
-                        size="small"
-                        className="mt-2"
-                        type="text"
-                        value={email}
-                        disabled={action === "view" || action === "update"}
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
-                    </FormControl>
-                  </div>
-
-                  <div className="sm:col-span-2">
+                  <div className="sm:col-span-1">
                     <FormControl fullWidth>
                       <label
                         htmlFor="code"
@@ -337,14 +394,32 @@ export default function ModalStudent(props: Props) {
                       />
                     </FormControl>
                   </div>
+                  <div className="sm:col-span-2">
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="email"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Email address
+                      </label>
 
-                  <div className="col-span-full">
+                      <TextField
+                        size="small"
+                        className="mt-2"
+                        type="text"
+                        value={email}
+                        disabled={action === "view" || action === "update"}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                    </FormControl>
+                  </div>
+                  <div className="sm:col-span-4">
                     <FormControl fullWidth>
                       <label
                         htmlFor="street-address"
                         className="block text-sm font-medium leading-6 text-gray-900"
                       >
-                        Street address
+                        Address
                       </label>
                       <TextField
                         size="small"
