@@ -18,7 +18,6 @@ const Header = (props: Props) => {
 
   const handleGetStudent = async (email) => {
     let data = await fetchStudentByEmail(email);
-    console.log(data);
 
     setUserName(data?.username);
     setCampus(data?.campus?.name);

@@ -73,7 +73,6 @@ export default function ModalStudent(props: Props) {
 
   const getStudentById = async (id) => {
     const data = await getStudent(id);
-    console.log(data);
     setId(data?.id);
     setFirstName(data?.firstName);
     setMiddleName(data?.middleName);
@@ -96,16 +95,12 @@ export default function ModalStudent(props: Props) {
   }, [id]);
 
   React.useEffect(() => {
-    console.log(action);
-
     if (action === "create") {
       clearFormData();
     }
   }, [action]);
 
   const clearFormData = () => {
-    console.log(1);
-
     setFirstName("");
     setMiddleName("");
     setLastName("");
@@ -268,10 +263,16 @@ export default function ModalStudent(props: Props) {
                         size="small"
                         value={gender}
                         disabled={action === "view"}
-                        onChange={(e) => setGender(e.target.value === "true" ? true : false)}
+                        onChange={(e) =>
+                          setGender(e.target.value === "true" ? true : false)
+                        }
                       >
-                        <MenuItem value="true" selected={gender == true}>Male</MenuItem>
-                        <MenuItem value="false" selected={gender == false}>Female</MenuItem>
+                        <MenuItem value="true" selected={gender == true}>
+                          Male
+                        </MenuItem>
+                        <MenuItem value="false" selected={gender == false}>
+                          Female
+                        </MenuItem>
                       </TextField>
                     </FormControl>
                   </div>

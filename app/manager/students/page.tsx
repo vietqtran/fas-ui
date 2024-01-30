@@ -1,7 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { DataGrid, GridColDef, GridToolbarContainer, GridToolbarExport, GridValueGetterParams } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridColDef,
+  GridToolbarContainer,
+  GridToolbarExport,
+  GridValueGetterParams,
+} from "@mui/x-data-grid";
 import useStudent from "@/hooks/Student";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -9,11 +15,7 @@ import ModalStudent from "@/components/Common/Modals/ModalStudent";
 import AddIcon from "@mui/icons-material/Add";
 import ManagerLayout from "@/components/Common/Layouts/ManagerLayout";
 export default function page() {
-  const {
-    students,
-    deleteStudent,
-    fetchStudents
-  } = useStudent();
+  const { students, deleteStudent, fetchStudents } = useStudent();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -40,7 +42,6 @@ export default function page() {
 
   const handleDelete = (id: string) => {
     deleteStudent(id);
-    console.log(`Delete button clicked for row with ID: ${id}`);
   };
 
   const columns: GridColDef[] = [

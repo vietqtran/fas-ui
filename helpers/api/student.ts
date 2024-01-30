@@ -22,10 +22,8 @@ export const getStudentById = (id: string) => {
 };
 
 export const addStudent = (studentData: StudentInformation) => {
-   console.log(studentData);
-   
-   return instance.post(`/${END_POINT.CREATE_STUDENT}`, studentData)
-}
+  return instance.post(`/${END_POINT.CREATE_STUDENT}`, studentData);
+};
 
 export const updateStudent = (id: string, studentData: StudentInformation) => {
   return instance.put(`/${END_POINT.UPDATE_STUDENT}/${id}`, studentData);

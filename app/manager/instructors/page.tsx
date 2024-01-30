@@ -1,21 +1,28 @@
 "use client";
 
 import * as React from "react";
-import { DataGrid, GridColDef, GridToolbar, GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridColDef,
+  GridToolbar,
+  GridToolbarContainer,
+  GridToolbarExport,
+} from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { useInstructor } from "@/hooks/Instructor";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import ModalInstructor from "@/components/Common/Modals/ModalInsturctor";
 import ManagerLayout from "@/components/Common/Layouts/ManagerLayout";
 
-interface Props { }
+interface Props {}
 
 export default function page(props: Props) {
-  const { instructors, setInstructors, handleDeleteInstructor } = useInstructor();
+  const { instructors, setInstructors, handleDeleteInstructor } =
+    useInstructor();
 
   const [searchText, setSearchText] = React.useState("");
   const [results, setResults] = React.useState([]);
@@ -25,12 +32,10 @@ export default function page(props: Props) {
 
   const handleUpdate = (id: string) => {
     // Handle update logic here
-    console.log(`Update button clicked for row with ID: ${id}`);
   };
 
   const handleDelete = (id: string) => {
     // Handle delete logic here
-    console.log(`Delete button clicked for row with ID: ${id}`);
     handleDeleteInstructor(id);
   };
 
@@ -41,8 +46,6 @@ export default function page(props: Props) {
       const valuesToSearch = Object.values(instructor).join(" ").toLowerCase();
       return valuesToSearch.includes(searchValue.toLowerCase());
     });
-
-    console.log(filteredInstructors);
 
     setResults(filteredInstructors);
   };
@@ -113,7 +116,9 @@ export default function page(props: Props) {
   return (
     <ManagerLayout>
       <div className="container p-5">
-        <h1 className="text-3xl font-semibold text-gray-800">List Of Instructors</h1>
+        <h1 className="text-3xl font-semibold text-gray-800">
+          List Of Instructors
+        </h1>
 
         <div className="flex justify-end my-8 gap-2">
           <button className="flex items-center gap-1 bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-4 rounded-md">

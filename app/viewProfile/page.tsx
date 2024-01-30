@@ -27,19 +27,18 @@ const Profile = () => {
   });
 
   let email = localStorage.getItem("email");
-  console.log(email);
+
+  // get email from local stroge
 
   useEffect(() => {
     handleGetStudent(email);
   }, []);
 
-  console.log(student);
-
   const handleGetStudent = async (email) => {
     let data = await fetchStudentByEmail(email);
-    console.log(data);
     setStudent(data);
   };
+  // get data from local storege (data user by email)
 
   return (
     <div className="bg-white text-black h-[100%] w-[100vw] grid place-items-center">
