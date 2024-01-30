@@ -1,44 +1,167 @@
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import {
+   createNewInstructor,
    deleteInstructorById,
    getAllInstructors,
+   getInstructorById,
+   updateInstructor,
 } from "@/helpers/api/instructor";
+import { getAllCampuses } from "@/helpers/api/campus";
 
 export const useInstructor = () => {
    const [instructors, setInstructors] = useState([]);
+   const [id, setId] = useState("");
+   const [email, setEmail] = useState("");
+   const [firstName, setFirstName] = useState("");
+   const [lastName, setLastName] = useState("");
+   const [middleName, setMiddleName] = useState("");
+   const [phone, setPhone] = useState("");
+   const [birthDay, setBirthDay] = useState("");
+   const [username, setUsername] = useState("");
+   const [address, setAddress] = useState("");
+   const [profileImage, setProfileImage] = useState("");
+   const [campuses, setCampuses] = useState([]);
+   const [campusId, setCampusId] = useState("");
 
    useEffect(() => {
       fetchInstructors();
    }, []);
 
-   const fetchInstructors = async () => {
-      const response = await getAllInstructors().then((res) => res);
+   console.log(instructors);
 
-      if (response && response?.code === "SUCCESS") {
-         setInstructors(response.data);
+
+   useEffect(() => {
+      fetchCampuses()
+   }, [])
+
+   const fetchCampuses = async () => {
+      const response = await getAllCampuses().then((res) => res)
+
+      if (response) {
+         setCampuses(response.data)
       } else {
-         toast.error(response?.message);
+         toast.error('Fetch campuses failed')
+      }
+   }
+
+   const fetchInstructors = async () => {
+      try {
+         const response = await getAllInstructors().then((res) => res) as BaseResponse;
+         if (response && response?.code === "SUCCESS") {
+            setInstructors(response.data);
+         } else {
+            toast.error(response?.message);
+         }
+      } catch (error) {
+         console.log(error);
       }
    };
 
    const handleDeleteInstructor = async (id: string) => {
-      const response = await deleteInstructorById(id).then((res) => res);
+      const response = await deleteInstructorById(id).then((res) => res) as BaseResponse;
 
       console.log(response);
 
-
       if (response && response?.code === "SUCCESS") {
          toast.success(response?.message);
-         fetchInstructors();
+         await fetchInstructors();
       } else {
          toast.error(response?.message);
       }
    };
 
+   const handleCreateInstructor = async (e: any) => {
+      e.preventDefault();
+
+      const response = await createNewInstructor({
+         email,
+         firstName,
+         lastName,
+         middleName,
+         phone,
+         birthDay,
+         username,
+         address,
+         profileImage,
+         campusId
+      } as InstructorCredentials).then((res) => res) as BaseResponse;
+
+      if (response && response?.code === "SUCCESS") {
+         toast.success(response?.message);
+         let data = await fetchInstructors();
+         console.log(data);
+
+      } else {
+         toast.error(response?.message);
+      }
+   }
+
+   const fetchInstructor = async (id: string) => {
+      const response = await getInstructorById(id).then((res) => res) as BaseResponse;
+
+      if (response && response?.code === "SUCCESS") {
+         return response.data
+      } else {
+         toast.error(response?.message);
+      }
+   }
+
+   const handleUpdateInstructor = async (e: any) => {
+      e.preventDefault();
+
+      const response = await updateInstructor(id, {
+         email,
+         firstName,
+         lastName,
+         middleName,
+         phone,
+         birthDay,
+         username,
+         address,
+         profileImage,
+         campusId
+      } as InstructorCredentials).then((res) => res) as BaseResponse;
+
+      if (response && response?.code === "SUCCESS") {
+         toast.success(response?.message);
+      } else {
+         toast.error(response?.message);
+      }
+
+   }
+
    return {
       instructors,
       setInstructors,
-      handleDeleteInstructor
+      id,
+      setId,
+      email,
+      setEmail,
+      firstName,
+      setFirstName,
+      lastName,
+      setLastName,
+      middleName,
+      setMiddleName,
+      phone,
+      setPhone,
+      birthDay,
+      setBirthDay,
+      username,
+      setUsername,
+      address,
+      setAddress,
+      profileImage,
+      setProfileImage,
+      campusId,
+      setCampusId,
+      campuses,
+      setCampuses,
+      handleDeleteInstructor,
+      handleCreateInstructor,
+      handleUpdateInstructor,
+      fetchInstructors,
+      fetchInstructor
    };
 };
