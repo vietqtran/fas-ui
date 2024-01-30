@@ -485,4 +485,5 @@ export default function ModalStudent(props: Props) {
         </Modal>
       </div>
     );
-  }                                        
+  }
+}
