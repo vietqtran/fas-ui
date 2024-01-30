@@ -1,16 +1,13 @@
-import { Bounce, toast } from "react-toastify";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import {
-  checkEmailExist,
-  login,
-  loginWithGoogleAPI,
-} from "@/helpers/api/login";
-import { use, useEffect, useState } from "react";
+import { Bounce, toast } from 'react-toastify'
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { forgotPassword, login, loginWithGoogleAPI } from '@/helpers/api/login'
+import { use, useEffect, useState } from 'react'
 
-import { auth } from "@/helpers/firebase";
-import { getAllCampuses } from "@/helpers/api/campus";
-import { getAllRoles } from "@/helpers/api/role";
-import { useRouter } from "next/navigation";
+import { auth } from '@/helpers/firebase'
+import { getAllCampuses } from '@/helpers/api/campus'
+import { getAllRoles } from '@/helpers/api/role'
+import { useRouter } from 'next/navigation'
+
 
 export const useLogin = () => {
   const router = useRouter();
@@ -105,38 +102,42 @@ export const useLogin = () => {
         console.log(loginResponse);
         router.push("/");
       }
-    } catch (error) {
+          } catch (error) {
       console.error("Error during Google login:", error);
       toast.error("An error occurred during Google login. Please check again.");
     }
   };
 
-  const checkEmail = async (e) => {
-    e.preventDefault();
-    const response = (await checkEmailExist(email).then(
-      (res) => res
-    )) as BaseResponse;
-    if (response && response?.code === "SUCCESS") {
-      toast.success(response?.message);
-      return response.data;
-    } else {
-      toast.error(response?.message);
-    }
-  };
+   const checkEmail = async (e) => {
+      e.preventDefault();
+      const response = (await forgotPassword(email).then(
+         (res) => res
+     )) as BaseResponse
+     if (response && response?.code === 'SUCCESS') {
+         toast.success(response?.message)
+         setTimeout(() => {
+            window.location.href = "/login";
+        }, 3000);
+         return response.data
+     } else {
+         toast.error(response?.message)
+     }
+   }
 
-  return {
-    roles,
-    campuses,
-    loginHandle,
-    loginWithGoogle,
-    campusId,
-    setCampusId,
-    roleId,
-    setRoleId,
-    email,
-    setEmail,
-    password,
-    setPassword,
-    checkEmail,
-  };
-};
+   return {
+      roles,
+      campuses,
+      loginHandle,
+      loginWithGoogle,
+      campusId,
+      setCampusId,
+      roleId,
+      setRoleId,
+      email,
+      setEmail,
+      password,
+      setPassword,
+      checkEmail
+   }
+}
+
