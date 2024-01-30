@@ -135,12 +135,17 @@ const ManagerLayout
                            Instructor Management
                         </SidebarLink>
                      </li>
-
+                     <li className='w-[80%]'>
+                        <SidebarLink href='/manager/majors'>
+                           Major Management
+                        </SidebarLink>
+                     </li>
                      <li className='w-[80%]'>
                         <span className='block cursor-pointer p-5 font-semibold text-red-500'>
                            Log out
                         </span>
                      </li>
+
                   </ul>
                </div>
             </aside>

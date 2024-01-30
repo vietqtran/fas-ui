@@ -56,7 +56,7 @@ const page = (props: Props) => {
                         </Link>
                     </div>
                 </form>
-            </div>
+            </div>  
         </div>
     )
 }
