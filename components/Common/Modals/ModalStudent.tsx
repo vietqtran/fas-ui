@@ -93,7 +93,7 @@ export default function ModalStudent(props: Props) {
   }, [id]);
 
   const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files[0]
     const upload = await uploadToCloudinary(e.target.files[0], "image");
     const imageUrl = URL.createObjectURL(file);
     setImage(imageUrl);
