@@ -73,7 +73,6 @@ export default function ModalStudent(props: Props) {
 
   const getStudentById = async (id) => {
     const data = await getStudent(id);
-    console.log(data);
     setId(data?.id);
     setFirstName(data?.firstName);
     setMiddleName(data?.middleName);
