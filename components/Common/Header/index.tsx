@@ -1,51 +1,64 @@
-import useStudent from "@/hooks/Student";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+
+import Link from 'next/link'
+import { RootState } from '@/helpers/redux/reducers'
+import { removeUser } from '@/helpers/redux/actions/user'
+import useStudent from '@/hooks/Student'
 
 interface Props {}
 
 const Header = (props: Props) => {
-  const { fetchStudentByEmail } = useStudent();
+   const { user } = useSelector((state: RootState) => state.user)
 
-  let [userName, setUserName] = useState();
-  let [campus, setCampus] = useState();
+   const { fetchStudentByEmail } = useStudent()
 
-  let email = localStorage.getItem("email");
+   let [userName, setUserName] = useState()
+   let [campus, setCampus] = useState()
 
-  useEffect(() => {
-    handleGetStudent(email);
-  }, []);
+   useEffect(() => {
+      handleGetStudent(user.email)
+   }, [])
 
-  const handleGetStudent = async (email) => {
-    let data = await fetchStudentByEmail(email);
+   const handleGetStudent = async (email) => {
+      let data = await fetchStudentByEmail(email)
+      setUserName(data?.username)
+      setCampus(data?.campus?.name)
+   }
 
-    setUserName(data?.username);
-    setCampus(data?.campus?.name);
-  };
+   const dispatch = useDispatch()
 
-  return (
-    <>
-      <div className="my-[10px] w-full">
-        <h1 className="text-3xl">FPT Attendance System</h1>
-      </div>
-      <div className="flex justify-between w-full  bg-gray-50 p-3">
-        <Link href="/" className="text-blue-400">
-          Home
-        </Link>
-        <div className="flex items-center justify-end gap-3">
-          <div className="cursor-pointer rounded-md bg-green-500 p-1 text-sm text-white hover:underline">
-            {userName}
-          </div>
-          <div className="cursor-pointer rounded-md bg-green-500 p-1 text-sm text-white hover:underline">
-            logout
-          </div>
-          <div className="cursor-pointer rounded-md bg-green-500 p-1 text-sm text-white hover:underline">
-            Campus: {campus}
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
+   return (
+      <>
+         <div className='my-[10px] w-full'>
+            <h1 className='text-3xl'>FPT Attendance System</h1>
+         </div>
+         <div className='flex justify-between w-full  bg-gray-50 p-3'>
+            <Link href='/' className='text-blue-400'>
+               Home
+            </Link>
+            <div className='flex items-center justify-end gap-3'>
+               <Link
+                  href={'/viewProfile'}
+                  className=' block cursor-pointer rounded-md bg-green-500 p-1 text-sm text-white hover:underline'
+               >
+                  {userName}
+               </Link>
+               <div
+                  onClick={() => {
+                     dispatch(removeUser())
+                  }}
+                  className='cursor-pointer rounded-md bg-green-500 p-1 text-sm text-white hover:underline'
+               >
+                  logout
+               </div>
+               <div className='cursor-pointer rounded-md bg-green-500 p-1 text-sm text-white hover:underline'>
+                  Campus: {campus}
+               </div>
+            </div>
+         </div>
+      </>
+   )
+}
 
-export default Header;
+export default Header
