@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Link from 'next/link'
 import { RootState } from '@/helpers/redux/reducers'
 import { removeUser } from '@/helpers/redux/actions/user'
+import { useRouter } from 'next/navigation'
 import useStudent from '@/hooks/Student'
 
 interface Props {}
@@ -17,7 +18,7 @@ const Header = (props: Props) => {
    let [campus, setCampus] = useState()
 
    useEffect(() => {
-      handleGetStudent(user.email)
+      handleGetStudent(user.email ?? '')
    }, [])
 
    const handleGetStudent = async (email) => {
@@ -27,26 +28,28 @@ const Header = (props: Props) => {
    }
 
    const dispatch = useDispatch()
+   const router = useRouter()
 
    return (
       <>
          <div className='my-[10px] w-full'>
             <h1 className='text-3xl'>FPT Attendance System</h1>
          </div>
-         <div className='flex justify-between w-full  bg-gray-50 p-3'>
+         <div className='flex w-full justify-between bg-gray-50 p-3'>
             <Link href='/' className='text-blue-400'>
                Home
             </Link>
             <div className='flex items-center justify-end gap-3'>
                <Link
                   href={'/viewProfile'}
-                  className=' block cursor-pointer rounded-md bg-green-500 p-1 text-sm text-white hover:underline'
+                  className='block cursor-pointer rounded-md bg-green-500 p-1 text-sm text-white hover:underline'
                >
                   {userName}
                </Link>
                <div
                   onClick={() => {
                      dispatch(removeUser())
+                     router.push('/login')
                   }}
                   className='cursor-pointer rounded-md bg-green-500 p-1 text-sm text-white hover:underline'
                >

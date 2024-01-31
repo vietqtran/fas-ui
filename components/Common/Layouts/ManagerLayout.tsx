@@ -1,10 +1,11 @@
 'use client'
 
 import { FC, ReactNode, useEffect, useState } from 'react'
+import { Provider, useDispatch } from 'react-redux'
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Provider } from 'react-redux'
+import { removeUser } from '@/helpers/redux/actions/user'
 import { store } from '@/helpers/redux/store'
 
 interface Props {
@@ -30,6 +31,8 @@ const ManagerLayout: FC<Props> = ({ children }) => {
          setShowSidebar(window?.innerWidth >= 769 ? true : false)
       }
    }, [])
+
+   const dispatch = useDispatch()
 
    return (
       <Provider store={store}>
@@ -143,7 +146,12 @@ const ManagerLayout: FC<Props> = ({ children }) => {
                         Major Management
                      </SidebarLink>
                   </li>
-                  <li className='w-[80%]'>
+                  <li
+                     onClick={() => {
+                        dispatch(removeUser())
+                     }}
+                     className='w-[80%]'
+                  >
                      <span className='block cursor-pointer p-5 font-semibold text-red-500'>
                         Log out
                      </span>

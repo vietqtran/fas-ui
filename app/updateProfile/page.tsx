@@ -1,12 +1,14 @@
 'use client'
 
 import { FormControl, MenuItem, TextField } from '@mui/material'
+import { Provider, useSelector } from 'react-redux'
 import React, { useEffect, useState } from 'react'
 
 import Header from '@/components/Common/Header'
-import { Provider } from 'react-redux'
+import { RootState } from '@/helpers/redux/reducers'
 import { store } from '@/helpers/redux/store'
 import { uploadToCloudinary } from '@/utils/uploadToCloudinary'
+import { useRouter } from 'next/navigation'
 import useStudent from '@/hooks/Student'
 
 type Props = {}
@@ -70,10 +72,14 @@ const page = (props: Props) => {
       idCard: ''
    })
 
-   let emailStudent = localStorage.getItem('email')
+   const { user } = useSelector((state: RootState) => state.user)
+   const router = useRouter()
+   if (!user) {
+      router.push('/login')
+   }
 
    useEffect(() => {
-      handleGetStudent(emailStudent)
+      handleGetStudent(user.email ?? '')
    }, [])
 
    const handleGetStudent = async (emailStudent) => {
@@ -116,11 +122,11 @@ const page = (props: Props) => {
 
    return (
       <Provider store={store}>
-         <div className='bg-white text-black h-[100%] w-[100vw] '>
+         <div className='h-[100%] w-[100vw] bg-white text-black'>
             <div className='container mx-auto py-5 text-gray-600'>
                <Header />
                <div className='mt-5 bg-gray-200 p-3'>
-                  <h4 className='text-xl text-center my-3 font-bold'>
+                  <h4 className='my-3 text-center text-xl font-bold'>
                      Update Profile
                   </h4>
                   <p className='text-center'>
@@ -340,7 +346,7 @@ const page = (props: Props) => {
                   </form>
                   <button
                      type='button'
-                     className='text-right rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+                     className='rounded-md bg-indigo-600 px-3 py-2 text-right text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
                      onClick={handleSubmit}
                   >
                      Save

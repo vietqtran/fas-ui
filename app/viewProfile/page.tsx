@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 
 import Header from '@/components/Common/Header'
 import { RootState } from '@/helpers/redux/reducers'
+import { useRouter } from 'next/navigation'
 import { useSelector } from 'react-redux'
 import useStudent from '@/hooks/Student'
 
@@ -31,8 +32,10 @@ const Profile = () => {
    })
 
    const { user } = useSelector((state: RootState) => state.user)
-
-   // get email from local stroge
+   const router = useRouter()
+   if (!user) {
+      router.push('/login')
+   }
 
    useEffect(() => {
       handleGetStudent(user.email)
@@ -45,20 +48,20 @@ const Profile = () => {
    // get data from local storege (data user by email)
 
    return (
-      <div className='bg-white text-black h-[100%] w-[100vw] grid place-items-center'>
+      <div className='grid h-[100%] w-[100vw] place-items-center bg-white text-black'>
          <div className='container mx-auto py-5 text-gray-600'>
             <Header />
             <div className='mt-5'>
                <h1 className='text-3xl'>Student information</h1>
                <img
                   src={student.profileImage}
-                  className='w-[120px] h-[140px] mt-3'
+                  className='mt-3 h-[140px] w-[120px]'
                   alt='Student Avatar'
                />
                <div>
-                  <table className='table border border-gray-300 w-full'>
+                  <table className='table w-full border border-gray-300'>
                      <tbody>
-                        <tr className='border border-gray-300 flex justify-between w-full'>
+                        <tr className='flex w-full justify-between border border-gray-300'>
                            <td style={{ width: '20%' }} className='basis-1/3'>
                               <fieldset>
                                  <legend
@@ -234,7 +237,7 @@ const Profile = () => {
 
 const TableRow = ({ label, value }) => (
    <tr className='border border-gray-300'>
-      <td className='w-1/5 text-left border border-gray-300'>{label}&nbsp;</td>
+      <td className='w-1/5 border border-gray-300 text-left'>{label}&nbsp;</td>
       <td>
          <span>{value}</span>
       </td>
