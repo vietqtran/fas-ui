@@ -12,12 +12,16 @@ import React from 'react'
 import { RootState } from '@/helpers/redux/reducers'
 import SlideItem from '@/components/Home/SlideItem'
 import { store } from '@/helpers/redux/store'
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
    const { user } = useSelector((state: RootState) => state.user)
-   console.log(user)
+   const router = useRouter()
+   if (!user) {
+      router.push('/login')
+   }
    return (
-      <div className='container mx-auto flex min-h-screen flex-col py-5 items-center justify-start bg-white text-black'>
+      <div className='container mx-auto flex min-h-screen flex-col items-center justify-start bg-white py-5 text-black'>
          <Header />
          {/* <div className="h-[100px] w-full">
         <Swiper

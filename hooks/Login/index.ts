@@ -75,7 +75,6 @@ export const useLogin = () => {
          toast.error('Login failed')
       } else {
          dispatch(setUser(loginResponse.data))
-         // router.push("/");
       }
    }
 
@@ -99,8 +98,6 @@ export const useLogin = () => {
             toast.error('Login failed')
          } else {
             dispatch(setUser(loginResponse.data))
-
-            // router.push('/')
          }
       } catch (error) {
          console.error('Error during Google login:', error)
