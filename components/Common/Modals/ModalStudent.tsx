@@ -96,21 +96,7 @@ export default function ModalStudent(props: Props) {
 
   React.useEffect(() => {
     if (action === "create") {
-      setFirstName("");
-      setMiddleName("");
-      setLastName("");
-      setBirthDay("");
-      setPhone("");
-      setMajorId("");
-      setEmail("");
-      setStudentCode("");
-      setUsername("");
-      setAddress("");
-      setProfileImage("");
-      setImage("");
-      setCampusId("");
-      setIdCard("");
-      setGender(Boolean);
+    clearFormData();
     }
   }, [action]);
 
@@ -126,7 +112,26 @@ export default function ModalStudent(props: Props) {
 
   const handleSubmit = async (e) => {
     createStudent(e);
+    clearFormData();
   };
+
+  const clearFormData = () => {
+    setFirstName("");
+      setMiddleName("");
+      setLastName("");
+      setBirthDay("");
+      setPhone("");
+      setMajorId("");
+      setEmail("");
+      setStudentCode("");
+      setUsername("");
+      setAddress("");
+      setProfileImage("");
+      setImage("");
+      setCampusId("");
+      setIdCard("");
+      setGender(Boolean);
+  }
 
   const handleUpdate = async (e) => {
     handleUpdateStudent(e);

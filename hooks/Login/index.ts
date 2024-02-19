@@ -17,7 +17,15 @@ export const useLogin = () => {
    const { user } = useSelector((state: RootState) => state.user)
 
    if (user) {
-      router.push('/')
+      if(user.role.name === 'ADMIN') {
+         router.push('/admin')
+      }else if(user.role.name === 'MANAGER') {
+         router.push('/manager')
+      }else if(user.role.name === 'TEACHER') {
+         router.push('/instructer')
+      }else if(user.role.name === 'STUDENT') {
+         router.push('/')
+      }
    }
 
    const [roles, setRoles] = useState([])

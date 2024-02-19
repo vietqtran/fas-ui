@@ -205,7 +205,7 @@ const Profile = () => {
                                     <tbody>
                                        <TableRow
                                           label='Name'
-                                          value='Vũ Văn Minh'
+                                          value='Nguyễn Đắc Đạt'
                                        />
                                        <TableRow
                                           label='Phone number'
