@@ -15,39 +15,15 @@ import { store } from "@/helpers/redux/store";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const { user } = useSelector((state: RootState) => state.user);
-  const router = useRouter();
-  if (!user) {
-    router.push("/login");
-  }
-  console.log(user.role.id);
-
-  return (
-    <div className="container mx-auto flex min-h-screen flex-col items-center justify-start bg-white py-5 text-black">
-      <Header />
-      {/* <div className="h-[100px] w-full">
-        <Swiper
-          id="1"
-          spaceBetween={50}
-          slidesPerView={1}
-          onSlideChange={() => console.log("slide change")}
-          onSwiper={(swiper) => console.log(swiper)}
-        >
-          <SwiperSlide>
-            <SlideItem src="/images/slide/1.png" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <SlideItem src="/images/slide/2.png" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <SlideItem src="/images/slide/3.png" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <SlideItem src="/images/slide/4.png" />
-          </SwiperSlide>
-        </Swiper>
-      </div> */}
-
+   const { user } = useSelector((state: RootState) => state.user)
+   const router = useRouter()
+   if (!user|| user.role.name !== 'STUDENT') {
+      router.push('/login')
+   }
+   
+   return (
+      <div className='container mx-auto flex min-h-screen flex-col items-center justify-start bg-white py-5 text-black'>
+         <Header />
       <div className="w-full pt-20">
         <Contributors />
       </div>
@@ -60,7 +36,7 @@ export default function Home() {
         </div>
         {user.role.id === 1 ? (
           <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
-            <Link href={"/updateProfile"}> View Attendance Report</Link>
+            <Link href={"/attendReport"}> View Attendance Report</Link>
           </div>
         ) : (
           <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">

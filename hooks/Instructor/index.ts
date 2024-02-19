@@ -54,7 +54,7 @@ export const useInstructor = () => {
          if (response && response?.code === "SUCCESS") {
             setInstructors(response.data);
          } else {
-            toast.error(response?.message);
+            toast.error("error to fetch data");
          }
       } catch (error) {
          console.log(error);
@@ -70,7 +70,7 @@ export const useInstructor = () => {
          toast.success(response?.message);
          await fetchInstructors();
       } else {
-         toast.error(response?.message);
+         toast.error("not able to delete");
       }
    };
 
@@ -108,7 +108,7 @@ export const useInstructor = () => {
       if (response && response?.code === "SUCCESS") {
          return response.data
       } else {
-         toast.error(response?.message);
+         toast.error("error to fetch data");
       }
    }
 
@@ -133,9 +133,8 @@ export const useInstructor = () => {
       if (response && response?.code === "SUCCESS") {
          toast.success(response?.message);
       } else {
-         toast.error(response?.message);
+         toast.error("not able to update");
       }
-
    }
 
    return {

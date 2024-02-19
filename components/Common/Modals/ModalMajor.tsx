@@ -35,8 +35,16 @@ interface Props {
 export default function ModalMajor(props: Props) {
   const { open, handleClose, id, action } = props;
 
-  const { code, fetchMajor, name, setCodeMajor, setNameMajor,createMajor, handleUpdateStudent, setId } =
-    useMajor();
+  const {
+    code,
+    fetchMajor,
+    name,
+    setCodeMajor,
+    setNameMajor,
+    createMajor,
+    handleUpdateStudent,
+    setId,
+  } = useMajor();
 
   const getMajor = async (id) => {
     const data = await getMajorByID(id);
@@ -51,13 +59,18 @@ export default function ModalMajor(props: Props) {
 
   React.useEffect(() => {
     if (action === "create") {
-      setCodeMajor("");
-      setNameMajor("");
+      clearFormData();
     }
   }, [action]);
 
   const handleSubmit = async (e) => {
     createMajor(e);
+    clearFormData();
+  };
+
+  const clearFormData = () => {
+    setCodeMajor("");
+    setNameMajor("");
   };
 
   const handleUpdate = async (e) => {

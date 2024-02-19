@@ -63,19 +63,7 @@ export default function ModalInstructor(props: Props) {
   };
   React.useEffect(() => {
     if (action === "create") {
-      setFirstName("");
-      setMiddleName("");
-      setLastName("");
-      setBirthDay("");
-      setPhone("");
-      setEmail("");
-      setUsername("");
-      setAddress("");
-      setCampusId("");
-      setProfileImage("");
-      setImage("");
-      setGender(true);
-      setIdCard("");
+      clearFormData();
     }
   }, [action]);
 
@@ -112,7 +100,21 @@ export default function ModalInstructor(props: Props) {
     setIdCard,
   } = useInstructor();
 
-  console.log(campusId);
+  const clearFormData = () => {
+    setFirstName("");
+    setMiddleName("");
+    setLastName("");
+    setBirthDay("");
+    setPhone("");
+    setEmail("");
+    setUsername("");
+    setAddress("");
+    setCampusId("");
+    setProfileImage("");
+    setImage("");
+    setGender(true);
+    setIdCard("");
+  }
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
@@ -124,6 +126,7 @@ export default function ModalInstructor(props: Props) {
 
   const handleSubmit = async (e) => {
     handleCreateInstructor(e);
+    clearFormData();
   };
 
   const handleUpdate = async (e) => {
