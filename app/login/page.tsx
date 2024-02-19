@@ -10,10 +10,12 @@ import {
 } from '@mui/material'
 
 import Image from 'next/image'
+import { Provider } from 'react-redux'
 import React from 'react'
+import { store } from '@/helpers/redux/store'
 import { useLogin } from '@/hooks/Login'
 
-interface Props { }
+interface Props {}
 
 const LoginPage = (props: Props) => {
    const {
@@ -32,23 +34,23 @@ const LoginPage = (props: Props) => {
    } = useLogin()
 
    const forgetPassword = () => {
-      window.location.href = "/login/forgot-password";
+      window.location.href = '/login/forgot-password'
    }
 
    return (
-      <div className='bg-white text-black h-[100vh] w-[100vw] grid place-items-center'>
+      <div className='grid h-[100vh] w-[100vw] place-items-center bg-white text-black'>
          <div className='w-[600px]'>
-            <div className='w-full h-[50px] mb-5'>
+            <div className='mb-5 h-[50px] w-full'>
                <Image
                   src='/images/logo/FPT_University.png'
                   alt='logo'
                   width={200}
                   height={200}
-                  className='w-full h-full object-contain'
+                  className='h-full w-full object-contain'
                />
             </div>
-            <form action='#' onSubmit={loginHandle} className='sm:px-0 px-3'>
-               <div className='border-[1px] flex flex-col gap-5 p-5 rounded-md'>
+            <form action='#' onSubmit={loginHandle} className='px-3 sm:px-0'>
+               <div className='flex flex-col gap-5 rounded-md border-[1px] p-5'>
                   <div className='grid grid-cols-2 gap-5'>
                      <FormControl fullWidth>
                         <InputLabel id='role-label'>Role</InputLabel>
@@ -110,7 +112,7 @@ const LoginPage = (props: Props) => {
                   </Button>
                </div>
             </form>
-            <div className='flex items-center gap-3 my-5'>
+            <div className='my-5 flex items-center gap-3'>
                <hr className='block flex-1' />
                <span className='text-sm opacity-50'>OR</span>
                <hr className='block flex-1' />
@@ -119,7 +121,7 @@ const LoginPage = (props: Props) => {
                <Button
                   onClick={loginWithGoogle}
                   variant='outlined'
-                  className='w-full  py-3 text-center '
+                  className='w-full py-3 text-center'
                >
                   <svg
                      width='24'
@@ -151,7 +153,7 @@ const LoginPage = (props: Props) => {
                <Button
                   onClick={forgetPassword}
                   variant='outlined'
-                  className='w-full hover:bg-rose-100  py-3 text-center mt-4 border-2 border-rose-300 '
+                  className='mt-4 w-full border-2 border-rose-300 py-3 text-center hover:bg-rose-100'
                >
                   <span className='ml-3 text-red-400'>Forget Password?</span>
                </Button>

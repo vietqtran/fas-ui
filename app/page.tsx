@@ -2,19 +2,30 @@
 
 import "swiper/css";
 
+import { Provider, useSelector } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import Header from "@/components/Common/Header";
 import Image from "next/image";
-import React from "react";
-import SlideItem from "@/components/Home/SlideItem";
 import Link from "next/link";
+import React from "react";
+import { RootState } from "@/helpers/redux/reducers";
+import SlideItem from "@/components/Home/SlideItem";
+import { store } from "@/helpers/redux/store";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const { user } = useSelector((state: RootState) => state.user);
+  const router = useRouter();
+  if (!user) {
+    router.push("/login");
+  }
+  console.log(user.role.id);
+
   return (
-    <div className="container mx-auto flex min-h-screen flex-col py-5 items-center justify-start bg-white text-black">
+    <div className="container mx-auto flex min-h-screen flex-col items-center justify-start bg-white py-5 text-black">
       <Header />
-      <div className="h-[500px] w-full">
+      {/* <div className="h-[100px] w-full">
         <Swiper
           id="1"
           spaceBetween={50}
@@ -35,15 +46,27 @@ export default function Home() {
             <SlideItem src="/images/slide/4.png" />
           </SwiperSlide>
         </Swiper>
-      </div>
+      </div> */}
 
+      <div className="w-full pt-20">
+        <Contributors />
+      </div>
       <div className="grid w-full grid-cols-4 gap-5 py-[30px]">
         <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
-          <h2> View Profile Detail</h2>
+          <Link href={"/viewProfile"}> View Profile Detail</Link>
         </div>
         <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
-          <h2>Update Profile Detail</h2>
+          <Link href={"/updateProfile"}> Update Profile Detail</Link>
         </div>
+        {user.role.id === 1 ? (
+          <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
+            <Link href={"/updateProfile"}> View Attendance Report</Link>
+          </div>
+        ) : (
+          <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
+            <Link href={"/attendStudent"}> Take Attendance Student</Link>
+          </div>
+        )}
         <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
           <h2>Attendance Report</h2>
         </div>
@@ -54,11 +77,6 @@ export default function Home() {
         <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
           <h2>Attendance Report</h2>
         </div>
-      </div>
-
-      <div className="w-full pt-20">
-        <h2 className="mb-10 block text-center text-3xl">Event</h2>
-        <Contributors />
       </div>
     </div>
   );
@@ -138,12 +156,12 @@ const Contributors = () => {
                     >
                       <path
                         stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinejoin="round"
                         d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
                       />
                       <path
                         stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinejoin="round"
                         d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
                       />
                     </svg>
