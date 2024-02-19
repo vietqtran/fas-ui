@@ -36,7 +36,7 @@ export default function Home() {
         </div>
         {user.role.id === 1 ? (
           <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
-            <Link href={"/updateProfile"}> View Attendance Report</Link>
+            <Link href={"/attendReport"}> View Attendance Report</Link>
           </div>
         ) : (
           <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">

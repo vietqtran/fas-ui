@@ -125,7 +125,7 @@ const page = (props: Props) => {
          <div className='h-[100%] w-[100vw] bg-white text-black'>
             <div className='container mx-auto py-5 text-gray-600'>
                <Header />
-               <div className='mt-5 bg-gray-200 p-3'>
+               <div className='bg-gray-200 my-5'>
                   <h4 className='my-3 text-center text-xl font-bold'>
                      Update Profile
                   </h4>
