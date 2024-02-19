@@ -18,7 +18,7 @@ const Header = (props: Props) => {
    let [campus, setCampus] = useState()
 
    useEffect(() => {
-      handleGetStudent(user.email ?? '')
+      handleGetStudent(user?.email ?? '')
    }, [])
 
    const handleGetStudent = async (email) => {
@@ -33,7 +33,7 @@ const Header = (props: Props) => {
    return (
       <>
          <div className='my-[10px] w-full'>
-            <h1 className='text-3xl'>FPT Attendance System</h1>
+            <h1 className='text-3xl text-black'>FPT Attendance System</h1>
          </div>
          <div className='flex w-full justify-between bg-gray-50 p-3'>
             <Link href='/' className='text-blue-400'>
