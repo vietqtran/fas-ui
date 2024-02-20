@@ -132,13 +132,12 @@ const ManagerLayout: FC<Props> = ({ children }) => {
           <ul className="py-5 text-gray-600">
             <li className="w-[80%]">
               <SidebarLink href="/manager/students">
-                Student Management
+                Students Management
               </SidebarLink>
             </li>
-
             <li className="w-[80%]">
               <SidebarLink href="/manager/instructors">
-                Instructor Management
+                Instructors Management
               </SidebarLink>
             </li>
             <li className="w-[80%]">
@@ -149,7 +148,11 @@ const ManagerLayout: FC<Props> = ({ children }) => {
                 Events Management
               </SidebarLink>
             </li>
-
+            <li className="w-[80%]">
+              <SidebarLink href="/manager/courses">
+                Courses Management
+              </SidebarLink>
+            </li>
             <li
               onClick={() => {
                 dispatch(removeUser());
