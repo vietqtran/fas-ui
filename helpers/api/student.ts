@@ -7,6 +7,7 @@ const END_POINT = {
   UPDATE_STUDENT: "student/update",
   DELETE_STUDENT: "student/delete",
   GET_STUDENT_EMAIL: "student/email",
+  GET_ALL_STUDENTS_BY_GRADE: "student/grade",
 };
 
 export const getAllStudents = () => {
@@ -32,3 +33,7 @@ export const updateStudent = (id: string, studentData: StudentInformation) => {
 export const getStudentByEmail = (email: string) => {
   return instance.get(`/${END_POINT.GET_STUDENT_EMAIL}/${email}`);
 };
+
+export const getAllStudentsByGrade = (gradeId: string) => {
+  return instance.get(`/${END_POINT.GET_ALL_STUDENTS_BY_GRADE}/${gradeId}`);
+}
