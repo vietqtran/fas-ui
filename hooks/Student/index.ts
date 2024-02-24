@@ -6,6 +6,7 @@ import {
    addStudent,
    deleteStudentById,
    getAllStudents,
+   getAllStudentsByGrade,
    getStudentByEmail,
    getStudentById,
    updateStudent
@@ -32,14 +33,23 @@ const useStudent = () => {
    const [gender, setGender] = useState(Boolean)
    const [campuses, setCampuses] = useState([])
    const [student, setStudent] = useState({})
+   const [gradeId, setGradeId] = useState('2eed7f8c-d090-11ee-a242-106530543950')
+
+   const [gradeStudents, setGradeStudents] = useState([])
+   const [currentPage, setCurrentPage] = useState('1');
+   const [pageSize, setPageSize] = useState('5');
+   const [totalPages, setTotalPages] = useState(0);
+   const [courseStudentId, setCourseStudentId] = useState('663fe3e3-d087-11ee-a242-106530543950')
 
    useEffect(() => {
       fetchStudents()
    }, [])
 
    useEffect(() => {
-      fetchCampuses()
-   }, [])
+      if (gradeId && courseStudentId) {
+         fetchStudentsByGrade(gradeId, courseStudentId, currentPage, pageSize)
+      }
+   }, [gradeId, courseStudentId, currentPage, pageSize])
 
    const fetchCampuses = async () => {
       const response = await getAllCampuses().then((res) => res)
@@ -56,6 +66,19 @@ const useStudent = () => {
       )) as BaseResponse
       if (response && response?.code === 'SUCCESS') {
          setStudents(response.data)
+      } else {
+         toast.error('Fetch students failed')
+      }
+   }
+
+   const fetchStudentsByGrade = async (gradeId: string, courseId: string, currentPage: string, pageSize: string) => {
+      const response = (await getAllStudentsByGrade(gradeId, courseId, currentPage, pageSize).then(
+         (res) => res
+      )) as BaseResponse
+      if (response && response?.code === 'SUCCESS') {
+         setGradeStudents(response.data?.content)
+         setCurrentPage(response.data?.currentPage)
+         setTotalPages(response.data?.totalPages)
       } else {
          toast.error('Fetch students failed')
       }
@@ -134,7 +157,6 @@ const useStudent = () => {
          (res) => res
       )) as BaseResponse
       if (response && response?.code === 'SUCCESS') {
-         toast.success(response?.message)
          return response.data
       } else {
          toast.error(response?.message)
@@ -146,7 +168,6 @@ const useStudent = () => {
          (res) => res
       )) as BaseResponse
       if (response && response?.code === 'SUCCESS') {
-         toast.success(response?.message)
          return response.data
       } else {
          toast.error(response?.message)
@@ -193,7 +214,16 @@ const useStudent = () => {
       idCard,
       setIdCard,
       campuses,
-      fetchStudentByEmail
+      fetchStudentByEmail,
+      gradeStudents,
+      gradeId,
+      setGradeId,
+      currentPage,
+      setCurrentPage,
+      totalPages,
+      pageSize,
+      courseStudentId,
+      setCourseStudentId
    }
 }
 export default useStudent

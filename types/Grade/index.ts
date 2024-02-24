@@ -1,0 +1,3 @@
+interface GradeInformation {
+    code: string
+}
