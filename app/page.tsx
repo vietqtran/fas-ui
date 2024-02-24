@@ -7,10 +7,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import Header from "@/components/Common/Header";
 import Image from "next/image";
-import Link from "next/link";
+
 import React from "react";
 import { RootState } from "@/helpers/redux/reducers";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Home() {
    const { user } = useSelector((state: RootState) => state.user)
