@@ -21,7 +21,7 @@ export const useLogin = () => {
          router.push('/admin')
       }else if(user.role.name === 'MANAGER') {
          router.push('/manager')
-      }else if(user.role.name === 'TEACHER') {
+      }else if(user.role.name === 'INSTRUCTOR') {
          router.push('/instructer')
       }else if(user.role.name === 'STUDENT') {
          router.push('/')

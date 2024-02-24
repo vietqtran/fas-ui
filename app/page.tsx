@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 export default function Home() {
    const { user } = useSelector((state: RootState) => state.user)
    const router = useRouter()
-   if (!user|| user.role.name !== 'STUDENT') {
+   if (!user|| user?.role?.name !== 'STUDENT') {
       router.push('/login')
    }
    
@@ -34,7 +34,7 @@ export default function Home() {
         <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
           <Link href={"/updateProfile"}> Update Profile Detail</Link>
         </div>
-        {user.role.id === 1 ? (
+        {user?.role?.id === 1 ? (
           <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
             <Link href={"/attendReport"}> View Attendance Report</Link>
           </div>
