@@ -1,7 +1,7 @@
 "use client";
 import { Bounce, toast } from "react-toastify";
 import React, { useEffect, useState } from "react";
-import { addCourse, deleteCourseById, getAllCourse, getCourseByID, updateCourse } from "@/helpers/api/course";
+import { addCourse, deleteCourseById, getAllCourse, getCourseByID, getCourseByMajor, updateCourse } from "@/helpers/api/course";
 
 type Props = {};
 
@@ -11,7 +11,7 @@ const useCourse = () => {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [noCredit, setNoCredit] = useState<number>(0);
-
+    const [curricilum, setCurriculum] =useState([]);
     const [id, setId] = useState("");
 
     useEffect(() => {
@@ -116,6 +116,22 @@ const useCourse = () => {
         }
     };
 
+    const getCurriculum = async (id: string) => {
+        try {
+            const response = await getCourseByMajor(id).then(
+                (res) => res
+            ) as BaseResponse;
+            if (response && response.code === "SUCCESS") {
+                toast.success(response.message);
+                setCurriculum(response.data);
+            } else {
+                toast.error(response?.message || "Failed to get course");
+            }
+        } catch (error) {
+            console.error("Error getting course:", error);
+            toast.error("Failed to get course");
+        }
+    };
     return {
         courses,
         fetchCourses,
@@ -132,6 +148,8 @@ const useCourse = () => {
         id,
         setId,
         handleUpdateCourse,
+        getCurriculum,
+        curricilum
     };
 };
 
