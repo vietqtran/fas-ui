@@ -1,6 +1,8 @@
 "use client";
 import { Bounce, toast } from "react-toastify";
 import React, { useEffect, useState } from "react";
+import { addCourse, deleteCourseById, getAllCourse, getCourseByID, getAllCourseByMajor, updateCourse } from "@/helpers/api/course";
+=======
 import { addCourse, deleteCourseById, getAllCourse, getCourseByID, getCourseByMajor, updateCourse } from "@/helpers/api/course";
 
 type Props = {};
@@ -11,12 +13,18 @@ const useCourse = () => {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [noCredit, setNoCredit] = useState<number>(0);
+    const [majorId, setMajorId] = useState("72e18d9c-bf96-11ee-bdb8-106530543950");
     const [curricilum, setCurriculum] =useState([]);
     const [id, setId] = useState("");
 
     useEffect(() => {
-        fetchCourses();
-    }, []);
+        if (!majorId) {
+            fetchCourses();
+        }
+        console.log(majorId);
+
+        fetchCoursesByMajor(majorId);
+    }, [majorId]);
 
     const fetchCourses = async () => {
         try {
@@ -68,6 +76,21 @@ const useCourse = () => {
             return undefined;
         }
     };
+
+    const fetchCoursesByMajor = async (majorId: string) => {
+        try {
+            const response = await getAllCourseByMajor(majorId).then(
+                (res) => res
+            ) as BaseResponse;
+            if (response && response.code === "SUCCESS") {
+                console.log(response.data);
+
+                setCourses(response.data);
+            }
+        } catch (error) {
+            console.error("Error getting courses by major:", error);
+        }
+    }
 
     const createCourse = async (e) => {
         e.preventDefault();
@@ -134,6 +157,9 @@ const useCourse = () => {
     };
     return {
         courses,
+        setCourses,
+        majorId,
+        setMajorId,
         fetchCourses,
         deleteCourse,
         code,
@@ -148,6 +174,7 @@ const useCourse = () => {
         id,
         setId,
         handleUpdateCourse,
+        fetchCoursesByMajor
         getCurriculum,
         curricilum
     };
