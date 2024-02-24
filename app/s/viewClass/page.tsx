@@ -370,10 +370,20 @@ const page = () => {
     const { majors } = useMajor();
     const { majorId, setMajorId, courses } = useCourse();
     const { courseId, setCourseId, grades } = useGrade()
-    const { gradeId, setGradeId, gradeStudents } = useStudent();
+    const { gradeId, setGradeId, gradeStudents, currentPage, setCurrentPage, totalPages, pageSize, setCourseStudentId } = useStudent();
 
-    console.log(gradeId);
+    const handleChangePage = (event: React.ChangeEvent<unknown>, newPage: number) => {
+        setCurrentPage(newPage.toString());
+    }
 
+    const handleCourseClick = (courseId: string) => {
+        setCourseId(courseId);
+        setCourseStudentId(courseId);
+        const selectedCourse = courses.find(course => course.id === courseId);
+        if (selectedCourse && selectedCourse.grades && selectedCourse.grades.length > 0) {
+            setGradeId(selectedCourse.grades[0].id);
+        }
+    }
 
     return (
         <div className="grid h-[100%] w-[100vw] place-items-center bg-white text-black">
@@ -422,7 +432,7 @@ const page = () => {
                                         <TableCell className="align-top" component="th" scope="row">
                                             {
                                                 courses.map((course, index) => (
-                                                    <div onClick={() => setCourseId(course.id)} key={index + 1}>
+                                                    <div onClick={() => handleCourseClick(course.id)} key={index + 1}>
                                                         <span className={courseId === course.id ? "font-bold" : `text-blue-600 cursor-pointer hover:text-blue-900 hover:underline`}>{course.name}</span>
                                                     </div>
                                                 ))
@@ -433,7 +443,7 @@ const page = () => {
                                             <div className="flex flex-wrap">
                                                 {
                                                     grades.map((grade, index) => (
-                                                        <div onClick={() => setGradeId(grade.id)} className="w-1/3 p-1" key={index + 1}>
+                                                        <div onClick={() => { setGradeId(grade.id); setCurrentPage('1') }} className="w-1/3 mx-2" key={index + 1}>
                                                             <span className={gradeId === grade.id ? "font-bold" : `text-blue-600 cursor-pointer hover:text-blue-900 hover:underline`}>{grade.code}</span>
                                                         </div>
                                                     ))
@@ -473,11 +483,11 @@ const page = () => {
                                             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                                         >
                                             <TableCell component="th" scope="row">
-                                                {index + 1}
+                                                {(parseInt(currentPage) - 1) * parseInt(pageSize) + index + 1}
                                             </TableCell>
                                             <TableCell component="th" scope="row">
                                                 <img
-                                                    className="block border border-blue-500 w-[10rem] h-[10rem]"
+                                                    className="block border border-blue-500 w-[8rem] h-[10rem]"
                                                     src={student.profileImage}
                                                     alt={`Image ${index + 1}`}
                                                 />
@@ -501,7 +511,7 @@ const page = () => {
                         </TableContainer>
 
                         <div className="flex justify-center mt-3">
-                            <Pagination count={10} />
+                            <Pagination onChange={handleChangePage} page={parseInt(currentPage)} count={totalPages} />
                         </div>
                     </div>
                 </div>

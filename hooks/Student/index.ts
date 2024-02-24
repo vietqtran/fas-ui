@@ -16,7 +16,6 @@ import { getAllCampuses } from '@/helpers/api/campus'
 
 const useStudent = () => {
    const [students, setStudents] = useState([])
-   const [gradeStudents, setGradeStudents] = useState([])
    const [id, setId] = useState('')
    const [firstName, setFirstName] = useState('')
    const [middleName, setMiddleName] = useState('')
@@ -36,15 +35,21 @@ const useStudent = () => {
    const [student, setStudent] = useState({})
    const [gradeId, setGradeId] = useState('2eed7f8c-d090-11ee-a242-106530543950')
 
+   const [gradeStudents, setGradeStudents] = useState([])
+   const [currentPage, setCurrentPage] = useState('1');
+   const [pageSize, setPageSize] = useState('5');
+   const [totalPages, setTotalPages] = useState(0);
+   const [courseStudentId, setCourseStudentId] = useState('663fe3e3-d087-11ee-a242-106530543950')
+
    useEffect(() => {
       fetchStudents()
    }, [])
 
    useEffect(() => {
-      if (gradeId) {
-         fetchStudentsByGrade(gradeId)
+      if (gradeId && courseStudentId) {
+         fetchStudentsByGrade(gradeId, courseStudentId, currentPage, pageSize)
       }
-   }, [gradeId])
+   }, [gradeId, courseStudentId, currentPage, pageSize])
 
    const fetchCampuses = async () => {
       const response = await getAllCampuses().then((res) => res)
@@ -66,12 +71,14 @@ const useStudent = () => {
       }
    }
 
-   const fetchStudentsByGrade = async (gradeId: string) => {
-      const response = (await getAllStudentsByGrade(gradeId).then(
+   const fetchStudentsByGrade = async (gradeId: string, courseId: string, currentPage: string, pageSize: string) => {
+      const response = (await getAllStudentsByGrade(gradeId, courseId, currentPage, pageSize).then(
          (res) => res
       )) as BaseResponse
       if (response && response?.code === 'SUCCESS') {
-         setGradeStudents(response.data)
+         setGradeStudents(response.data?.content)
+         setCurrentPage(response.data?.currentPage)
+         setTotalPages(response.data?.totalPages)
       } else {
          toast.error('Fetch students failed')
       }
@@ -210,7 +217,13 @@ const useStudent = () => {
       fetchStudentByEmail,
       gradeStudents,
       gradeId,
-      setGradeId
+      setGradeId,
+      currentPage,
+      setCurrentPage,
+      totalPages,
+      pageSize,
+      courseStudentId,
+      setCourseStudentId
    }
 }
 export default useStudent
