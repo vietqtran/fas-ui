@@ -18,9 +18,9 @@ import ModalMajor from "@/components/Common/Modals/ModalMajor";
 import ModalStudent from "@/components/Common/Modals/ModalStudent";
 import { RootState } from "@/helpers/redux/reducers";
 import useMajor from "@/hooks/Major";
-import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import useStudent from "@/hooks/Student";
+import { useRouter } from "next/navigation";
 
 export default function page() {
   const { user } = useSelector((state: RootState) => state.user);
