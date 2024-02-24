@@ -98,7 +98,6 @@ const page = (props: Props) => {
       setIdCard(data?.idCard)
       setCampusId(data?.campus?.id)
       setMajorId(data?.major?.id)
-
       setStudent(data)
    }
    // set data from local storage

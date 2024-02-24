@@ -21,6 +21,14 @@ export default function Home() {
 
   return (
     <div className='container mx-auto flex min-h-screen flex-col items-center justify-start bg-white py-5 text-black'>
+  const { user } = useSelector((state: RootState) => state.user);
+  const router = useRouter();
+  if (!user || user.role.name !== "STUDENT") {
+    router.push("/login");
+  }
+
+  return (
+    <div className="container mx-auto flex min-h-screen flex-col items-center justify-start bg-white py-5 text-black">
       <Header />
       <div className="w-full pt-20">
         <Contributors />
@@ -42,11 +50,11 @@ export default function Home() {
           </div>
         )}
         <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
-          <h2>Attendance Report</h2>
+          <Link href={"/curriculum"}> Curriculum</Link>
         </div>
 
         <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
-          <h2>View Schedule</h2>
+          <Link href={"/studentFeedback"}> Feedback Instructor</Link>
         </div>
         <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
           <h2>Attendance Report</h2>
