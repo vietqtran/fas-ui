@@ -13,23 +13,16 @@ import { RootState } from "@/helpers/redux/reducers";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const { user } = useSelector((state: RootState) => state.user)
-  const router = useRouter()
-  if (!user || user.role.name !== 'STUDENT') {
-    router.push('/login')
-  }
+   const { user } = useSelector((state: RootState) => state.user)
+   const router = useRouter()
+   if (!user|| user?.role?.name !== 'STUDENT') {
+      router.push('/login')
+   }
+   
+   return (
+      <div className='container mx-auto flex min-h-screen flex-col items-center justify-start bg-white py-5 text-black'>
+         <Header />
 
-  return (
-    <div className='container mx-auto flex min-h-screen flex-col items-center justify-start bg-white py-5 text-black'>
-  const { user } = useSelector((state: RootState) => state.user);
-  const router = useRouter();
-  if (!user || user.role.name !== "STUDENT") {
-    router.push("/login");
-  }
-
-  return (
-    <div className="container mx-auto flex min-h-screen flex-col items-center justify-start bg-white py-5 text-black">
-      <Header />
       <div className="w-full pt-20">
         <Contributors />
       </div>
@@ -40,7 +33,8 @@ export default function Home() {
         <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
           <Link href={"/updateProfile"}> Update Profile Detail</Link>
         </div>
-        {user.role?.id === 1 ? (
+
+        {user?.role?.id === 1 ? (
           <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
             <Link href={"/attendReport"}> View Attendance Report</Link>
           </div>

@@ -15,7 +15,7 @@ const rows = Array.from({ length: 30 }, (_, index) => index + 1);
 
 const page = () => {
   return (
-    <div className="h-[100%] w-[100vw] bg-white text-black">
+    <div className="h-[100%] w-[100%] bg-white text-black overflow-x-hidden">
       <div className="container mx-auto py-5 text-gray-600">
         <Header />
         <div className="mt-10">
@@ -40,7 +40,9 @@ const page = () => {
                   <TableBody>
                     <TableRow
                       sx={{
-                        "&:last-child TableCell, &:last-child th": { border: 0 },
+                        "&:last-child TableCell, &:last-child th": {
+                          border: 0,
+                        },
                       }}
                     >
                       <TableCell
@@ -55,207 +57,61 @@ const page = () => {
                         scope="row"
                         className="align-top"
                       >
-                        <Table>
-                          <TableBody>
-                            <TableRow>
-                              <TableCell>
-                                <a href="?id=HE172134&amp;campus=3&amp;term=18">
-                                  Summer2017
-                                </a>
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell>
-                                <a href="?id=HE172134&amp;campus=3&amp;term=19">
-                                  Fall2017
-                                </a>
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell>
-                                <a href="?id=HE172134&amp;campus=3&amp;term=20">
-                                  Spring2018
-                                </a>
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell>
-                                <a href="?id=HE172134&amp;campus=3&amp;term=21">
-                                  Summer2018
-                                </a>
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell>
-                                <a href="?id=HE172134&amp;campus=3&amp;term=22">
-                                  Fall2018
-                                </a>
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell>
-                                <a href="?id=HE172134&amp;campus=3&amp;term=23">
-                                  Spring2019
-                                </a>
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell>
-                                <a href="?id=HE172134&amp;campus=3&amp;term=24">
-                                  Summer2019
-                                </a>
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell>
-                                <a href="?id=HE172134&amp;campus=3&amp;term=25">
-                                  Fall2019
-                                </a>
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell>
-                                <a href="?id=HE172134&amp;campus=3&amp;term=26">
-                                  Spring2020
-                                </a>
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell>
-                                <a href="?id=HE172134&amp;campus=3&amp;term=27">
-                                  Summer2020
-                                </a>
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell>
-                                <a href="?id=HE172134&amp;campus=3&amp;term=28">
-                                  Fall2020
-                                </a>
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell>
-                                <a href="?id=HE172134&amp;campus=3&amp;term=29">
-                                  Spring2021
-                                </a>
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell>
-                                <a href="?id=HE172134&amp;campus=3&amp;term=30">
-                                  Summer2021
-                                </a>
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell>
-                                <a href="?id=HE172134&amp;campus=3&amp;term=31">
-                                  Fall2021
-                                </a>
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell>
-                                <a href="?id=HE172134&amp;campus=3&amp;term=32">
-                                  Spring2022
-                                </a>
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell>
-                                <a href="?id=HE172134&amp;campus=3&amp;term=33">
-                                  Summer2022
-                                </a>
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell>
-                                <b>Fall2022</b>
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell>
-                                <a href="?id=HE172134&amp;campus=3&amp;term=38">
-                                  Spring2023
-                                </a>
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell>
-                                <a href="?id=HE172134&amp;campus=3&amp;term=39">
-                                  Summer2023
-                                </a>
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell>
-                                <a href="?id=HE172134&amp;campus=3&amp;term=40">
-                                  Fall2023
-                                </a>
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell>
-                                <a href="?id=HE172134&amp;campus=3&amp;term=41">
-                                  Spring2024
-                                </a>
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
+                        <a href="?id=HE172134&amp;campus=3&amp;term=18">
+                          Summer2017
+                        </a>
+                        <br />
+                        <a href="?id=HE172134&amp;campus=3&amp;term=19">
+                          Fall2017
+                        </a>
+                        <br />
+                        <b>Fall2022</b>
+                        <br />
+                        <a href="?id=HE172134&amp;campus=3&amp;term=38">
+                          Spring2023
+                        </a>
+                        <br />
+                        <a href="?id=HE172134&amp;campus=3&amp;term=39">
+                          Summer2023
+                        </a>
+                        <br />
+                        <a href="?id=HE172134&amp;campus=3&amp;term=40">
+                          Fall2023
+                        </a>
+                        <br />
+                        <a href="?id=HE172134&amp;campus=3&amp;term=41">
+                          Spring2024
+                        </a>
                       </TableCell>
                       <TableCell
                         component="th"
                         scope="row"
                         className="align-top"
                       >
-                          <Table>
-                            <TableBody>
-                              <TableRow>
-                                <TableCell>
-                                  <b>
-                                    Mathematics for
-                                    Engineering(MAE101)(SE1748,start 05/09/2022)
-                                  </b>
-                                </TableCell>
-                              </TableRow>
-                              <TableRow>
-                                <TableCell>
-                                  <a href="?id=HE172134&amp;campus=3&amp;term=37&amp;course=27110">
-                                    Computer Organization and
-                                    Architecture(CEA201)
-                                  </a>
-                                  (SE1748,start 05/09/2022)
-                                </TableCell>
-                              </TableRow>
-                              <TableRow>
-                                <TableCell>
-                                  <a href="?id=HE172134&amp;campus=3&amp;term=37&amp;course=27135">
-                                    Introduction to Computer Science(CSI104)
-                                  </a>
-                                  (SE1748,start 06/09/2022)
-                                </TableCell>
-                              </TableRow>
-                              <TableRow>
-                                <TableCell>
-                                  <a href="?id=HE172134&amp;campus=3&amp;term=37&amp;course=27574">
-                                    Programming Fundamentals(PRF192)
-                                  </a>
-                                  (SE1748,start 13/09/2022)
-                                </TableCell>
-                              </TableRow>
-                              <TableRow>
-                                <TableCell>
-                                  <a href="?id=HE172134&amp;campus=3&amp;term=37&amp;course=28030">
-                                    Academic Skills for University
-                                    Success(SSL101c)
-                                  </a>
-                                  (SE1748,start 14/09/2022)
-                                </TableCell>
-                              </TableRow>
-                            </TableBody>
-                          </Table>
+                        <b>
+                          Mathematics for Engineering(MAE101)(SE1748,start
+                          05/09/2022)
+                        </b>
+                        <br />
+                        <a href="?id=HE172134&amp;campus=3&amp;term=37&amp;course=27110">
+                          Computer Organization and Architecture(CEA201)
+                        </a>
+                        (SE1748,start 05/09/2022)
+                        <br />
+                        <a href="?id=HE172134&amp;campus=3&amp;term=37&amp;course=27135">
+                          Introduction to Computer Science(CSI104)
+                        </a>
+                        (SE1748,start 06/09/2022)
+                        <br />
+                        <a href="?id=HE172134&amp;campus=3&amp;term=37&amp;course=27574">
+                          Programming Fundamentals(PRF192)
+                        </a>
+                        (SE1748,start 13/09/2022)
+                        <br />
+                        <a href="?id=HE172134&amp;campus=3&amp;term=37&amp;course=28030">
+                          Academic Skills for University Success(SSL101c)
+                        </a>
+                        (SE1748,start 14/09/2022)
                       </TableCell>
                     </TableRow>
                   </TableBody>
@@ -274,7 +130,7 @@ const page = () => {
                       <TableCell>Room</TableCell>
                       <TableCell>Lecture</TableCell>
                       <TableCell>Class</TableCell>
-                      <TableCell>Attendace Status</TableCell>
+                      <TableCell>Attendance Status</TableCell>
                       <TableCell>Lecture's comment</TableCell>
                     </TableRow>
                   </TableHead>
@@ -309,11 +165,6 @@ const page = () => {
                     ))}
                   </TableBody>
                 </Table>
-                <TableRow>
-                  <TableCell>
-                    ABSENT: 0% ABSENT SO FAR (0 ABSENT ON 30 TOTAL).
-                  </TableCell>
-                </TableRow>
               </TableContainer>
             </div>
           </div>
