@@ -50,8 +50,6 @@ export default function page(props: Props) {
   };
 
   const handleUpdate = (instructorId: string) => {
-    // Handle update logic here
-    console.log(`Update button clicked for row with ID: ${instructorId}`);
     setId(instructorId);
     setAction("update");
     setOpen(true);
