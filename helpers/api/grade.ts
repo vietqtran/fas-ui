@@ -18,6 +18,10 @@ export const getAllGradeByCourse = (courseId: string) => {
     return instance.get(`/${END_POINT.GET_ALL_Grade_BY_Course}/${courseId}`);
 }
 
+export const getAllGradeByCourseAndTerm = (courseId: string, termId: string) => {
+    return instance.get(`/${END_POINT.GET_ALL_Grade}/course/${courseId}/term/${termId}`);
+}
+
 export const createGrade = (data: GradeInformation) => {
     return instance.post(`/${END_POINT.CREATE_Grade}`, data);
 }
