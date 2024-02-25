@@ -11,18 +11,19 @@ const useCourse = () => {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [noCredit, setNoCredit] = useState<number>(0);
-    const [majorId, setMajorId] = useState("72e18d9c-bf96-11ee-bdb8-106530543950");
+    const [courseMajorId, setCourseMajorId] = useState("72e18d9c-bf96-11ee-bdb8-106530543950");
 
     const [id, setId] = useState("");
 
     useEffect(() => {
-        if (!majorId) {
-            fetchCourses();
-        }
-        console.log(majorId);
+        fetchCourses();
+    }, []);
 
-        fetchCoursesByMajor(majorId);
-    }, [majorId]);
+    useEffect(() => {
+        if (courseMajorId) {
+            fetchCoursesByMajor(courseMajorId);
+        }
+    }, [courseMajorId]);
 
     const fetchCourses = async () => {
         try {
@@ -140,8 +141,8 @@ const useCourse = () => {
     return {
         courses,
         setCourses,
-        majorId,
-        setMajorId,
+        courseMajorId,
+        setCourseMajorId,
         fetchCourses,
         deleteCourse,
         code,
