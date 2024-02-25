@@ -1,13 +1,25 @@
 "use client";
 import { Bounce, toast } from "react-toastify";
 import React, { useEffect, useState } from "react";
-import { getAllGrade, getAllGradeByCourse } from "@/helpers/api/grade";
+import { addStudentToGrade, createGrade, deleteGradeById, deleteStudentToGrade, getAllGrade, getAllGradeByCourse, getGradeByID, getGradeByMajor, updateGrade } from "@/helpers/api/grade";
 
 const useGrade = () => {
     const [code, setCode] = useState("");
     const [grades, setGrades] = useState([]);
-    const [courseId, setCourseId] = useState("663fe3e3-d087-11ee-a242-106530543950");
-
+    const [courseId, setCourseId] = useState("");
+    const [id, setId] = useState("");
+    const [studentId, setStudentId] = useState("");
+    const [gradeId, setGradeId] = useState("");
+    const [majorId, setMajorId] = useState("");
+    const [campusId, setCampusId] = useState("");
+    const [gradeByMajor, setGradeByMajor] = useState([]);
+    const [grade, setGrade] = useState({
+        code: "",
+        createdAt:"",
+        status: Boolean,
+        updatedAt:"",
+        students: [],
+    });
     useEffect(() => {
         if (!courseId) {
             fectchGrade();
@@ -21,13 +33,14 @@ const useGrade = () => {
             if (response) {
                 setGrades(response.data);
             } else {
-                toast.error(response.message);
+                console.log(response.message);
             }
         } catch (error) {
             console.error("Error fetching grade:", error);
-            toast.error("Error from server");
         }
     };
+
+
 
     const fetchGradeByCourse = async (courseId: string) => {
         try {
@@ -35,18 +48,162 @@ const useGrade = () => {
             if (response) {
                 setGrades(response.data);
             } else {
-                toast.error(response.message);
+                console.log(response?.message);
             }
         } catch (error) {
             console.error("Error fetching grade:", error);
-            toast.error("Error from server");
+        }
+    }
+
+    const fetchGradeByMajor = async (majorId: string) => {
+        try {
+            const response = await getGradeByMajor(majorId).then((res) => res) as BaseResponse;
+            if (response) {
+                setGradeByMajor(response.data);
+                return response.data;
+            } else {
+                console.log(response?.message);
+            }
+        } catch (error) {
+            console.error("Error fetching grade:", error);
+        }
+    }
+
+    const getGrade = async (id: string) => {
+        try {
+            const response = await getGradeByID(id).then((res) => res) as BaseResponse;
+            if (response) {
+                setGrade(response.data);
+                return response.data;
+            }
+            else {
+                return response?.message;
+            }
+        } catch (error) {
+            console.error("Error fetching grade:", error);
+        }
+    }
+
+    const addGrade = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await createGrade({
+                code,
+                majorId,
+                campusId
+            } as GradeInformation).then(
+                (res) => res
+            ) as BaseResponse;
+            if (response && response.code === "SUCCESS") {
+                toast.success(response.message);
+            } else {
+                toast.error(response?.message || "Add course failed");
+            }
+        } catch (error) {
+            console.error("Error adding course:", error);
+            toast.error("Add course failed");
+        }
+    }
+
+    const deleteGrade = async (id: string) => {
+        try {
+            const response = await deleteGradeById(id).then((res) => res) as BaseResponse;
+            if (response) {
+                toast.success(response.message);
+                fectchGrade();
+            }
+            else {
+                return (response.message);
+            }
+        }
+        catch (error) {
+            console.error("Error deleting grade:", error);
+        }
+    }
+
+    const handleUpdateGrade = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await updateGrade(id,{
+                code,
+                majorId,
+                campusId
+            }as GradeInformation).then((res) => res) as BaseResponse;
+            if (response && response.code === "SUCCESS") {
+                toast.success(response.message);
+                fectchGrade();
+            } else {
+                return (response?.message || "Update grade failed");
+            }
+        }
+        catch (error) {
+            console.error("Error updating grade:", error);
+        }
+    }
+
+    const handleAddStudentToGrade = async (studentId: string, gradeId: string) => {
+        try {
+            const response = await addStudentToGrade(studentId,gradeId).then((res) => res) as BaseResponse;
+            if (response && response.code === "SUCCESS") {
+                toast.success(response.message);
+                fectchGrade();
+            } else {
+                return (response?.message || "Add grade failed");
+            }
+        }
+        catch (error) {
+            console.error("Error add grade:", error);
+        }
+    }
+
+    const handleDeleteStudentToGrade = async (studentId: string, gradeId: string) => {
+        try {
+            const response = await deleteStudentToGrade(studentId,gradeId).then((res) => res) as BaseResponse;
+            if (response && response.code === "SUCCESS") {
+                toast.success(response.message);
+                fectchGrade();
+            }
+            else {
+                return (response?.message || "Delete grade failed");
+            }
+        }
+        catch (error) {
+            console.error("Error delete grade:", error);
         }
     }
 
     return {
-        grades, setGrades, courseId, setCourseId
+        grades, 
+        setGrades, 
+        courseId, 
+        setCourseId,
+        code,
+        setCode,
+        id,
+        setId,
+        fectchGrade,
+        fetchGradeByCourse,
+        getGrade,
+        addGrade,
+        deleteGrade,
+        handleUpdateGrade,
+        handleAddStudentToGrade,
+        handleDeleteStudentToGrade,
+        studentId,
+        setStudentId,
+        grade,
+        setGrade,
+        campusId,
+        setCampusId,
+        majorId,
+        setMajorId,
+        fetchGradeByMajor,
+        gradeByMajor,
+        setGradeByMajor
     }
-
 }
+
+
+
 
 export default useGrade;

@@ -37,9 +37,6 @@ interface Props {
 const ModalFeedback = (props: Props) => {
   const { open, handleClose, id, action } = props;
 
-   
-    
-
   const {
     feedbacks,
     fetchFeedBacks,
@@ -154,7 +151,7 @@ const ModalFeedback = (props: Props) => {
                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 text-black">
                   <div className="sm:col-span-3 bg-gray-200">
                     <FormControl className="p-5">
-                      <FormLabel id="punctuality" className="font-semibold italic text-black">
+                      <FormLabel id="punctuality" className="font-semibold italic text-black text-center">
                         Regarding the teacher's punctuality
                       </FormLabel>
                       <RadioGroup

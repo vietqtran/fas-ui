@@ -7,6 +7,7 @@ import {
    deleteStudentById,
    getAllStudents,
    getAllStudentsByGrade,
+   getAllStudentsByMajorAndCampus,
    getStudentByEmail,
    getStudentById,
    updateStudent
@@ -43,7 +44,8 @@ const useStudent = () => {
    const [courseStudentId, setCourseStudentId] = useState('663fe3e3-d087-11ee-a242-106530543950')
 
    useEffect(() => {
-      fetchStudents()
+      fetchStudents();
+      fetchCampuses();
    }, [])
 
    useEffect(() => {
@@ -175,6 +177,17 @@ const useStudent = () => {
       }
    }
 
+   const fetchStudentByMajorAndCampus = async (majorId: string, campusId: string) => {
+      const response = (await getAllStudentsByMajorAndCampus(majorId, campusId).then(
+         (res) => res
+      )) as BaseResponse
+      if (response && response?.code === 'SUCCESS') {
+         return response.data
+      } else {
+         toast.error(response?.message)
+      }
+   }
+
    return {
       students,
       setStudents,
@@ -225,6 +238,7 @@ const useStudent = () => {
       pageSize,
       courseStudentId,
       setCourseStudentId,
+      fetchStudentByMajorAndCampus
       order,
       setOrder,
       searchValue,

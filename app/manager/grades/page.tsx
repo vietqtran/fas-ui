@@ -14,12 +14,12 @@ import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import ManagerLayout from "@/components/Common/Layouts/ManagerLayout";
-import ModalMajor from "@/components/Common/Modals/ModalMajor";
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import { RootState } from "@/helpers/redux/reducers";
-import useMajor from "@/hooks/Major";
-import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import useGrade from "@/hooks/Grade";
+import ModalGrade from "@/components/Common/Modals/ModalGrade";
 
 export default function page() {
   const { user } = useSelector((state: RootState) => state.user);
@@ -28,54 +28,63 @@ export default function page() {
     router.push("/login");
   }
 
-  const { majors, fetchMajor, deleteMajor } = useMajor();
+  const { grades, fectchGrade, deleteGrade } = useGrade();
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
     setOpen(true);
-    setId("");
     setAction("create");
+    setId("");
   };
   const handleClose = () => {
-    fetchMajor();
+    fectchGrade();
     setOpen(false);
   };
+  
 
   const [id, setId] = React.useState("");
 
   const [action, setAction] = React.useState("");
 
-  const handleView = async (idMajor: string) => {
+  const handleView = async (idEvent: string) => {
     setAction("view");
-    setId(idMajor);
+    setId(idEvent);
     setOpen(true);
   };
 
-  const handleUpdate = async (idMajor: string) => {
+  const handleUpdate = async (idEvent: string) => {
     setAction("update");
-    setId(idMajor);
+    setId(idEvent);
     setOpen(true);
   };
 
   const handleDelete = (id: string) => {
-    deleteMajor(id);
-    console.log(`Delete button clicked for row with ID: ${id}`);
+    deleteGrade(id);
   };
 
-  const hanldeOpenMajor = (id:string) => {
-    router.push(`/manager/majors/${id}`);
+  const hanldeOpenGrade = (id:string) => {
+    router.push(`/manager/grades/${id}`);
   }
 
+  
+
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 300 },
+    { field: "id", headerName: "ID", width: 200 },
+    { field: "code", headerName: "Code", width: 250 },
     {
-      field: "code",
-      headerName: "Code",
-      width: 80,
+      field: "major",
+      headerName: "Major",
+      width: 70,
+      valueGetter: (params: GridValueGetterParams) => params.row.major?.code,
     },
-    { field: "name", headerName: "Major Name", width: 250 },
-    { field: "createAt", headerName: "Create At", width: 250 },
-    { field: "updateAt", headerName: "Update At", width: 250 },
+    {
+      field: "campus",
+      headerName: "Campus",
+      width: 100,
+      valueGetter: (params: GridValueGetterParams) => params.row.campus?.name,
+    },
+    { field: "createdAt", headerName: "Create At", width: 250 },
+    { field: "updatedAt", headerName: "Update At", width: 250 },
     {
       field: "status",
       headerName: "Status",
@@ -89,13 +98,13 @@ export default function page() {
     {
       field: "action",
       headerName: "Action",
-      width: 200,
+      width: 210,
       disableColumnMenu: true,
       renderCell: (params) => (
         <div className="flex gap-5">
-          <button
+            <button
             className="rounded bg-blue-500 px-2 py-2 font-bold text-white hover:bg-blue-600"
-            onClick={() => hanldeOpenMajor(params.row.id)}
+            onClick={() => hanldeOpenGrade(params.row.id)}
           >
             <VisibilityIcon />
           </button>
@@ -127,19 +136,19 @@ export default function page() {
   return (
     <ManagerLayout>
       <div className="container">
-        <h1 className="my-8 text-3xl font-bold">List of Majors</h1>
+        <h1 className="my-8 text-3xl font-bold">List of Grade</h1>
         <div className="flex justify-end">
           <button
             className="mb-4 flex items-center gap-2 rounded-md bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
             onClick={() => handleOpen()}
           >
             <AddIcon />
-            Add new major
+            Add new grade
           </button>
         </div>
         <div style={{ height: "100%", width: "100%" }}>
           <DataGrid
-            rows={majors}
+            rows={grades}
             columns={columns}
             initialState={{
               pagination: {
@@ -158,7 +167,7 @@ export default function page() {
               toolbar: CustomToolbar,
             }}
           />
-          <ModalMajor
+          <ModalGrade
             open={open}
             handleClose={handleClose}
             id={id}

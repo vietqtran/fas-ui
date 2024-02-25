@@ -36,3 +36,7 @@ export const getStudentByEmail = (email: string) => {
 export const getAllStudentsByGrade = (gradeId: string, courseId: string, majorId: string, searchValue: string, order: string, page: string, size: string) => {
   return instance.get(`/${END_POINT.GET_ALL_STUDENTS}/grade/${gradeId}/course/${courseId}?majorId=${majorId}&search=${searchValue}&order=${order}&page=${page}&size=${size}`);
 }
+
+export const getAllStudentsByMajorAndCampus = (majorId: string, campusId: string) => {
+  return instance.get(`/${END_POINT.GET_ALL_STUDENTS}/major/${majorId}/campus/${campusId}`);
+}

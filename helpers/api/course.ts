@@ -33,7 +33,6 @@ export const updateCourse = (id: string, courseData: CourseInformation) => {
 export const getAllCourseByMajor = (majorId: string) => {
   return instance.get(`/${END_POINT.GET_ALL_COURSE_BY_MAJOR}/${majorId}`);
 }
-=======
 export const getCourseByMajor = (id: string) => {
   return instance.get(`/${END_POINT.GET_COURSE_BY_MAJOR}/${id}`);
 };
