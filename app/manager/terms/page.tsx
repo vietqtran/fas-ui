@@ -1,44 +1,40 @@
 "use client";
 
 import * as React from "react";
-
 import {
   DataGrid,
   GridColDef,
   GridToolbarContainer,
   GridToolbarExport,
-  GridValueGetterParams,
 } from "@mui/x-data-grid";
-
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import ManagerLayout from "@/components/Common/Layouts/ManagerLayout";
-import ModalMajor from "@/components/Common/Modals/ModalMajor";
-import ModalStudent from "@/components/Common/Modals/ModalStudent";
 import { RootState } from "@/helpers/redux/reducers";
-import useMajor from "@/hooks/Major";
-import { useSelector } from "react-redux";
-import useStudent from "@/hooks/Student";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import ModalCourse from "@/components/Common/Modals/ModalCourse";
+import useTerm from "@/hooks/Term";
+import ModalTerm from "@/components/Common/Modals/ModalTerm";
 
-export default function page() {
+const page = () => {
   const { user } = useSelector((state: RootState) => state.user);
   const router = useRouter();
   if (!user || user.role.name !== "MANAGER") {
     router.push("/login");
   }
 
-  const { majors, fetchMajor, deleteMajor } = useMajor();
+  const { terms, fetchTerms, deleteTerm } = useTerm();
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
     setOpen(true);
-    setId("");
     setAction("create");
+    setId("");
   };
   const handleClose = () => {
-    fetchMajor();
+    fetchTerms();
     setOpen(false);
   };
 
@@ -46,37 +42,49 @@ export default function page() {
 
   const [action, setAction] = React.useState("");
 
-  const handleView = async (idMajor: string) => {
+  const handleView = async (idEvent: string) => {
     setAction("view");
-    setId(idMajor);
+    setId(idEvent);
     setOpen(true);
   };
 
-  const handleUpdate = async (idMajor: string) => {
+  const handleUpdate = async (idEvent: string) => {
     setAction("update");
-    setId(idMajor);
+    setId(idEvent);
     setOpen(true);
   };
 
   const handleDelete = (id: string) => {
-    deleteMajor(id);
-    console.log(`Delete button clicked for row with ID: ${id}`);
+    deleteTerm(id);
   };
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 300 },
+    { field: "id", headerName: "ID", width: 200 },
+    { field: "name", headerName: "Name", width: 150 },
     {
-      field: "code",
-      headerName: "Code",
-      width: 80,
+      field: "startAt",
+      headerName: "Start Date",
+      width: 250,
+      renderCell: (params) => (
+        <div>{new Date(params.row.startAt).toLocaleDateString("en-US")}</div>
+      ),
     },
-    { field: "name", headerName: "Major Name", width: 250 },
-    { field: "createAt", headerName: "Create At", width: 250 },
-    { field: "updateAt", headerName: "Update At", width: 250 },
+    { field: "endAt", headerName: "End Date", width: 250,
+    renderCell: (params) => (
+      <div>{new Date(params.row.endAt).toLocaleDateString("en-US")}</div>
+    ), },
+    { field: "createAt", headerName: "Create At", width: 200,
+    renderCell: (params) => (
+      <div>{new Date(params.row.createAt).toLocaleDateString("en-US")}</div>
+    ), },
+    { field: "updateAt", headerName: "Update At", width: 200,
+    renderCell: (params) => (
+      <div>{new Date(params.row.updateAt).toLocaleDateString("en-US")}</div>
+    ), },
     {
       field: "status",
       headerName: "Status",
-      width: 200,
+      width: 80,
       renderCell: (params) => (
         <div style={{ color: params.row.status ? "green" : "red" }}>
           {params.row.status ? "Active" : "Inactive"}
@@ -118,19 +126,19 @@ export default function page() {
   return (
     <ManagerLayout>
       <div className="container">
-        <h1 className="my-8 text-3xl font-bold">List of Majors</h1>
+        <h1 className="my-8 text-3xl font-bold">List of Term</h1>
         <div className="flex justify-end">
           <button
             className="mb-4 flex items-center gap-2 rounded-md bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
             onClick={() => handleOpen()}
           >
             <AddIcon />
-            Add new major
+            Add new Term
           </button>
         </div>
         <div style={{ height: "100%", width: "100%" }}>
           <DataGrid
-            rows={majors}
+            rows={terms}
             columns={columns}
             initialState={{
               pagination: {
@@ -149,7 +157,7 @@ export default function page() {
               toolbar: CustomToolbar,
             }}
           />
-          <ModalMajor
+          <ModalTerm
             open={open}
             handleClose={handleClose}
             id={id}
@@ -159,4 +167,6 @@ export default function page() {
       </div>
     </ManagerLayout>
   );
-}
+};
+
+export default page;

@@ -12,7 +12,8 @@ const useCourse = () => {
     const [description, setDescription] = useState("");
     const [noCredit, setNoCredit] = useState<number>(0);
     const [courseMajorId, setCourseMajorId] = useState("72e18d9c-bf96-11ee-bdb8-106530543950");
-
+    const [majorId, setMajorId] = useState("72e18d9c-bf96-11ee-bdb8-106530543950");
+    const [curricilum, setCurriculum] = useState([]);
     const [id, setId] = useState("");
 
     useEffect(() => {
@@ -137,6 +138,7 @@ const useCourse = () => {
             toast.error("Update course failed");
         }
     };
+
 
     return {
         courses,

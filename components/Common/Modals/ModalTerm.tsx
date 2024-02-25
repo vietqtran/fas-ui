@@ -3,8 +3,7 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
 import { FormControl, TextField } from "@mui/material";
-import useCourse from "@/hooks/Course";
-import { getCourseByID } from "@/helpers/api/course";
+import useTerm from "@/hooks/Term";
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -26,30 +25,28 @@ interface Props {
   action: string;
 }
 
-const ModalCourse = (props: Props) => {
+const ModalTerm = (props: Props) => {
   const { open, handleClose, id, action } = props;
 
   const {
-    code,
-    setCode,
-    setName,
-    description,
-    setDescription,
-    setNoCredit,
-    noCredit,
     name,
-    createCourse,
-    handleUpdateCourse,
+    setName,
+    startAt,
+    setStartAt,
+    endAt,
+    setEndAt,
+    createTerm,
+    handleUpdateTerm,
     setId,
-  } = useCourse();
+    getTerm
+  } = useTerm();
 
   const getCourse = async (id) => {
-    const data = await getCourseByID(id);
-    setId(data?.data?.id);
-    setCode(data?.data?.code);
-    setName(data?.data?.name);
-    setDescription(data?.data?.description);
-    setNoCredit(data?.data?.noCredit);
+    const data = await getTerm(id);
+    setId(data?.id);
+    setName(data?.name);
+    setStartAt(data?.startAt.split("T")[0]);
+    setEndAt(data?.endAt.split("T")[0]);
   };
   React.useEffect(() => {
     getCourse(id);
@@ -62,19 +59,18 @@ const ModalCourse = (props: Props) => {
   }, [action]);
 
   const handleSubmit = async (e) => {
-    createCourse(e);
+    createTerm(e);
     clearFormData();
   };
 
   const clearFormData = () => {
-    setCode("");
-    setDescription("");
     setName("");
-    setNoCredit(null);
+    setStartAt("");
+    setEndAt("");
   };
 
   const handleUpdate = async (e) => {
-    handleUpdateCourse(e);
+    handleUpdateTerm(e);
   };
 
   return (
@@ -90,7 +86,7 @@ const ModalCourse = (props: Props) => {
               <div className="border-b border-gray-900/10 pb-12">
                 <div className="flex justify-between">
                   <h2 className="text-xl font-semibold leading-7 text-gray-900">
-                    Course's information
+                    Term's information
                   </h2>
                   <button
                     className="text-gray-400 hover:text-gray-600 transition duration-200 ease-in-out"
@@ -101,33 +97,13 @@ const ModalCourse = (props: Props) => {
                 </div>
 
                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                  <div className="sm:col-span-3">
+                  <div className="sm:col-span-2">
                     <FormControl fullWidth>
                       <label
-                        htmlFor="course-code"
+                        htmlFor="term-name"
                         className="block text-sm font-medium leading-6 text-gray-900"
                       >
-                        Course Code:
-                      </label>
-                      <TextField
-                        size="small"
-                        className="mt-2"
-                        type="text"
-                        variant="outlined"
-                        value={code}
-                        disabled={action === "view"}
-                        onChange={(e) => setCode(e.target.value)}
-                      />
-                    </FormControl>
-                  </div>
-
-                  <div className="sm:col-span-3">
-                    <FormControl fullWidth>
-                      <label
-                        htmlFor="course-name"
-                        className="block text-sm font-medium leading-6 text-gray-900"
-                      >
-                        Course Name:
+                        Term Name:
                       </label>
                       <TextField
                         size="small"
@@ -140,41 +116,42 @@ const ModalCourse = (props: Props) => {
                       />
                     </FormControl>
                   </div>
-                  <div className="sm:col-span-3">
+
+                  <div className="sm:col-span-2">
                     <FormControl fullWidth>
                       <label
-                        htmlFor="course-description"
+                        htmlFor="start-at"
                         className="block text-sm font-medium leading-6 text-gray-900"
                       >
-                        Course Desciption:
+                        Start Date:
                       </label>
                       <TextField
                         size="small"
                         className="mt-2"
-                        type="text"
+                        type="date"
                         variant="outlined"
-                        value={description}
+                        value={startAt}
                         disabled={action === "view"}
-                        onChange={(e) => setDescription(e.target.value)}
+                        onChange={(e) => setStartAt(e.target.value)}
                       />
                     </FormControl>
                   </div>
-                  <div className="sm:col-span-3">
+                  <div className="sm:col-span-2">
                     <FormControl fullWidth>
                       <label
-                        htmlFor="no-credit"
+                        htmlFor="end-at"
                         className="block text-sm font-medium leading-6 text-gray-900"
                       >
-                        No credit:
+                        End Date:
                       </label>
                       <TextField
                         size="small"
                         className="mt-2"
-                        type="number"
+                        type="date"
                         variant="outlined"
-                        value={noCredit}
+                        value={endAt}
                         disabled={action === "view"}
-                        onChange={(e) => setNoCredit(parseInt(e.target.value, 10))}
+                        onChange={(e) => setEndAt(e.target.value)}
                       />
                     </FormControl>
                   </div>
@@ -207,4 +184,4 @@ const ModalCourse = (props: Props) => {
   );
 };
 
-export default ModalCourse;
+export default ModalTerm;
