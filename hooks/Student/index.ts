@@ -238,7 +238,7 @@ const useStudent = () => {
       pageSize,
       courseStudentId,
       setCourseStudentId,
-      fetchStudentByMajorAndCampus
+      fetchStudentByMajorAndCampus,
       order,
       setOrder,
       searchValue,

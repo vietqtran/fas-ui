@@ -362,7 +362,7 @@ const page = () => {
   ];
 
   return (
-    <div className="grid h-[100%] w-[100vw] place-items-center bg-white text-black">
+    <div className="grid h-[100%] place-items-center bg-white text-black">
       <div className="container mx-auto py-5 text-gray-600">
         <Header />
         <div className="mt-5">
