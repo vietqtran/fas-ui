@@ -18,6 +18,8 @@ import useFeedBack from "@/hooks/FeedBack";
 import { useRouter } from "next/navigation";
 import ModalFeedback from "@/components/Common/Modals/ModalFeedback";
 import useStudent from "@/hooks/Student";
+import useGrade from "@/hooks/Grade";
+import useAssignFeedBack from "@/hooks/AssignFeedBack";
 const rows = Array.from({ length: 30 }, (_, index) => index + 1);
 
 const page = () => {
@@ -43,7 +45,25 @@ const page = () => {
     idCard: "",
   });
 
+  const { getGradeStudent } = useGrade();
+  const { getAssignFeedBackGrade } = useAssignFeedBack();
+  const [arrayFeedBack, setArrayFeedBack] = useState([]);
+  const [feedback, setFeedBack] = useState({
+    id: "",
+    createAt: "",
+    endDate: "",
+    grade: { code: "", id: "" },
+    instructor: {
+      id: "",
+      username: "",
+    },
+    startDate: "",
+    status: true,
+    updateAt: "",
+  });
   const { user } = useSelector((state: RootState) => state.user);
+
+  const {studentId, setStudentId , assignFeedBackId, setAssignFeedBackId} = useFeedBack();
   const router = useRouter();
   if (!user) {
     router.push("/login");
@@ -56,50 +76,18 @@ const page = () => {
   const handleGetStudent = async (emailStudent) => {
     let data = await fetchStudentByEmail(emailStudent);
     setStudent(data);
+    let data2 = await getGradeStudent(data?.id);
+    let data3 = await getAssignFeedBackGrade(data2[0]?.id);
+    setArrayFeedBack(data3);
   };
 
-  const { courses } = useCourse();  
-
-  const {
-    setCourseId,
-    setStudentId,
-    setInstructorId,
-    instructorId,
-    studentId,
-    courseId,
-  } = useFeedBack();
-
-  const [instructor, setInstructor] = useState({
-    id: "cf578b9c-bf92-11ee-bdb8-106530543950",
-    email: "datnd1@fpt.edu.vn",
-    username: "datnd1",
-    firstName: "nguyen",
-    middleName: "dac",
-    lastName: "dat",
-    profileImage:
-      "https://images.pexels.com/photos/14803768/pexels-photo-14803768.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    phone: "0123456789",
-    address: "Ha dong",
-    birthDay: "2003-04-04T17:00:00.000+00:00",
-    gender: true,
-    status: true,
-    campus: {
-      id: 1,
-      name: "FU_HL",
-      location: "Hà Nội - Hòa Lạc",
-      createAt: "2024-02-24T14:00:27",
-      updateAt: "2024-02-24T14:00:27",
-    },
-    createAt: "2024-02-24T14:00:27",
-    updateAt: "2024-02-24T14:00:27",
-    idCard: "001123123123",
-  });
+  const { courses } = useCourse();
 
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {
+  const handleOpen = (data) => {
     setOpen(true);
     setAction("create");
-    setId("");
+    setFeedBack(data);
   };
   const handleClose = () => {
     setOpen(false);
@@ -111,14 +99,6 @@ const page = () => {
 
   const handleView = async (idEvent: string) => {
     setAction("view");
-    setOpen(true);
-  };
-
-  const handleUpdate = (courseId: string) => {
-    setAction("update");
-    setCourseId(courseId);
-    setStudentId(user?.student?.id);
-    setInstructorId(instructor.id);
     setOpen(true);
   };
 
@@ -149,36 +129,47 @@ const page = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {courses.map((row, index) => (
-                  <TableRow
-                    key={index}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {index + 1}
-                    </TableCell>
-                    <TableCell component="th" scope="row">
-                      24/2/2024
-                    </TableCell>
-                    <TableCell component="th" scope="row">
-                      {instructor.username}
-                    </TableCell>
-                    <TableCell component="th" scope="row">
-                      {row.code}
-                    </TableCell>
-                    <TableCell>30/3/2024</TableCell>
-                    <TableCell>
-                      <div className="flex gap-3">
-                        <button
-                          className="rounded bg-yellow-500 px-2 py-2 font-bold text-white hover:bg-yellow-600"
-                          onClick={() => handleUpdate(row.id)}
+                {arrayFeedBack &&
+                  arrayFeedBack.map(
+                    (row, index) =>
+                      row.status === true && (
+                        <TableRow
+                          key={index}
+                          sx={{
+                            "&:last-child td, &:last-child th": { border: 0 },
+                          }}
                         >
-                          <EditIcon />
-                        </button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                          <TableCell component="th" scope="row">
+                            {row.grade.code}
+                          </TableCell>
+                          <TableCell component="th" scope="row">
+                            {new Date(row.startDate).toLocaleDateString(
+                              "en-US"
+                            )}
+                          </TableCell>
+                          <TableCell component="th" scope="row">
+                            {row.instructor.username}
+                          </TableCell>
+                          <TableCell component="th" scope="row">
+                            CSI
+                          </TableCell>
+                          <TableCell>
+                            {" "}
+                            {new Date(row.endDate).toLocaleDateString("en-US")}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex gap-3">
+                              <button
+                                className="rounded bg-yellow-500 px-2 py-2 font-bold text-white hover:bg-yellow-600"
+                                onClick={() => handleOpen(row)}
+                              >
+                                <EditIcon />
+                              </button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      )
+                  )}
               </TableBody>
             </Table>
           </TableContainer>
@@ -188,6 +179,7 @@ const page = () => {
         open={open}
         handleClose={handleClose}
         id={id}
+        feedback={feedback}
         action={action}
       />
     </div>

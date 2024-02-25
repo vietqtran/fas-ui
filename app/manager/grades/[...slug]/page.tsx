@@ -32,7 +32,7 @@ const page = (props: Props) => {
   const { students, fetchStudentByMajorAndCampus } = useStudent();
   const [studentArray, setStudentArray] = React.useState([]);
   const getData = async (id: string) => {
-    const data = await getGrade(id);
+    const data = await getGrade(id);    
     const data2 = await fetchStudentByMajorAndCampus(data?.major?.id, data?.campus?.id);
     setStudentArray(data2);
     setGrade(data);
@@ -73,10 +73,6 @@ const page = (props: Props) => {
     handleDeleteStudentToGrade(studentId, slug[0]);
     setReload(!reload);
   };
-
-  const filteredStudents = studentArray?.filter(student => {
-    return !grade?.students.some(grade => grade.id === student.id);
-  });
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 70 },
@@ -180,7 +176,7 @@ const page = (props: Props) => {
 
         <div style={{ height: "100%", width: "100%" }}>
           <DataGrid
-            rows={filteredStudents}
+            rows={studentArray}
             columns={columns}
             initialState={{
               pagination: {
@@ -204,7 +200,7 @@ const page = (props: Props) => {
             handleClose={handleClose}
             id={id}
             action={action}
-            studentInGrade={filteredStudents}
+            studentInGrade={studentArray}
           />
           <ModalStudent
             open={openView}

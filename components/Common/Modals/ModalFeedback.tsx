@@ -32,22 +32,34 @@ interface Props {
   handleClose: () => void;
   id: string;
   action: string;
+  feedback: {
+    id: "";
+    createAt: "";
+    endDate: "";
+    grade: {
+      code: "";
+      id: "";
+    };
+    instructor: {
+      id: "";
+      username: "";
+    };
+    startDate: "";
+    status: true;
+    updateAt: "";
+  };
 }
 
 const ModalFeedback = (props: Props) => {
-  const { open, handleClose, id, action } = props;
-
+  const { open, handleClose, feedback, id, action } = props;
+  const { user } = useSelector((state: RootState) => state.user);
   const {
     feedbacks,
+    studentId, setStudentId,
+    assignFeedBackId, setAssignFeedBackId,
     fetchFeedBacks,
     getFeedBack,
     handleUpdateFeedBack,
-    studentId,
-    setStudentId,
-    instructorId,
-    setInstructorId,
-    courseId,
-    setCourseId,
     punctuality,
     setPunctuality,
     teachingSkill,
@@ -62,10 +74,6 @@ const ModalFeedback = (props: Props) => {
     setTeachingMethods,
     dispositionStudents,
     setDispositionStudents,
-    professionalPractices,
-    setProfessionalPractices,
-    appearanceAndPersonal,
-    setAppearanceAndPersonal,
     overall,
     setOverall,
     comment,
@@ -74,15 +82,17 @@ const ModalFeedback = (props: Props) => {
     createFeedBack,
   } = useFeedBack();
 
-  console.log(instructorId, courseId, studentId);
   
+
   const getFeedBackById = async (id) => {
     const data = await getFeedBack(id);
     setId(data?.data?.id);
   };
   React.useEffect(() => {
-    getFeedBackById(id);
-  }, [id]);
+    // getFeedBackById(id);
+    setAssignFeedBackId(feedback.id);
+    setStudentId(user.id)
+  }, [feedback]);
 
   React.useEffect(() => {
     if (action === "create") {
@@ -96,7 +106,15 @@ const ModalFeedback = (props: Props) => {
   };
 
   const clearFormData = () => {
-    //setAdequatelySyllabus("")
+    setAdequatelySyllabus("");
+    setTeachingSkill("");
+    setPunctuality("");
+    setSupport("");
+    setResponseQuestion("");
+    setTeachingMethods("");
+    setDispositionStudents("");
+    setOverall("");
+    setComment("");
   };
 
   const handleUpdate = async (e) => {
@@ -107,7 +125,6 @@ const ModalFeedback = (props: Props) => {
   const day = currentDate.getDate();
   const month = currentDate.getMonth() + 1;
   const year = currentDate.getFullYear();
-
 
   const formattedDate = `${day}/${month}/${year}`;
 
@@ -135,28 +152,39 @@ const ModalFeedback = (props: Props) => {
                 </div>
                 <div>
                   <div className="text-gray-900 my-3 flex justify-between">
-                    <p>Techer: a</p>
-                    <p>Course: a</p>
+                    <p>Techer: {feedback.instructor?.username}</p>
+                    <p>Course: CSI</p>
                   </div>
                   <div className="text-gray-900 my-3 flex justify-between">
-                    <p>Class: a</p>
+                    <p>Class: {feedback.grade?.code}</p>
                     <p>Date: {formattedDate}</p>
                   </div>
                 </div>
                 <div className="text-black font-semibold italic text-md">
-                    <p>Please fill out the form in evaluating your instructor for the semester. After completion, please press the submit button. </p>
-                    <p className="mt-3">Tick the phrase, which best suits the teacher</p>
+                  <p>
+                    Please fill out the form in evaluating your instructor for
+                    the semester. After completion, please press the submit
+                    button.{" "}
+                  </p>
+                  <p className="mt-3">
+                    Tick the phrase, which best suits the teacher
+                  </p>
                 </div>
 
                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 text-black">
                   <div className="sm:col-span-3 bg-gray-200">
                     <FormControl className="p-5">
-                      <FormLabel id="punctuality" className="font-semibold italic text-black text-center">
+                      <FormLabel
+                        id="punctuality"
+                        className="font-semibold italic text-black text-center"
+                      >
                         Regarding the teacher's punctuality
                       </FormLabel>
                       <RadioGroup
                         aria-labelledby="punctuality"
                         name="radio-buttons-group"
+                        value={punctuality}
+                        onChange={(event) => setPunctuality(event.target.value)}
                       >
                         <FormControlLabel
                           value="Always punctual"
@@ -184,12 +212,19 @@ const ModalFeedback = (props: Props) => {
 
                   <div className="sm:col-span-3 bg-gray-200">
                     <FormControl className="p-5">
-                      <FormLabel id="skill" className="font-semibold italic text-black">
+                      <FormLabel
+                        id="skill"
+                        className="font-semibold italic text-black"
+                      >
                         Teaching skills of teacher
                       </FormLabel>
                       <RadioGroup
                         aria-labelledby="skill"
                         name="radio-buttons-group"
+                        value={teachingSkill}
+                        onChange={(event) =>
+                          setTeachingSkill(event.target.value)
+                        }
                       >
                         <FormControlLabel
                           value="Very Good"
@@ -216,12 +251,20 @@ const ModalFeedback = (props: Props) => {
                   </div>
                   <div className="sm:col-span-3 bg-gray-200">
                     <FormControl className="p-5">
-                      <FormLabel id="adequately" className="font-semibold italic text-black">
-                        The teacher adequately covers the topics required by the syllabus
+                      <FormLabel
+                        id="adequately"
+                        className="font-semibold italic text-black"
+                      >
+                        The teacher adequately covers the topics required by the
+                        syllabus
                       </FormLabel>
                       <RadioGroup
                         aria-labelledby="adequately"
                         name="radio-buttons-group"
+                        value={adequatelySyllabus}
+                        onChange={(event) =>
+                          setAdequatelySyllabus(event.target.value)
+                        }
                       >
                         <FormControlLabel
                           value="Fully covered"
@@ -248,12 +291,18 @@ const ModalFeedback = (props: Props) => {
                   </div>
                   <div className="sm:col-span-3 bg-gray-200">
                     <FormControl className="p-5">
-                      <FormLabel id="support" className="font-semibold italic text-black">
-                        Support from the teacher - guidance for practical exercises, answering questions out side of class
+                      <FormLabel
+                        id="support"
+                        className="font-semibold italic text-black"
+                      >
+                        Support from the teacher - guidance for practical
+                        exercises, answering questions out side of class
                       </FormLabel>
                       <RadioGroup
                         aria-labelledby="support"
                         name="radio-buttons-group"
+                        value={support}
+                        onChange={(event) => setSupport(event.target.value)}
                       >
                         <FormControlLabel
                           value="Very Good"
@@ -280,12 +329,19 @@ const ModalFeedback = (props: Props) => {
                   </div>
                   <div className="sm:col-span-3 bg-gray-200">
                     <FormControl className="p-5">
-                      <FormLabel id="response" className="font-semibold italic text-black">
+                      <FormLabel
+                        id="response"
+                        className="font-semibold italic text-black"
+                      >
                         Teacher's response to student's questions in class
                       </FormLabel>
                       <RadioGroup
                         aria-labelledby="response"
                         name="radio-buttons-group"
+                        value={responseQuestion}
+                        onChange={(event) =>
+                          setResponseQuestion(event.target.value)
+                        }
                       >
                         <FormControlLabel
                           value="Answered immediately or just after the session"
@@ -312,14 +368,22 @@ const ModalFeedback = (props: Props) => {
                   </div>
                   <div className="sm:col-span-3 bg-gray-200">
                     <FormControl className="p-5">
-                      <FormLabel id="methods" className="font-semibold italic text-black">
-                        Teacher has organized the lesson conducive for easy understanding of students
+                      <FormLabel
+                        id="methods"
+                        className="font-semibold italic text-black"
+                      >
+                        Teacher has organized the lesson conducive for easy
+                        understanding of students
                       </FormLabel>
                       <RadioGroup
                         aria-labelledby="methods"
                         name="radio-buttons-group"
+                        value={teachingMethods}
+                        onChange={(event) =>
+                          setTeachingMethods(event.target.value)
+                        }
                       >
-                         <FormControlLabel
+                        <FormControlLabel
                           value="Always organized the lesson conducive"
                           control={<Radio />}
                           label="Always organized the lesson conducive"
@@ -344,12 +408,20 @@ const ModalFeedback = (props: Props) => {
                   </div>
                   <div className="sm:col-span-3 bg-gray-200">
                     <FormControl className="p-5">
-                      <FormLabel id="disposion" className="font-semibold italic text-black">
-                        Teacher understands the weakness of a student and helps in the student's improvement
+                      <FormLabel
+                        id="disposion"
+                        className="font-semibold italic text-black"
+                      >
+                        Teacher understands the weakness of a student and helps
+                        in the student's improvement
                       </FormLabel>
                       <RadioGroup
                         aria-labelledby="disposion"
                         name="radio-buttons-group"
+                        value={dispositionStudents}
+                        onChange={(event) =>
+                          setDispositionStudents(event.target.value)
+                        }
                       >
                         <FormControlLabel
                           value="Always helps in the student's improvement"
@@ -376,12 +448,17 @@ const ModalFeedback = (props: Props) => {
                   </div>
                   <div className="sm:col-span-3 bg-gray-200">
                     <FormControl className="p-5">
-                      <FormLabel id="over" className="font-semibold italic text-black">
+                      <FormLabel
+                        id="over"
+                        className="font-semibold italic text-black"
+                      >
                         Over All
                       </FormLabel>
                       <RadioGroup
                         aria-labelledby="over"
                         name="radio-buttons-group"
+                        value={overall}
+                        onChange={(event) => setOverall(event.target.value)}
                       >
                         <FormControlLabel
                           value="Excellent insructor"
@@ -416,7 +493,8 @@ const ModalFeedback = (props: Props) => {
                         Your FeedBack:
                       </label>
                       <TextField
-                        size="small" rows={4}
+                        size="small"
+                        rows={4}
                         multiline
                         className="mt-2"
                         type="text"
