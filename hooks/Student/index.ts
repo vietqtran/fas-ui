@@ -35,7 +35,8 @@ const useStudent = () => {
    const [campuses, setCampuses] = useState([])
    const [student, setStudent] = useState({})
    const [gradeId, setGradeId] = useState('2eed7f8c-d090-11ee-a242-106530543950')
-
+   const [order, setOrder] = useState('');
+   const [searchValue, setSearchValue] = useState('')
    const [gradeStudents, setGradeStudents] = useState([])
    const [currentPage, setCurrentPage] = useState('1');
    const [pageSize, setPageSize] = useState('5');
@@ -49,9 +50,9 @@ const useStudent = () => {
 
    useEffect(() => {
       if (gradeId && courseStudentId) {
-         fetchStudentsByGrade(gradeId, courseStudentId, currentPage, pageSize)
+         fetchStudentsByGrade(gradeId, courseStudentId, majorId, searchValue, order, currentPage, pageSize)
       }
-   }, [gradeId, courseStudentId, currentPage, pageSize])
+   }, [gradeId, courseStudentId, majorId, searchValue, order, currentPage, pageSize])
 
    const fetchCampuses = async () => {
       const response = await getAllCampuses().then((res) => res)
@@ -73,8 +74,8 @@ const useStudent = () => {
       }
    }
 
-   const fetchStudentsByGrade = async (gradeId: string, courseId: string, currentPage: string, pageSize: string) => {
-      const response = (await getAllStudentsByGrade(gradeId, courseId, currentPage, pageSize).then(
+   const fetchStudentsByGrade = async (gradeId: string, courseId: string, majorId: string, searchValue: string, order: string, currentPage: string, pageSize: string) => {
+      const response = (await getAllStudentsByGrade(gradeId, courseId, majorId, searchValue, order, currentPage, pageSize).then(
          (res) => res
       )) as BaseResponse
       if (response && response?.code === 'SUCCESS') {
@@ -82,7 +83,7 @@ const useStudent = () => {
          setCurrentPage(response.data?.currentPage)
          setTotalPages(response.data?.totalPages)
       } else {
-         toast.error('Fetch students failed')
+         console.log('Fetch students failed')
       }
    }
 
@@ -238,6 +239,10 @@ const useStudent = () => {
       courseStudentId,
       setCourseStudentId,
       fetchStudentByMajorAndCampus
+      order,
+      setOrder,
+      searchValue,
+      setSearchValue
    }
 }
 export default useStudent
