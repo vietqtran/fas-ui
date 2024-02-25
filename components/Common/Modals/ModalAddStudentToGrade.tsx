@@ -10,8 +10,6 @@ import useGrade from "@/hooks/Grade";
 import {
   DataGrid,
   GridColDef,
-  GridToolbarContainer,
-  GridToolbarExport,
   GridValueGetterParams,
 } from "@mui/x-data-grid";
 
@@ -43,6 +41,7 @@ export default function ModalAddStudentToGrade(props: Props) {
   const {getGrade} = useGrade();
   const [selectedStudents, setSelectedStudents] = React.useState([]);
   const [studentArray, setStudentArray] = React.useState([]);
+  const { students, fetchStudentByMajorAndCampus } = useStudent();
   const getData = async (id: string) => {
     const data = await getGrade(id);
     const data2 = await fetchStudentByMajorAndCampus(data?.major?.id, data?.campus?.id);
@@ -68,7 +67,7 @@ export default function ModalAddStudentToGrade(props: Props) {
     }
   };
 
-  const { students, fetchStudentByMajorAndCampus } = useStudent();
+
   const handleSubmit = (e) => {
     addStudentsToGrade();
   };
