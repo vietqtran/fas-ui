@@ -33,6 +33,6 @@ export const getStudentByEmail = (email: string) => {
   return instance.get(`/${END_POINT.GET_STUDENT_EMAIL}/${email}`);
 };
 
-export const getAllStudentsByGrade = (gradeId: string, courseId: string, page: string, size: string) => {
-  return instance.get(`/${END_POINT.GET_ALL_STUDENTS}/grade/${gradeId}/course/${courseId}?page=${page}&size=${size}`);
+export const getAllStudentsByGrade = (gradeId: string, courseId: string, majorId: string, searchValue: string, order: string, page: string, size: string) => {
+  return instance.get(`/${END_POINT.GET_ALL_STUDENTS}/grade/${gradeId}/course/${courseId}?majorId=${majorId}&search=${searchValue}&order=${order}&page=${page}&size=${size}`);
 }
