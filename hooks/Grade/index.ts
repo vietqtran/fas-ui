@@ -1,31 +1,37 @@
 "use client";
 import { Bounce, toast } from "react-toastify";
 import React, { useEffect, useState } from "react";
-import { addStudentToGrade, createGrade, deleteGradeById, deleteStudentToGrade, getAllGrade, getAllGradeByCourse, getGradeByID, getGradeByMajor, updateGrade } from "@/helpers/api/grade";
+import { addStudentToGrade, createGrade, deleteGradeById, deleteStudentToGrade, getAllGrade, getAllGradeByCourse, getAllGradeByCourseAndTerm, getGradeByID, getGradeByMajor, updateGrade } from "@/helpers/api/grade";
 
 const useGrade = () => {
     const [code, setCode] = useState("");
     const [grades, setGrades] = useState([]);
-    const [courseId, setCourseId] = useState("");
+    const [courseId, setCourseId] = useState("663fe3e3-d087-11ee-a242-106530543950");
     const [id, setId] = useState("");
     const [studentId, setStudentId] = useState("");
     const [gradeId, setGradeId] = useState("");
+    const [gradeTermId, setGradeTermId] = useState("7228a3fc-d3ba-11ee-a242-106530543950");
     const [majorId, setMajorId] = useState("");
     const [campusId, setCampusId] = useState("");
     const [gradeByMajor, setGradeByMajor] = useState([]);
     const [grade, setGrade] = useState({
         code: "",
-        createdAt:"",
+        createdAt: "",
         status: Boolean,
-        updatedAt:"",
+        updatedAt: "",
         students: [],
     });
+
     useEffect(() => {
         if (!courseId) {
             fectchGrade();
         }
-        fetchGradeByCourse(courseId);
-    }, [courseId])
+        if (courseId && !gradeTermId) {
+            fetchGradeByCourse(courseId);
+        }
+
+        fetchGradeByCourseAndTerm(courseId, gradeTermId);
+    }, [courseId, gradeTermId]);
 
     const fectchGrade = async () => {
         try {
@@ -41,10 +47,22 @@ const useGrade = () => {
     };
 
 
-
     const fetchGradeByCourse = async (courseId: string) => {
         try {
             const response = await getAllGradeByCourse(courseId).then((res) => res) as BaseResponse;
+            if (response) {
+                setGrades(response.data);
+            } else {
+                console.log(response?.message);
+            }
+        } catch (error) {
+            console.error("Error fetching grade:", error);
+        }
+    }
+
+    const fetchGradeByCourseAndTerm = async (courseId: string, termId: string) => {
+        try {
+            const response = await getAllGradeByCourseAndTerm(courseId, termId).then((res) => res) as BaseResponse;
             if (response) {
                 setGrades(response.data);
             } else {
@@ -124,11 +142,11 @@ const useGrade = () => {
     const handleUpdateGrade = async (e) => {
         e.preventDefault();
         try {
-            const response = await updateGrade(id,{
+            const response = await updateGrade(id, {
                 code,
                 majorId,
                 campusId
-            }as GradeInformation).then((res) => res) as BaseResponse;
+            } as GradeInformation).then((res) => res) as BaseResponse;
             if (response && response.code === "SUCCESS") {
                 toast.success(response.message);
                 fectchGrade();
@@ -143,7 +161,7 @@ const useGrade = () => {
 
     const handleAddStudentToGrade = async (studentId: string, gradeId: string) => {
         try {
-            const response = await addStudentToGrade(studentId,gradeId).then((res) => res) as BaseResponse;
+            const response = await addStudentToGrade(studentId, gradeId).then((res) => res) as BaseResponse;
             if (response && response.code === "SUCCESS") {
                 toast.success(response.message);
                 fectchGrade();
@@ -158,7 +176,7 @@ const useGrade = () => {
 
     const handleDeleteStudentToGrade = async (studentId: string, gradeId: string) => {
         try {
-            const response = await deleteStudentToGrade(studentId,gradeId).then((res) => res) as BaseResponse;
+            const response = await deleteStudentToGrade(studentId, gradeId).then((res) => res) as BaseResponse;
             if (response && response.code === "SUCCESS") {
                 toast.success(response.message);
                 fectchGrade();
@@ -173,9 +191,9 @@ const useGrade = () => {
     }
 
     return {
-        grades, 
-        setGrades, 
-        courseId, 
+        grades,
+        setGrades,
+        courseId,
         setCourseId,
         code,
         setCode,
@@ -199,11 +217,10 @@ const useGrade = () => {
         setMajorId,
         fetchGradeByMajor,
         gradeByMajor,
-        setGradeByMajor
+        setGradeByMajor,
+        gradeTermId,
+        setGradeTermId
     }
 }
-
-
-
 
 export default useGrade;
