@@ -27,6 +27,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import React from "react";
+import useTerm from "@/hooks/Term";
 function createData(
   name: string,
   calories: number,
@@ -38,11 +39,12 @@ function createData(
 }
 const page = () => {
   const campus = "FU-HL";
-  const terms = ["SUMMER2023", "FALL2023", "SPRING2024"];
+  // const terms = ["SUMMER2023", "FALL2023", "SPRING2024"];
 
+  const { terms } = useTerm()
   const { majors } = useMajor();
   const { courseMajorId, setCourseMajorId, courses } = useCourse();
-  const { courseId, setCourseId, grades } = useGrade();
+  const { courseId, setCourseId, grades, gradeTermId, setGradeTermId } = useGrade();
   const {
     gradeId,
     setGradeId,
@@ -58,6 +60,7 @@ const page = () => {
     setSearchValue,
     order,
     setOrder,
+    setStudentTermId
   } = useStudent();
 
   const handleChangePage = (
@@ -67,9 +70,13 @@ const page = () => {
     setCurrentPage(newPage.toString());
   };
 
+  const handleTermClick = (termId: string) => {
+    setGradeTermId(termId);
+    setStudentTermId(termId);
+  };
+
   const handleMajorClick = (majorId: string) => {
     setCourseMajorId(majorId);
-    setCurrentPage("1");
     const selectedMajor = majors.find((major) => major.id === majorId);
 
     if (
@@ -114,19 +121,19 @@ const page = () => {
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                   <TableRow style={{ backgroundColor: "#6b90da" }}>
-                    <TableCell style={{width: "10%", borderRight: "1px solid white" }}>
+                    <TableCell style={{ width: "10%", borderRight: "1px solid white" }}>
                       CAMPUS
                     </TableCell>
-                    <TableCell style={{width: "10%", borderRight: "1px solid white" }}>
+                    <TableCell style={{ width: "10%", borderRight: "1px solid white" }}>
                       TERM
                     </TableCell>
-                    <TableCell style={{width: "20%", borderRight: "1px solid white" }}>
+                    <TableCell style={{ width: "20%", borderRight: "1px solid white" }}>
                       MAJOR
                     </TableCell>
-                    <TableCell style={{width: "30%", borderRight: "1px solid white" }}>
+                    <TableCell style={{ width: "30%", borderRight: "1px solid white" }}>
                       COURSE
                     </TableCell>
-                    <TableCell style={{width: "30%", borderRight: "1px solid white" }}>
+                    <TableCell style={{ width: "30%", borderRight: "1px solid white" }}>
                       GROUP
                     </TableCell>
                   </TableRow>
@@ -138,15 +145,15 @@ const page = () => {
                     </TableCell>
                     <TableCell className="align-top" component="th" scope="row">
                       {terms.map((term, index) => (
-                        <div key={index + 1}>
+                        <div onClick={() => handleTermClick(term.id)} key={index + 1}>
                           <span
                             className={
-                              term === "SPRING2024"
+                              term.id === gradeTermId
                                 ? "font-bold"
                                 : `text-blue-600 cursor-pointer hover:text-blue-900 hover:underline`
                             }
                           >
-                            {term}
+                            {term.name}
                           </span>
                         </div>
                       ))}
@@ -229,129 +236,129 @@ const page = () => {
           </div>
 
           <div className="my-8">
-                        <div className="flex space-x-5">
-                            <div className="w-1/6 sticky top-0">
-                                <TableContainer component={Paper}>
-                                    <Table aria-label="simple table">
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell className="flex items-center gap-2">
-                                                    <FilterListIcon />
-                                                    <span>SORT AND FILTER</span>
-                                                </TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            <TableRow>
-                                                <TableCell className="space-y-3">
-                                                    <FormControl>
-                                                        <FormLabel id="sort-code">Sort by code</FormLabel>
-                                                        <RadioGroup
-                                                            aria-labelledby="sort-code"
-                                                            name="radio-buttons-group"
-                                                            onChange={(e) => setOrder(e.target.value)}
-                                                        >
-                                                            <FormControlLabel checked={order === "ASC"} value="ASC" control={<Radio />} label="Ascending" />
-                                                            <FormControlLabel checked={order === "DESC"} value="DESC" control={<Radio />} label="Descending" />
-                                                        </RadioGroup>
-                                                    </FormControl>
-                                                </TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                            <TableCell className="space-y-3">
-                                                    
-                                                    <FormControl>
-                                                        <FormLabel id="filter-major">Major</FormLabel>
-                                                        <RadioGroup
-                                                            aria-labelledby="filter-major"
-                                                            name="radio-buttons-group"
-                                                            onChange={(e) => setMajorId(e.target.value)}
-                                                        >
-                                                            {majors.map((major, index) => (
-                                                                <FormControlLabel checked={majorId === major.id} key={index + 1} value={major.id} control={<Radio />} label={major.code} />
-                                                            ))}
-                                                        </RadioGroup>
-                                                    </FormControl>
-                                                </TableCell>
-                                            </TableRow>
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
+            <div className="flex space-x-5">
+              <div className="w-1/6 sticky top-0">
+                <TableContainer component={Paper}>
+                  <Table aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell className="flex items-center gap-2">
+                          <FilterListIcon />
+                          <span>SORT AND FILTER</span>
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell className="space-y-3">
+                          <FormControl>
+                            <FormLabel id="sort-code">Sort by code</FormLabel>
+                            <RadioGroup
+                              aria-labelledby="sort-code"
+                              name="radio-buttons-group"
+                              onChange={(e) => setOrder(e.target.value)}
+                            >
+                              <FormControlLabel checked={order === "ASC"} value="ASC" control={<Radio />} label="Ascending" />
+                              <FormControlLabel checked={order === "DESC"} value="DESC" control={<Radio />} label="Descending" />
+                            </RadioGroup>
+                          </FormControl>
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="space-y-3">
 
-                            </div>
-                            <div className="w-5/6">
-                                <div className="mb-5 flex items-center gap-3">
-                                    <button onClick={handleRefresh} className="rounded bg-gray-700 px-4 py-3 font-bold text-white hover:bg-gray-600 flex items-center gap-1">
-                                        <span>Refresh</span>
-                                        <RefreshIcon />
-                                    </button>
-                                    <div className=" flex h-12 flex-1 items-center overflow-hidden rounded-lg border border-gray-400 bg-white transition duration-300 ease-in-out focus-within:border-gray-300 focus-within:shadow-lg">
-                                        <div className="grid h-full w-12 place-items-center text-gray-300">
-                                            <SearchIcon />
-                                        </div>
+                          <FormControl>
+                            <FormLabel id="filter-major">Major</FormLabel>
+                            <RadioGroup
+                              aria-labelledby="filter-major"
+                              name="radio-buttons-group"
+                              onChange={(e) => setMajorId(e.target.value)}
+                            >
+                              {majors.map((major, index) => (
+                                <FormControlLabel checked={majorId === major.id} key={index + 1} value={major.id} control={<Radio />} label={major.code} />
+                              ))}
+                            </RadioGroup>
+                          </FormControl>
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
 
-                                        <input
-                                            className="peer h-full w-full pr-2 text-sm text-gray-700 outline-none"
-                                            type="text"
-                                            id="search"
-                                            value={searchValue}
-                                            onChange={(e) => setSearchValue(e.target.value)}
-                                            placeholder="Search something..."
-                                        />
-                                    </div>
-                                </div>
-                                <TableContainer component={Paper}>
-                                    <Table aria-label="simple table">
-                                        <TableHead>
-                                            <TableRow style={{ backgroundColor: "#6b90da" }}>
-                                                <TableCell style={{ borderRight: "1px solid white" }}>INDEX</TableCell>
-                                                <TableCell style={{ borderRight: "1px solid white" }}>IMAGE</TableCell>
-                                                <TableCell style={{ borderRight: "1px solid white" }}>Code</TableCell>
-                                                <TableCell style={{ borderRight: "1px solid white" }}>SURNAME</TableCell>
-                                                <TableCell style={{ borderRight: "1px solid white" }}>MIDDLENAME</TableCell>
-                                                <TableCell style={{ borderRight: "1px solid white" }}>GIVENNAME</TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            {gradeStudents.map((student, index) => (
-                                                <TableRow
-                                                    key={index + 1}
-                                                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                                                >
-                                                    <TableCell component="th" scope="row">
-                                                        {(parseInt(currentPage) - 1) * parseInt(pageSize) + index + 1}
-                                                    </TableCell>
-                                                    <TableCell component="th" scope="row">
-                                                        <img
-                                                            className="block border border-blue-500 w-[8rem] h-[10rem]"
-                                                            src={student.profileImage}
-                                                            alt={`Image ${index + 1}`}
-                                                        />
-                                                    </TableCell>
-                                                    <TableCell component="th" scope="row">
-                                                        {student.studentCode}
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        {student.firstName}
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        {student.middleName}
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        {student.lastName}
-                                                    </TableCell>
-                                                </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-
-                                <div className="flex justify-center mt-3">
-                                    <Pagination onChange={handleChangePage} page={parseInt(currentPage)} count={totalPages} />
-                                </div>
-                            </div>
-                        </div>
+              </div>
+              <div className="w-5/6">
+                <div className="mb-5 flex items-center gap-3">
+                  <button onClick={handleRefresh} className="rounded bg-gray-700 px-4 py-3 font-bold text-white hover:bg-gray-600 flex items-center gap-1">
+                    <span>Refresh</span>
+                    <RefreshIcon />
+                  </button>
+                  <div className=" flex h-12 flex-1 items-center overflow-hidden rounded-lg border border-gray-400 bg-white transition duration-300 ease-in-out focus-within:border-gray-300 focus-within:shadow-lg">
+                    <div className="grid h-full w-12 place-items-center text-gray-300">
+                      <SearchIcon />
                     </div>
+
+                    <input
+                      className="peer h-full w-full pr-2 text-sm text-gray-700 outline-none"
+                      type="text"
+                      id="search"
+                      value={searchValue}
+                      onChange={(e) => setSearchValue(e.target.value)}
+                      placeholder="Search something..."
+                    />
+                  </div>
+                </div>
+                <TableContainer component={Paper}>
+                  <Table aria-label="simple table">
+                    <TableHead>
+                      <TableRow style={{ backgroundColor: "#6b90da" }}>
+                        <TableCell style={{ borderRight: "1px solid white" }}>INDEX</TableCell>
+                        <TableCell style={{ borderRight: "1px solid white" }}>IMAGE</TableCell>
+                        <TableCell style={{ borderRight: "1px solid white" }}>Code</TableCell>
+                        <TableCell style={{ borderRight: "1px solid white" }}>SURNAME</TableCell>
+                        <TableCell style={{ borderRight: "1px solid white" }}>MIDDLENAME</TableCell>
+                        <TableCell style={{ borderRight: "1px solid white" }}>GIVENNAME</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {gradeStudents.map((student, index) => (
+                        <TableRow
+                          key={index + 1}
+                          sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                        >
+                          <TableCell component="th" scope="row">
+                            {(parseInt(currentPage) - 1) * parseInt(pageSize) + index + 1}
+                          </TableCell>
+                          <TableCell component="th" scope="row">
+                            <img
+                              className="block border border-blue-500 w-[8rem] h-[10rem]"
+                              src={student.profileImage}
+                              alt={`Image ${index + 1}`}
+                            />
+                          </TableCell>
+                          <TableCell component="th" scope="row">
+                            {student.studentCode}
+                          </TableCell>
+                          <TableCell>
+                            {student.firstName}
+                          </TableCell>
+                          <TableCell>
+                            {student.middleName}
+                          </TableCell>
+                          <TableCell>
+                            {student.lastName}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+
+                <div className="flex justify-center mt-3">
+                  <Pagination onChange={handleChangePage} page={parseInt(currentPage)} count={totalPages} />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

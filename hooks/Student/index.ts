@@ -42,6 +42,7 @@ const useStudent = () => {
    const [pageSize, setPageSize] = useState('5');
    const [totalPages, setTotalPages] = useState(0);
    const [courseStudentId, setCourseStudentId] = useState('663fe3e3-d087-11ee-a242-106530543950')
+   const [studentTermId, setStudentTermId] = useState("7228a3fc-d3ba-11ee-a242-106530543950");
 
    useEffect(() => {
       fetchStudents();
@@ -49,10 +50,10 @@ const useStudent = () => {
    }, [])
 
    useEffect(() => {
-      if (gradeId && courseStudentId) {
-         fetchStudentsByGrade(gradeId, courseStudentId, majorId, searchValue, order, currentPage, pageSize)
+      if (gradeId && courseStudentId && studentTermId) {
+         fetchStudentsByGrade(gradeId, courseStudentId, studentTermId, majorId, searchValue, order, currentPage, pageSize)
       }
-   }, [gradeId, courseStudentId, majorId, searchValue, order, currentPage, pageSize])
+   }, [gradeId, courseStudentId, studentTermId, majorId, searchValue, order, currentPage, pageSize])
 
    const fetchCampuses = async () => {
       const response = await getAllCampuses().then((res) => res)
@@ -74,8 +75,8 @@ const useStudent = () => {
       }
    }
 
-   const fetchStudentsByGrade = async (gradeId: string, courseId: string, majorId: string, searchValue: string, order: string, currentPage: string, pageSize: string) => {
-      const response = (await getAllStudentsByGrade(gradeId, courseId, majorId, searchValue, order, currentPage, pageSize).then(
+   const fetchStudentsByGrade = async (gradeId: string, courseId: string, termId: string, majorId: string, searchValue: string, order: string, currentPage: string, pageSize: string) => {
+      const response = (await getAllStudentsByGrade(gradeId, courseId, termId, majorId, searchValue, order, currentPage, pageSize).then(
          (res) => res
       )) as BaseResponse
       if (response && response?.code === 'SUCCESS') {
@@ -242,7 +243,9 @@ const useStudent = () => {
       order,
       setOrder,
       searchValue,
-      setSearchValue
+      setSearchValue,
+      studentTermId,
+      setStudentTermId
    }
 }
 export default useStudent
