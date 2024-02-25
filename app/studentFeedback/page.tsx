@@ -58,7 +58,7 @@ const page = () => {
     setStudent(data);
   };
 
-  const { courses } = useCourse();
+  const { courses } = useCourse();  
 
   const {
     setCourseId,
@@ -114,7 +114,7 @@ const page = () => {
     setOpen(true);
   };
 
-  const handleUpdate = async (courseId: string) => {
+  const handleUpdate = (courseId: string) => {
     setAction("update");
     setCourseId(courseId);
     setStudentId(user?.student?.id);

@@ -12,14 +12,12 @@ const useCourse = () => {
     const [description, setDescription] = useState("");
     const [noCredit, setNoCredit] = useState<number>(0);
     const [majorId, setMajorId] = useState("72e18d9c-bf96-11ee-bdb8-106530543950");
-    const [curricilum, setCurriculum] =useState([]);
     const [id, setId] = useState("");
 
     useEffect(() => {
         if (!majorId) {
             fetchCourses();
         }
-        console.log(majorId);
 
         fetchCoursesByMajor(majorId);
     }, [majorId]);

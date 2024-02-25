@@ -43,7 +43,6 @@ const useMajor = () => {
             (res) => res
         )) as BaseResponse
         if (response && response?.code === 'SUCCESS') {
-            toast.success(response?.message)
             return response.data
         } else {
             toast.error(response?.message)
@@ -92,7 +91,8 @@ const useMajor = () => {
         createMajor,
         id,
         setId,
-        handleUpdateStudent
+        handleUpdateStudent,
+        getMajor
     }
 
     
