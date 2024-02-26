@@ -45,4 +45,15 @@ function getWeek(date: Date): number {
    )
 }
 
-export { formatDateForMySQL, getWeeks, getFirstMonday, getWeek }
+const scheduleDateToString = ({ day1, day2 }) => {
+   const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+   return `${days[day1 - 1]} - ${days[day2 - 1]}`
+}
+
+export {
+   formatDateForMySQL,
+   getWeeks,
+   getFirstMonday,
+   getWeek,
+   scheduleDateToString
+}
