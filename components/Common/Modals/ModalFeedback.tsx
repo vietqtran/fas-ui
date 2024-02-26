@@ -53,6 +53,8 @@ interface Props {
 const ModalFeedback = (props: Props) => {
   const { open, handleClose, feedback, id, action } = props;
   const { user } = useSelector((state: RootState) => state.user);
+  console.log(user);
+  
   const {
     feedbacks,
     studentId, setStudentId,
@@ -83,15 +85,15 @@ const ModalFeedback = (props: Props) => {
   } = useFeedBack();
 
   
-
-  const getFeedBackById = async (id) => {
+  const getFeedBackById = async (id: string) => {
     const data = await getFeedBack(id);
     setId(data?.data?.id);
   };
   React.useEffect(() => {
     // getFeedBackById(id);
     setAssignFeedBackId(feedback.id);
-    setStudentId(user.id)
+    setStudentId("367511ac-bf97-11ee-bdb8-106530543950");
+
   }, [feedback]);
 
   React.useEffect(() => {
