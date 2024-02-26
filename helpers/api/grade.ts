@@ -8,6 +8,7 @@ const END_POINT = {
     UPDATE_Grade: 'grade/update',
     DELETE_Grade: 'grade/delete',
     GET_ALL_Grade_BY_Course: "grade/course",
+    GET_GRADE_BY_STUDENT_ID: 'grade/student',
 }
 
 export const getAllGrade = () => {
@@ -48,4 +49,8 @@ export const deleteStudentToGrade = (studentId: string, gradeId: string) => {
 
 export const getGradeByMajor = (id: string) => {
     return instance.get(`/${END_POINT.GET_Grade_BY_MAJOR}/${id}`);
+}
+
+export const getGradeByStudent = (id: string) => {
+    return instance.get(`/${END_POINT.GET_GRADE_BY_STUDENT_ID}/${id}`);
 }

@@ -16,6 +16,7 @@ import {
   addAssignFeedBack,
   deleteAssignFeedBack,
   getAllAssignFeedBack,
+  getAssignFeedBackByGreade,
   getAssignFeedBackByID,
   updateAssignFeedBack,
 } from "@/helpers/api/assignFeedBack";
@@ -127,6 +128,22 @@ const useAssignFeedBack = () => {
     }
   };
 
+  const getAssignFeedBackGrade = async (id: string) => {
+    try {
+      const response = (await getAssignFeedBackByGreade(id).then(
+        (res) => res
+      )) as BaseResponse;
+      if (response) {
+        setAssignFeedBack(response.data);
+        return response.data;
+      } else {
+        return response?.message;
+      }
+    } catch (error) {
+      console.error("Error fetching grade:", error);
+    }
+  };
+
   return {
     instructorId,
     setInstructorId,
@@ -147,6 +164,7 @@ const useAssignFeedBack = () => {
     handleUpdateAssignFeedBack,
     getAssignFeedBack,
     fectchAssignFeedBack,
+    getAssignFeedBackGrade
   };
 };
 

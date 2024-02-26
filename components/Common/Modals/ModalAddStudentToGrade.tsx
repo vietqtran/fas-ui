@@ -40,11 +40,15 @@ export default function ModalAddStudentToGrade(props: Props) {
   const { handleAddStudentToGrade, studentId, setStudentId } = useGrade();
   const {getGrade} = useGrade();
   const [selectedStudents, setSelectedStudents] = React.useState([]);
-  const [studentArray, setStudentArray] = React.useState([]);
+  const [studentArray, setStudentArray] = React.useState(['1']);
   const { students, fetchStudentByMajorAndCampus } = useStudent();
   const getData = async (id: string) => {
     const data = await getGrade(id);
+    // console.log(data);
+    
     const data2 = await fetchStudentByMajorAndCampus(data?.major?.id, data?.campus?.id);
+    // console.log(data2);
+    
     setStudentArray(data2);
   };
 
