@@ -53,12 +53,16 @@ interface Props {
 const ModalFeedback = (props: Props) => {
   const { open, handleClose, feedback, id, action } = props;
   const { user } = useSelector((state: RootState) => state.user);
-  console.log(user);
-  
+  console.log(action);
+
+  const [submit, setSubmit] = React.useState("create");
+
   const {
     feedbacks,
-    studentId, setStudentId,
-    assignFeedBackId, setAssignFeedBackId,
+    studentId,
+    setStudentId,
+    assignFeedBackId,
+    setAssignFeedBackId,
     fetchFeedBacks,
     getFeedBack,
     handleUpdateFeedBack,
@@ -82,19 +86,54 @@ const ModalFeedback = (props: Props) => {
     setComment,
     setId,
     createFeedBack,
+    checkFeedBack,
   } = useFeedBack();
 
-  
-  const getFeedBackById = async (id: string) => {
-    const data = await getFeedBack(id);
-    setId(data?.data?.id);
-  };
   React.useEffect(() => {
-    // getFeedBackById(id);
-    setAssignFeedBackId(feedback.id);
-    setStudentId("367511ac-bf97-11ee-bdb8-106530543950");
+    if (action === "view") {
+      setId(feedback.id);
+      setAdequatelySyllabus(feedback?.adequatelySyllabus);
+      setTeachingSkill(feedback?.teachingSkill);
+      setPunctuality(feedback?.punctuality);
+      setSupport(feedback?.support);
+      setResponseQuestion(feedback?.responseQuestion);
+      setTeachingMethods(feedback?.teachingMethods);
+      setDispositionStudents(feedback?.dispositionStudents);
+      setOverall(feedback?.overall);
+      setComment(feedback?.comment);
+    }
 
-  }, [feedback]);
+    setAssignFeedBackId(feedback.id);
+    setStudentId(user.id);
+    const fetchData = async () => {
+      try {
+        setAssignFeedBackId(feedback.id);
+        setStudentId(user.student.id);
+        const data = await checkFeedBack(feedback.id, user.student.id);
+        console.log(data);
+
+        if (data != null) {
+          setId(data?.id);
+          setAdequatelySyllabus(data?.adequatelySyllabus);
+          setTeachingSkill(data?.teachingSkill);
+          setPunctuality(data?.punctuality);
+          setSupport(data?.support);
+          setResponseQuestion(data?.responseQuestion);
+          setTeachingMethods(data?.teachingMethods);
+          setDispositionStudents(data?.dispositionStudents);
+          setOverall(data?.overall);
+          setComment(data?.comment);
+          setStudentId(data?.student?.studentId);
+          setAssignFeedBackId(data?.assignFeedBack?.assignFeedBackId);
+          setSubmit("update");
+        }
+      } catch (error) {
+        // Handle errors here
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [feedback, user?.student?.id, action]);
 
   React.useEffect(() => {
     if (action === "create") {
@@ -120,7 +159,7 @@ const ModalFeedback = (props: Props) => {
   };
 
   const handleUpdate = async (e) => {
-    //handleUpdateCourse(e);
+    handleUpdateFeedBack(e);
   };
   const currentDate = new Date();
 
@@ -190,22 +229,22 @@ const ModalFeedback = (props: Props) => {
                       >
                         <FormControlLabel
                           value="Always punctual"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Always punctual"
                         />
                         <FormControlLabel
                           value="Mostly punctual"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Mostly punctual"
                         />
                         <FormControlLabel
                           value="Rarely punctual"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Rarely punctual"
                         />
                         <FormControlLabel
                           value="Not at all punctual"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Not at all punctual"
                         />
                       </RadioGroup>
@@ -230,22 +269,22 @@ const ModalFeedback = (props: Props) => {
                       >
                         <FormControlLabel
                           value="Very Good"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Very Good"
                         />
                         <FormControlLabel
                           value="Good"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Good"
                         />
                         <FormControlLabel
                           value="Average"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Average"
                         />
                         <FormControlLabel
                           value="Poor"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Poor"
                         />
                       </RadioGroup>
@@ -270,22 +309,22 @@ const ModalFeedback = (props: Props) => {
                       >
                         <FormControlLabel
                           value="Fully covered"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Fully covered"
                         />
                         <FormControlLabel
                           value="Mostly covered"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Mostly covered"
                         />
                         <FormControlLabel
                           value="Partially covered"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Partially covered"
                         />
                         <FormControlLabel
                           value="Not at all covered"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Not at all covered"
                         />
                       </RadioGroup>
@@ -308,22 +347,22 @@ const ModalFeedback = (props: Props) => {
                       >
                         <FormControlLabel
                           value="Very Good"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Very Good"
                         />
                         <FormControlLabel
                           value="Good"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Good"
                         />
                         <FormControlLabel
                           value="Average"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Average"
                         />
                         <FormControlLabel
                           value="Poor"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Poor"
                         />
                       </RadioGroup>
@@ -347,22 +386,22 @@ const ModalFeedback = (props: Props) => {
                       >
                         <FormControlLabel
                           value="Answered immediately or just after the session"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Answered immediately or just after the session"
                         />
                         <FormControlLabel
                           value="Answered in the next session"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Answered in the next session"
                         />
                         <FormControlLabel
                           value="Some queries left unanswered"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Some queries left unanswered"
                         />
                         <FormControlLabel
                           value="Most queries left unanswered"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Most queries left unanswered"
                         />
                       </RadioGroup>
@@ -387,22 +426,22 @@ const ModalFeedback = (props: Props) => {
                       >
                         <FormControlLabel
                           value="Always organized the lesson conducive"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Always organized the lesson conducive"
                         />
                         <FormControlLabel
                           value="Mostly organized the lesson conducive"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Mostly organized the lesson conducive"
                         />
                         <FormControlLabel
                           value="Rarely organized the lesson conducive"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Rarely organized the lesson conducive"
                         />
                         <FormControlLabel
                           value="Never organized the lesson conducive"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Never organized the lesson conducive"
                         />
                       </RadioGroup>
@@ -427,22 +466,22 @@ const ModalFeedback = (props: Props) => {
                       >
                         <FormControlLabel
                           value="Always helps in the student's improvement"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Always helps in the student's improvement"
                         />
                         <FormControlLabel
                           value="Mostly helps in the student's improvement"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Mostly helps in the student's improvement"
                         />
                         <FormControlLabel
                           value="Rarely helps in the student's improvement"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Rarely helps in the student's improvement"
                         />
                         <FormControlLabel
                           value="Never helps in the student's improvement"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Never helps in the student's improvement"
                         />
                       </RadioGroup>
@@ -464,22 +503,22 @@ const ModalFeedback = (props: Props) => {
                       >
                         <FormControlLabel
                           value="Excellent insructor"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Excellent insructor"
                         />
                         <FormControlLabel
                           value="Good insructor"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Good insructor"
                         />
                         <FormControlLabel
                           value="Average insructor"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Average insructor"
                         />
                         <FormControlLabel
                           value="Poor insructor"
-                          control={<Radio />}
+                          control={<Radio disabled={action === "view"} />}
                           label="Poor insructor"
                         />
                       </RadioGroup>
@@ -522,7 +561,7 @@ const ModalFeedback = (props: Props) => {
               {action != "view" && (
                 <button
                   type="button"
-                  onClick={id ? handleUpdate : handleSubmit}
+                  onClick={submit === "create" ? handleSubmit : handleUpdate}
                   className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                   Save
