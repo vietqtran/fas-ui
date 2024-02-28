@@ -53,7 +53,7 @@ export default function Home() {
           <Link href={"/studentFeedback"}> Feedback Instructor</Link>
         </div>
         <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
-          <h2>Attendance Report</h2>
+          <Link href={"/terms"}> List Terms</Link>
         </div>
       </div>
     </div>
@@ -69,7 +69,7 @@ const Contributors = () => {
     <Swiper
       id="2"
       spaceBetween={50}
-      slidesPerView={3}
+      slidesPerView={1}
       onSlideChange={() => console.log("slide change")}
       onSwiper={(swiper) => console.log(swiper)}
       autoplay

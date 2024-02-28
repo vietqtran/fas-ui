@@ -11,7 +11,7 @@ const useCourse = () => {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [noCredit, setNoCredit] = useState<number>(0);
-    const [courseMajorId, setCourseMajorId] = useState("72e18d9c-bf96-11ee-bdb8-106530543950");
+    const [courseMajorId, setCourseMajorId] = useState("");
     const [majorId, setMajorId] = useState("72e18d9c-bf96-11ee-bdb8-106530543950");
     const [id, setId] = useState("");
 

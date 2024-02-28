@@ -145,7 +145,12 @@ const ManagerLayout: FC<Props> = ({ children }) => {
             </li>
             <li className="w-[80%]">
               <SidebarLink href="/manager/grades">
-                Grades Management
+                Class Management
+              </SidebarLink>
+            </li>
+            <li className="w-[80%]">
+              <SidebarLink href="/manager/assign">
+                Assign Class
               </SidebarLink>
             </li>
             <li className="w-[80%]">

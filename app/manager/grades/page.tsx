@@ -136,14 +136,14 @@ export default function page() {
   return (
     <ManagerLayout>
       <div className="container">
-        <h1 className="my-8 text-3xl font-bold">List of Grade</h1>
+        <h1 className="my-8 text-3xl font-bold">List of Classes</h1>
         <div className="flex justify-end">
           <button
             className="mb-4 flex items-center gap-2 rounded-md bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
             onClick={() => handleOpen()}
           >
             <AddIcon />
-            Add new grade
+            Add new class
           </button>
         </div>
         <div style={{ height: "100%", width: "100%" }}>
