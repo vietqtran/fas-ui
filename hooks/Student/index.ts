@@ -85,6 +85,7 @@ const useStudent = () => {
          setTotalPages(response.data?.totalPages)
       } else {
          console.log('Fetch students failed')
+         setGradeStudents([])
       }
    }
 

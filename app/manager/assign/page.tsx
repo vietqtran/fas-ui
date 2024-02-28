@@ -7,6 +7,7 @@ import AssignInstructorToClass from '@/components/Manager/Assign/AssignInstructo
 import AssignStudentsToClass from '@/components/Manager/Assign/AssignStudentsToClass'
 import Box from '@mui/material/Box'
 import { useState } from 'react'
+import ManagerLayout from '@/components/Common/Layouts/ManagerLayout'
 
 const columns: GridColDef[] = [
    { field: 'id', headerName: 'ID', width: 90 },
@@ -95,8 +96,9 @@ const page = () => {
    console.log(modal)
 
    return (
-      <>
-         {modal !== '' && (
+      <ManagerLayout>
+      <div className="container">
+      {modal !== '' && (
             <div
                onClick={() => setModal('')}
                className='absolute left-0 top-0 z-50 grid h-[100vh] w-[100vw] place-items-center bg-black/50'
@@ -150,7 +152,8 @@ const page = () => {
                />
             </Box>
          </div>
-      </>
+      </div>
+    </ManagerLayout>
    )
 }
 

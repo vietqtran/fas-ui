@@ -10,7 +10,7 @@ import {
   GridValueGetterParams,
 } from "@mui/x-data-grid";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import React, { use, useEffect } from "react";
+import React, { use, useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -31,13 +31,25 @@ const page = (props: Props) => {
   const [reload, setReload] = React.useState(false);
   const { students, fetchStudentByMajorAndCampus } = useStudent();
   const [studentArray, setStudentArray] = React.useState([]);
+  const [major, setMajor] = React.useState("");
+  const [campusId, setCampusId] = React.useState("");
   const getData = async (id: string) => {
-    const data = await getGrade(id);    
-    const data2 = await fetchStudentByMajorAndCampus(data?.major?.id, data?.campus?.id);
-    setStudentArray(data2);
-    setGrade(data);
-    setId(slug[0]);
-  };
+    try {
+        const data = await getGrade(id);    
+        console.log(data);
+        setStudentArray(data.students);
+        setGrade(data);
+        setId(slug[0]);
+        setCampusId(data.campus.id);
+        setMajor(data.major.id);
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    }
+};
+
+ 
+
+
 
   useEffect(() => {
     getData(slug[0]);
@@ -150,7 +162,6 @@ const page = (props: Props) => {
       ),
     },
   ];
-
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
@@ -159,10 +170,12 @@ const page = (props: Props) => {
     );
   }
 
+  const filtered = studentArray.filter(student => student.major.id === major && student.campus.id === campusId);
+
   return (
     <ManagerLayout>
       <div className="container">
-        <h1 className="text-3xl font-bold my-5 hover:cursor-pointer" onClick={() => router.push("/manager/grades")}> <ArrowBackIcon/> List Grade</h1>
+        <h1 className="text-3xl font-bold my-5 hover:cursor-pointer" onClick={() => router.push("/manager/grades")}> <ArrowBackIcon/> List Classes</h1>
         <div className="flex justify-between items-center my-7">
           <h1 className="text-3xl font-bold italic text-slate-600">Class {grade?.code}</h1>
           <button
@@ -176,7 +189,7 @@ const page = (props: Props) => {
 
         <div style={{ height: "100%", width: "100%" }}>
           <DataGrid
-            rows={studentArray}
+            rows={filtered}
             columns={columns}
             initialState={{
               pagination: {
@@ -200,7 +213,7 @@ const page = (props: Props) => {
             handleClose={handleClose}
             id={id}
             action={action}
-            studentInGrade={studentArray}
+            studentInGrade={filtered}
           />
           <ModalStudent
             open={openView}
