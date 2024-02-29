@@ -131,6 +131,11 @@ const ManagerLayout: FC<Props> = ({ children }) => {
           </div>
           <ul className="py-5 text-gray-600">
             <li className="w-[80%]">
+              <SidebarLink href="/manager/building">
+                Buildings Management
+              </SidebarLink>
+            </li>
+            <li className="w-[80%]">
               <SidebarLink href="/manager/students">
                 Students Management
               </SidebarLink>
@@ -144,14 +149,10 @@ const ManagerLayout: FC<Props> = ({ children }) => {
               <SidebarLink href="/manager/majors">Major Management</SidebarLink>
             </li>
             <li className="w-[80%]">
-              <SidebarLink href="/manager/grades">
-                Class Management
-              </SidebarLink>
+              <SidebarLink href="/manager/grades">Class Management</SidebarLink>
             </li>
             <li className="w-[80%]">
-              <SidebarLink href="/manager/assign">
-                Assign Class
-              </SidebarLink>
+              <SidebarLink href="/manager/assign">Assign Class</SidebarLink>
             </li>
             <li className="w-[80%]">
               <SidebarLink href="/manager/events">
