@@ -1,0 +1,59 @@
+import { addMessage, getAllMessage } from '@/helpers/api/message'
+import React from 'react'
+
+const useMessage = () => {
+    const [messages, setMessages] = React.useState<MessageInformation[]>([])
+    const [content, setContent] = React.useState<string>("")
+    const [image, setImage] = React.useState<string>("")
+    const [chatId, setChatId] = React.useState<string>("")
+    const [studentId, setStudentId] = React.useState<string>("")
+
+    React.useEffect(() => {
+        if (chatId) {
+            fetchMessageByChatId(chatId)
+            console.log(messages);
+        }
+    }, [chatId])
+
+    const fetchMessageByChatId = async (chatId: string) => {
+        try {
+            let response = (await getAllMessage(chatId).then((res) => res)) as BaseResponse
+            if (response && response.code === "SUCCESS") {
+                setMessages(response.data)
+                console.log(response.data);
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleAddMessage = async (studentId: string, chatId: string, message: MessageInformation, sendMessageToServer: (newMessage: any) => void) => {
+
+        try {
+            let response = (await addMessage(studentId, chatId, message).then((res) => res)) as BaseResponse;
+            if (response && response.code === "SUCCESS") {
+                console.log(response.data);
+                sendMessageToServer(response.data);
+                fetchMessageByChatId(chatId);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    return {
+        messages,
+        setMessages,
+        chatId,
+        setChatId,
+        content,
+        setContent,
+        image,
+        setImage,
+        studentId,
+        setStudentId,
+        handleAddMessage
+    }
+}
+
+export default useMessage;

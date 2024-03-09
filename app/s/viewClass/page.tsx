@@ -7,6 +7,7 @@ import useMajor from "@/hooks/Major";
 import useStudent from "@/hooks/Student";
 import {
   Button,
+  IconButton,
   Pagination,
   Paper,
   Table,
@@ -19,7 +20,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import CloseIcon from "@mui/icons-material/Close";
+import ChatIcon from '@mui/icons-material/Chat';
 import FilterListIcon from "@mui/icons-material/FilterList";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -28,6 +29,12 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import React from "react";
 import useTerm from "@/hooks/Term";
+import { useSelector } from "react-redux";
+import { RootState } from "@/helpers/redux/reducers";
+import useChat from "@/hooks/Chat";
+import { useRouter } from "next/navigation";
+
+
 function createData(
   name: string,
   calories: number,
@@ -107,6 +114,20 @@ const page = () => {
     setOrder("");
     setSearchValue("");
   };
+
+  const { handleCreateChat } = useChat()
+
+  const { user } = useSelector((state: RootState) => state.user)
+
+  const router = useRouter();
+
+  const handleClickChat = (studentId: string) => {
+    if (user?.role?.name === "STUDENT") {
+      console.log(user);
+      handleCreateChat(user.student.id, studentId);
+      router.push("/s/message");
+    }
+  }
 
   return (
     <div className="grid min-h-[100vh] h-[100%] place-items-center bg-white text-black">
@@ -317,6 +338,7 @@ const page = () => {
                         <TableCell style={{ borderRight: "1px solid white" }}>SURNAME</TableCell>
                         <TableCell style={{ borderRight: "1px solid white" }}>MIDDLENAME</TableCell>
                         <TableCell style={{ borderRight: "1px solid white" }}>GIVENNAME</TableCell>
+                        <TableCell style={{ borderRight: "1px solid white" }}>ACTION</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -346,6 +368,11 @@ const page = () => {
                           </TableCell>
                           <TableCell>
                             {student.lastName}
+                          </TableCell>
+                          <TableCell>
+                            <IconButton onClick={() => handleClickChat(student.id)} disabled={student.id === user.student.id}>
+                              <ChatIcon className={student.id === user.student.id ? `text-gray-500 text-xxl` : `text-blue-500 text-xxl`} />
+                            </IconButton>
                           </TableCell>
                         </TableRow>
                       ))}
