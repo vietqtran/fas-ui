@@ -135,10 +135,11 @@ const page = (props: Props) => {
                     <div className="flex h-full justify-between space-x-2">
                         <div className="w-full">
                             <div
+                                onClick={() => router.push("/s/viewClass")}
                                 className="flex space-x-4 items-center py-5 cursor-pointer"
                             >
                                 <WestIcon />
-                                <h1 onClick={() => router.push("/s/viewClass")} className="text-xl font-bold">Students Of Class</h1>
+                                <h1 className="text-xl font-bold">Students Of Class</h1>
                             </div>
 
                             <div className="h-[82vh]">
