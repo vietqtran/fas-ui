@@ -17,6 +17,7 @@ import SockJS from "sockjs-client";
 import Stomp from 'stompjs';
 import useChat from '@/hooks/Chat';
 import { useRouter } from 'next/navigation';
+import SearchUser from '@/components/Chat/SearchUser/SearchUser';
 
 type Props = {}
 
@@ -26,9 +27,9 @@ const page = (props: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const { user } = useSelector((state: RootState) => state.user);
 
-    const { handleAddMessage, messages, setMessages, setChatId } = useMessage();
+    const { handleAddMessage, messages, setMessages, setChatId, handleDeleteMessage, fetchMessageByChatId } = useMessage();
 
-    const { chats } = useChat();
+    const { chats, textSearch, setTextSearch } = useChat();
 
     const router = useRouter();
 
@@ -73,10 +74,16 @@ const page = (props: Props) => {
 
         console.log("Message received from WebSocket: ", receivedMessage);
 
+
         // Update messages state with the received message
         setMessages([...messages, receivedMessage]);
+
+        fetchMessageByChatId(currentChat?.id);
+
         console.log("messages: ", messages);
+
     };
+    console.log("messages: ", messages);
 
     const sendMessageToServer = (newMessage: MessageInformation) => {
         if (stompClient && newMessage) {
@@ -108,8 +115,11 @@ const page = (props: Props) => {
         }
     }
 
-    const chatContainerUserRef = useRef(null);
+    const handleRemoveMessage = (message) => {
+        handleDeleteMessage(message.id, sendMessageToServer);
+    }
 
+    const chatContainerUserRef = useRef(null);
 
     useEffect(() => {
         if (chatContainerUserRef.current) {
@@ -132,9 +142,16 @@ const page = (props: Props) => {
                             </div>
 
                             <div className="h-[82vh]">
-                                {/* <div>
-                                    <SearchUser />
-                                </div> */}
+                                <div>
+                                    <input
+                                        value={textSearch}
+                                        onChange={(e) => setTextSearch(e.target.value)}
+                                        type="text"
+                                        className="bg-transparent border border-[#3b4054] rounded-full w-full py-3 px-5 outline-none"
+                                        placeholder="Search user..."
+                                    />
+                                </div>
+
                                 <div className="h-full space-y-4 mt-5 overflow-y-scroll">
                                     {chats.map((item: ChatInformation) => (
                                         <div className='pr-5'
@@ -186,14 +203,14 @@ const page = (props: Props) => {
 
                             <div
                                 ref={chatContainerUserRef}
-                                className="overflow-y-scroll h-[82vh] px-2 space-x-5 py-5"
+                                className="overflow-y-scroll h-[82vh] px-2 space-y-5 py-[4rem]"
                             >
                                 {messages?.map((item) => (
-                                    <ChatMessage key={item?.id} item={item} />
+                                    <ChatMessage onDelete={handleRemoveMessage} key={item?.id} item={item} />
                                 ))}
                             </div>
 
-                            <div className="sticky bottom-0">
+                            <div className="sticky bottom-0 bg-white">
                                 {selectedImage && (
                                     <img
                                         src={selectedImage}
