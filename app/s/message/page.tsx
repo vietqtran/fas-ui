@@ -154,12 +154,11 @@ const page = (props: Props) => {
 
                                 <div className="h-full space-y-4 mt-5 overflow-y-scroll">
                                     {chats.map((item: ChatInformation) => (
-                                        <div className='pr-5'
+                                        <div className='pr-5 cursor-pointer'
                                             key={item.id}
                                             onClick={() => {
                                                 setCurrentChat(item);
                                                 setChatId(item.id);
-                                                setMessages(item.messages);
                                             }}
                                         >
                                             <UserChatCard chat={item} />
