@@ -15,10 +15,11 @@ const useChat = () => {
 
     const [chat, setChat] = useState(null);
     const [chats, setChats] = useState([]);
+    const [textSearch, setTextSearch] = useState("");
 
     useEffect(() => {
         fetchStudentChats(reqStudentId);
-    }, [reqStudentId])
+    }, [reqStudentId, textSearch])
 
     const handleCreateChat = async (reqStudentId: string, studentId: string) => {
         try {
@@ -34,7 +35,7 @@ const useChat = () => {
 
     const fetchStudentChats = async (reqStudentId: string) => {
         try {
-            const response = await getStudentChats(reqStudentId).then((res) => res) as BaseResponse;
+            const response = await getStudentChats(reqStudentId, textSearch).then((res) => res) as BaseResponse;
 
             if (response && response.code === "SUCCESS") {
                 setChats(response.data);
@@ -47,7 +48,9 @@ const useChat = () => {
     return {
         handleCreateChat,
         setReqStudentId,
-        chats
+        chats,
+        textSearch,
+        setTextSearch,
     }
 }
 

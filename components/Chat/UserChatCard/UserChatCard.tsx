@@ -13,9 +13,6 @@ const UserChatCard = (props: Props) => {
     const { chat } = props;
     const { user } = useSelector((state: RootState) => state.user)
 
-    console.log("chat: ", chat);
-
-
     return (
         <Card>
             <CardHeader
