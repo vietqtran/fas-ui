@@ -1,113 +1,162 @@
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import { Checkbox, FormControl, FormControlLabel, FormGroup, InputLabel, MenuItem, Select } from "@mui/material";
 
-import React from 'react'
-import { scheduleDateToString } from '@/utils/date'
+import React, { useState } from "react";
+import { scheduleDateToString } from "@/utils/date";
+import useGrade from "@/hooks/Grade";
+import useTerm from "@/hooks/Term";
+import { useInstructor } from "@/hooks/Instructor";
+import useCourse from "@/hooks/Course";
 
 interface Props {}
 
-const scheduleSlots = [
-   {
-      day1: 1,
-      day2: 3
-   },
-   {
-      day1: 1,
-      day2: 4
-   },
-   {
-      day1: 1,
-      day2: 5
-   },
-   {
-      day1: 2,
-      day2: 4
-   },
-   {
-      day1: 2,
-      day2: 5
-   },
-   {
-      day1: 3,
-      day2: 5
-   }
-]
-
-const slots = [1, 2, 3, 4, 5, 6, 7]
-
 const AssignClassSchedule = (props: Props) => {
-   const [studentGroupList, setStudentGroupList] = React.useState([
-      'SE1748',
-      'SE1749',
-      'SE1750'
-   ])
+  const [selectedDays, setSelectedDays] = useState([]);
 
-   const courses = ['PRF192', 'PRO192', 'PRN211', 'DBI202']
+  const handleDaySelect = (day) => {
+    if (selectedDays.includes(day)) {
+      // Nếu đã chọn, hủy chọn ngày đó
+      setSelectedDays(
+        selectedDays.filter((selectedDay) => selectedDay !== day)
+      );
+    } else if (selectedDays.length < 2) {
+      // Nếu chưa chọn đủ 2 ngày, thêm ngày vào danh sách
+      setSelectedDays([...selectedDays, day]);
+    }
+  };
 
-   const [studentGroup, setStudentGroup] = React.useState('')
+  const daysOfWeek = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
+
+  const { grades } = useGrade();
+  const { terms } = useTerm();
+  const { instructors } = useInstructor();
+  const {courses} = useCourse();
+
 
    return (
-      <div className='grid grid-cols-2 gap-10 p-5'>
-         <FormControl fullWidth className='col-span-2'>
-            <InputLabel id='studentGroup-label'>Student Group</InputLabel>
-            <Select
-               labelId='studentGroup-label'
-               id='studentGroup-select'
-               value={studentGroup}
-               label='Student Group'
-               onChange={(e) => setStudentGroup(e.target.value)}
-            >
-               {studentGroupList.map((s) => (
+    <div className="grid grid-cols-2 gap-10 p-5">
+      <FormControl fullWidth className="col-span-1">
+        <InputLabel id="studentGroup-label">Term</InputLabel>
+        <Select
+          labelId="studentGroup-label"
+          id="studentGroup-select"
+          // value={studentGroup}
+          label="Student Group"
+          // onChange={(e) => setStudentGroup(e.target.value)}
+        >
+          {/* {studentGroupList.map((s) => (
                   <MenuItem key={s} value={s}>
                      {s}
                   </MenuItem>
-               ))}
-            </Select>
-         </FormControl>
-         {courses.map((c) => {
-            return (
-               <div key={c} className='col-span-1 grid grid-cols-3 gap-3'>
-                  <div className='col-span-1'>{c}</div>
-                  <div className='col-span-1'>
-                     <FormControl fullWidth>
-                        <InputLabel id='scheduleSlot-label'>
-                           Schedule
-                        </InputLabel>
-                        <Select
-                           labelId={`scheduleSlot-${c}-label`}
-                           id={`scheduleSlot-${c}-select`}
-                           value={scheduleSlots}
-                           label='Schedule'
-                        >
-                           {scheduleSlots.map((s, i) => (
-                              <MenuItem key={i} value={scheduleDateToString(s)}>
-                                 {scheduleDateToString(s)}
-                              </MenuItem>
-                           ))}
-                        </Select>
-                     </FormControl>
-                  </div>
-                  <div className='col-span-1'>
-                     <FormControl fullWidth>
-                        <InputLabel id='slot-label'>Slot</InputLabel>
-                        <Select
-                           labelId={`slot-${c}-label`}
-                           id={`slot-${c}-select`}
-                           value={slots}
-                           label='Slot'
-                        >
-                           {slots.map((s, i) => (
-                              <MenuItem key={i} value={s}>
-                                 {s}
-                              </MenuItem>
-                           ))}
-                        </Select>
-                     </FormControl>
-                  </div>
-               </div>
-            )
-         })}
-      </div>
-   )
-}
+               ))} */}
+        </Select>
+      </FormControl>
+      <FormControl fullWidth className="col-span-1">
+        <InputLabel id="studentGroup-label">Course</InputLabel>
+        <Select
+          labelId="studentGroup-label"
+          id="studentGroup-select"
+          // value={studentGroup}
+          label="Student Group"
+          // onChange={(e) => setStudentGroup(e.target.value)}
+        >
+          {/* {studentGroupList.map((s) => (
+                  <MenuItem key={s} value={s}>
+                     {s}
+                  </MenuItem>
+               ))} */}
+        </Select>
+      </FormControl>
+      <FormControl fullWidth className="col-span-1">
+        <InputLabel id="studentGroup-label">Class</InputLabel>
+        <Select
+          labelId="studentGroup-label"
+          id="studentGroup-select"
+          // value={studentGroup}
+          label="Student Group"
+          // onChange={(e) => setStudentGroup(e.target.value)}
+        >
+          {/* {studentGroupList.map((s) => (
+                  <MenuItem key={s} value={s}>
+                     {s}
+                  </MenuItem>
+               ))} */}
+        </Select>
+      </FormControl>
+      <FormControl fullWidth className="col-span-1">
+        <InputLabel id="studentGroup-label">Room</InputLabel>
+        <Select
+          labelId="studentGroup-label"
+          id="studentGroup-select"
+          // value={studentGroup}
+          label="Student Group"
+          // onChange={(e) => setStudentGroup(e.target.value)}
+        >
+          {/* {studentGroupList.map((s) => (
+                  <MenuItem key={s} value={s}>
+                     {s}
+                  </MenuItem>
+               ))} */}
+        </Select>
+      </FormControl>
+      <FormControl fullWidth className="col-span-1">
+        <InputLabel id="studentGroup-label">Slot</InputLabel>
+        <Select
+          labelId="studentGroup-label"
+          id="studentGroup-select"
+          // value={studentGroup}
+          label="Student Group"
+          // onChange={(e) => setStudentGroup(e.target.value)}
+        >
+          {/* {studentGroupList.map((s) => (
+                  <MenuItem key={s} value={s}>
+                     {s}
+                  </MenuItem>
+               ))} */}
+        </Select>
+      </FormControl>
+      <FormControl fullWidth className="col-span-1">
+        <InputLabel id="studentGroup-label">Intructor</InputLabel>
+        <Select
+          labelId="studentGroup-label"
+          id="studentGroup-select"
+          // value={studentGroup}
+          label="Student Group"
+          // onChange={(e) => setStudentGroup(e.target.value)}
+        >
+          {/* {studentGroupList.map((s) => (
+                  <MenuItem key={s} value={s}>
+                     {s}
+                  </MenuItem>
+               ))} */}
+        </Select>
+      </FormControl>
+      <FormGroup>
+        {daysOfWeek.map((day) => (
+          <FormControlLabel
+            key={day}
+            control={
+              <Checkbox
+                checked={selectedDays.includes(day)}
+                onChange={() => handleDaySelect(day)}
+                disabled={
+                  selectedDays.length === 2 && !selectedDays.includes(day)
+                }
+              />
+            }
+            label={day}
+          />
+        ))}
+      </FormGroup>
+    </div>
+  );
+};
 
-export default AssignClassSchedule
+export default AssignClassSchedule;

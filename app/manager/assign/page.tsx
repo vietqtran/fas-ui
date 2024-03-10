@@ -3,8 +3,6 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
 
 import AssignClassSchedule from '@/components/Manager/Assign/AssignClassSchedule'
-import AssignInstructorToClass from '@/components/Manager/Assign/AssignInstructorToClass'
-import AssignStudentsToClass from '@/components/Manager/Assign/AssignStudentsToClass'
 import Box from '@mui/material/Box'
 import { useState } from 'react'
 import ManagerLayout from '@/components/Common/Layouts/ManagerLayout'
@@ -108,7 +106,6 @@ const page = () => {
                   onClick={(e) => e.stopPropagation()}
                   className='h-auto min-h-[600px] w-[1000px] rounded-md bg-white text-black'
                >
-                  {modal === 'instructorToClass' && <AssignInstructorToClass />}
                   {modal === 'classSchedule' && <AssignClassSchedule />}
                </div>
             </div>
