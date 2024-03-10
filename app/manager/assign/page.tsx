@@ -8,6 +8,7 @@ import AssignStudentsToClass from '@/components/Manager/Assign/AssignStudentsToC
 import Box from '@mui/material/Box'
 import { useState } from 'react'
 import ManagerLayout from '@/components/Common/Layouts/ManagerLayout'
+import { useRouter } from 'next/navigation'
 
 const columns: GridColDef[] = [
    { field: 'id', headerName: 'ID', width: 90 },
@@ -93,7 +94,7 @@ const rows = [
 const page = () => {
    const [modal, setModal] = useState('')
 
-   console.log(modal)
+   const router = useRouter();
 
    return (
       <ManagerLayout>
@@ -107,7 +108,6 @@ const page = () => {
                   onClick={(e) => e.stopPropagation()}
                   className='h-auto min-h-[600px] w-[1000px] rounded-md bg-white text-black'
                >
-                  {modal === 'studentToClass' && <AssignStudentsToClass />}
                   {modal === 'instructorToClass' && <AssignInstructorToClass />}
                   {modal === 'classSchedule' && <AssignClassSchedule />}
                </div>
@@ -116,7 +116,7 @@ const page = () => {
          <div className='p-5'>
             <div className='flex items-center gap-3 pb-3'>
                <button
-                  onClick={() => setModal('studentToClass')}
+                  onClick={() => router.push('/manager/grades')}
                   className='rounded-md bg-blue-500 px-4 py-2 text-sm text-white'
                >
                   Assign students to class
