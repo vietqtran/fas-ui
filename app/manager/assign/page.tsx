@@ -119,12 +119,6 @@ const page = () => {
                   Assign students to class
                </button>
                <button
-                  onClick={() => setModal('instructorToClass')}
-                  className='rounded-md bg-blue-500 px-4 py-2 text-sm text-white'
-               >
-                  Assign instructor to class
-               </button>
-               <button
                   onClick={() => setModal('classSchedule')}
                   className='rounded-md bg-blue-500 px-4 py-2 text-sm text-white'
                >
