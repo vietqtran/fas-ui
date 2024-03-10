@@ -6,6 +6,7 @@ const END_POINT = {
   GET_BUILDING_BY_ID: "building",
   UPDATE_BUILDING: "building/update",
   DELETE_BUILDING: "building/delete",
+  GET_BUILDING_BY_CAMPUS: "building/campus",
 };
 
 export const getAllBuilding = () => {
@@ -26,4 +27,8 @@ export const updateBuilding = (id: string, data: BuildingInformation) => {
 
 export const deleteBuildingById = (id: string) => {
   return instance.put(`/${END_POINT.DELETE_BUILDING}/${id}`);
+};
+
+export const getBuildingByCampus = (campusId: string) => {
+  return instance.get(`/${END_POINT.GET_BUILDING_BY_CAMPUS}/${campusId}`);
 };

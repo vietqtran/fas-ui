@@ -145,7 +145,6 @@ const useStudent = () => {
          address,
          profileImage,
          gender,
-
          idCard
       } as StudentInformation).then((res) => res)) as BaseResponse
 
@@ -238,6 +237,7 @@ const useStudent = () => {
       setCurrentPage,
       totalPages,
       pageSize,
+      setPageSize,
       courseStudentId,
       setCourseStudentId,
       fetchStudentByMajorAndCampus,

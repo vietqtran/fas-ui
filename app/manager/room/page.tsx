@@ -15,10 +15,9 @@ import ManagerLayout from "@/components/Common/Layouts/ManagerLayout";
 import { RootState } from "@/helpers/redux/reducers";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
-import ModalCourse from "@/components/Common/Modals/ModalCourse";
-import useBuilding from "@/hooks/Building";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import ModalBuilding from "@/components/Common/Modals/ModalBuilding";
+import useRoom from "@/hooks/Room";
+import ModalRoom from "@/components/Common/Modals/ModalRoom";
 
 const page = () => {
   const { user } = useSelector((state: RootState) => state.user);
@@ -27,7 +26,7 @@ const page = () => {
     router.push("/login");
   }
 
-  const { buildings, fetchBuildings, deleteBuilding } = useBuilding();
+  const { rooms, fetchRooms, deleteRoom } = useRoom();
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
@@ -36,7 +35,7 @@ const page = () => {
     setId("");
   };
   const handleClose = () => {
-    fetchBuildings();
+    fetchRooms();
     setOpen(false);
   };
 
@@ -44,8 +43,8 @@ const page = () => {
 
   const [action, setAction] = React.useState("");
 
-  const handleView = async (id) => {
-    router.push(`/manager/building/${id}`);
+  const handleView = async () => {
+    console.log(1);
   };
 
   const handleUpdate = async (idEvent: string) => {
@@ -55,20 +54,27 @@ const page = () => {
   };
 
   const handleDelete = (id: string) => {
-    deleteBuilding(id);
+    deleteRoom(id);
   };
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 250 },
-    { field: "name", headerName: "Name", width: 200 },
+    { field: "id", headerName: "ID", width: 190 },
+    { field: "code", headerName: "Name", width: 190 },
+    {
+      field: "building",
+      headerName: "Building",
+      width: 190,
+      valueGetter: (params: GridValueGetterParams) => params.row.building?.name,
+    },
     {
       field: "campus",
       headerName: "Campus",
-      width: 200,
-      valueGetter: (params: GridValueGetterParams) => params.row.campus?.name,
+      width: 190,
+      valueGetter: (params: GridValueGetterParams) =>
+        params.row.building.campus?.name,
     },
-    { field: "createAt", headerName: "Create At", width: 280 },
-    { field: "updateAt", headerName: "Update At", width: 280 },
+    { field: "createAt", headerName: "Create At", width: 240 },
+    { field: "updateAt", headerName: "Update At", width: 240 },
     {
       field: "status",
       headerName: "Status",
@@ -82,17 +88,10 @@ const page = () => {
     {
       field: "action",
       headerName: "Action",
-      width: 240,
+      width: 200,
       disableColumnMenu: true,
       renderCell: (params) => (
         <div className="flex gap-5">
-          <button
-            className="rounded bg-blue-500 px-2 py-2 font-bold text-white hover:bg-blue-600"
-            onClick={() => handleView(params.row.id)}
-          >
-            <VisibilityIcon />
-          </button>
-
           <button
             className="rounded bg-yellow-500 px-2 py-2 font-bold text-white hover:bg-yellow-600"
             onClick={() => handleUpdate(params.row.id)}
@@ -133,7 +132,7 @@ const page = () => {
         </div>
         <div style={{ height: "100%", width: "100%" }}>
           <DataGrid
-            rows={buildings}
+            rows={rooms}
             columns={columns}
             initialState={{
               pagination: {
@@ -152,7 +151,7 @@ const page = () => {
               toolbar: CustomToolbar,
             }}
           />
-          <ModalBuilding
+          <ModalRoom
             open={open}
             handleClose={handleClose}
             id={id}
