@@ -5,6 +5,7 @@ import {
   createBuilding,
   deleteBuildingById,
   getAllBuilding,
+  getBuildingByCampus,
   getBuildingById,
   updateBuilding,
 } from "@/helpers/api/building";
@@ -17,6 +18,7 @@ const useBuilding = () => {
   const [building, setBuilding] = useState({});
   const [campusId, setCampusId] = useState("");
   const [id, setId] = useState("");
+  const [buildingsByCampus, setBuildingsByCampus] = useState([]);
 
   useEffect(() => {
     fetchBuildings();
@@ -110,6 +112,23 @@ const useBuilding = () => {
     }
   };
 
+  const handleGetBuildingByCampus = async (id: string) => {
+    try {
+      const response = (await getBuildingByCampus(id).then(
+        (res) => res
+      )) as BaseResponse;
+      if (response && response.code === "SUCCESS") {
+        setBuildingsByCampus(response.data);
+        return response.data;
+      } else {
+        return undefined;
+      }
+    } catch (error) {
+      console.error("Error getting building:", error);
+      return undefined;
+    }
+  };
+
   return {
     buildings,
     name,
@@ -123,6 +142,8 @@ const useBuilding = () => {
     getBuilding,
     addBuilding,
     handleUpdateBuilding,
+    handleGetBuildingByCampus,
+    buildingsByCampus,
   };
 };
 

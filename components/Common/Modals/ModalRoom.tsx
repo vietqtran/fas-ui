@@ -8,6 +8,8 @@ import { getCourseByID } from "@/helpers/api/course";
 import useBuilding from "@/hooks/Building";
 import useStudent from "@/hooks/Student";
 import { set } from "firebase/database";
+import useRoom from "@/hooks/Room";
+import { log } from "console";
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -29,33 +31,35 @@ interface Props {
   action: string;
 }
 
-const ModalBuilding = (props: Props) => {
+const ModalRoom = (props: Props) => {
   const { open, handleClose, id, action } = props;
 
   const [information, setInformation] = React.useState<any>();
 
   const {
-    name,
-    setName,
-    campusId,
-    setCampusId,
-    addBuilding,
-    handleUpdateBuilding,
+    code,
+    setCode,
+    buildingId,
+    setBuildingId,
+    addRoom,
+    handleUpdateRoom,
     setId,
-    getBuilding,
-  } = useBuilding();
+    getRoom,
+  } = useRoom();
 
   const { campuses } = useStudent();
 
-  const getInformationBuilding = async (id) => {
-    const data = await getBuilding(id);
+  const { buildings } = useBuilding();
+
+  const getInformationRoom = async (id) => {
+    const data = await getRoom(id);
     setInformation(data);
     setId(data?.id);
-    setName(data?.name);
-    setCampusId(data?.campus?.id);
+    setCode(data?.code);
+    setBuildingId(data?.building?.id);
   };
   React.useEffect(() => {
-    getInformationBuilding(id);
+    getInformationRoom(id);
   }, [id]);
 
   React.useEffect(() => {
@@ -65,22 +69,22 @@ const ModalBuilding = (props: Props) => {
   }, [action]);
 
   const handleSubmit = async (e) => {
-    addBuilding(e);
+    const data = await addRoom(e);
     clearFormData();
   };
 
   const clearFormData = () => {
-    setName("");
-    setCampusId("");
+    setCode("");
+    setBuildingId("");
   };
 
   const handleUpdate = async (e) => {
-    handleUpdateBuilding(e);
+    handleUpdateRoom(e);
   };
 
   const handleCloseModal = () => {
-    setName(information?.name);
-    setCampusId(information?.campus?.id);
+    setCode(information?.code);
+    setBuildingId(information?.building?.id);
     handleClose();
   };
 
@@ -97,7 +101,7 @@ const ModalBuilding = (props: Props) => {
               <div className="border-b border-gray-900/10 pb-12">
                 <div className="flex justify-between">
                   <h2 className="text-xl font-semibold leading-7 text-gray-900">
-                    Building's information
+                    Room's information
                   </h2>
                   <button
                     className="text-gray-400 hover:text-gray-600 transition duration-200 ease-in-out"
@@ -114,16 +118,16 @@ const ModalBuilding = (props: Props) => {
                         htmlFor="building-name"
                         className="block text-sm font-medium leading-6 text-gray-900"
                       >
-                        Building Name:
+                        Room Code:
                       </label>
                       <TextField
                         size="small"
                         className="mt-2"
                         type="text"
                         variant="outlined"
-                        value={name}
+                        value={code}
                         disabled={action === "view"}
-                        onChange={(e) => setName(e.target.value)}
+                        onChange={(e) => setCode(e.target.value)}
                       />
                     </FormControl>
                   </div>
@@ -139,15 +143,15 @@ const ModalBuilding = (props: Props) => {
                         className="mt-2"
                         select
                         size="small"
-                        value={campusId}
-                        onChange={(e) => setCampusId(e.target.value)}
+                        value={buildingId}
+                        onChange={(e) => setBuildingId(e.target.value)}
                       >
-                        {campuses &&
-                          campuses.map((item, index) => (
+                        {buildings &&
+                          buildings.map((item, index) => (
                             <MenuItem
                               key={item.id}
                               value={item.id}
-                              selected={campusId == item.id}
+                              selected={buildingId == item.id}
                             >
                               {item.name}
                             </MenuItem>
@@ -184,4 +188,4 @@ const ModalBuilding = (props: Props) => {
   );
 };
 
-export default ModalBuilding;
+export default ModalRoom;
