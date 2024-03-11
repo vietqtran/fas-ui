@@ -18,13 +18,13 @@ export const useLogin = () => {
    const { user } = useSelector((state: RootState) => state.user)
 
    if (user) {
-      if (user.role.name === 'ADMIN') {
+      if (user?.role?.name === 'ADMIN') {
          router.push('/admin')
-      } else if (user.role.name === 'MANAGER') {
+      } else if (user?.role?.name === 'MANAGER') {
          router.push('/manager')
-      } else if (user.role.name === 'INSTRUCTOR') {
+      } else if (user?.role?.name === 'INSTRUCTOR') {
          router.push('/i/schedule')
-      } else if (user.role.name === 'STUDENT') {
+      } else if (user?.role?.name === 'STUDENT') {
          router.push('/')
       }
    }

@@ -6,30 +6,36 @@ import {
   formatDateForMySQL,
   getFirstMonday,
   getWeek,
+  getWeekDayByDateString,
   getWeeks,
 } from "@/utils/date";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import Activity from "@/components/Student/Dashboard/Activity";
 import { Button } from "@mui/material";
-import FormControl from "@mui/material/FormControl";
 import Header from "@/components/Common/Header";
 import InputLabel from "@mui/material/InputLabel";
 import Link from "next/link";
 import MenuItem from "@mui/material/MenuItem";
-import PreviewCourse from "@/components/Student/Dashboard/PreviewCourse";
+import { getStudentActivityByWeekYear } from "@/helpers/api/activity";
+import { useSelector } from "react-redux";
+import { RootState } from "@/helpers/redux/reducers";
 
 const StudentSchedule = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const { user } = useSelector((state: RootState) => state.user);
+  console.log("=>>>>>>>>>", user);
+
   const currentYear = new Date().getFullYear();
   const currentWeek = getWeek(new Date());
-  const [year, setYear] = useState(currentYear);
-  const [week, setWeek] = useState(1);
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
-  const [days, setDays] = useState([]);
+
+    const [year, setYear] = useState(currentYear)
+    const [week, setWeek] = useState(1)
+    const [from, setFrom] = useState(formatDateForMySQL(getFirstMonday(currentYear)));
+    const [to, setTo] = useState('');
+    const [days, setDays] = useState([])
 
   const years = [
     currentYear - 4,
@@ -41,12 +47,12 @@ const StudentSchedule = () => {
   ];
 
   const slots = [
-    { index: 1, from: "07:30", to: "09:50" },
-    { index: 2, from: "10:00", to: "12:20" },
-    { index: 3, from: "12:50", to: "15:10" },
-    { index: 4, from: "15:20", to: "17:40" },
-    { index: 5, from: "18:10", to: "20:30" },
-    { index: 6, from: "20:10", to: "22:30" },
+    { index: 1, from: "07:30", to: "09:50", name: "Slot 1" },
+    { index: 2, from: "10:00", to: "12:20", name: "Slot 2" },
+    { index: 3, from: "12:50", to: "15:10", name: "Slot 3" },
+    { index: 4, from: "15:20", to: "17:40", name: "Slot 4" },
+    { index: 5, from: "18:10", to: "20:30", name: "Slot 5" },
+    { index: 6, from: "20:10", to: "22:30", name: "Slot 6" },
   ];
 
   const weeksComputed = getWeeks(year);
@@ -87,6 +93,24 @@ const StudentSchedule = () => {
     };
 
     updateDateRange();
+  }, [year, week]);
+
+  const [activities, setActivities] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchActivity = async () => {
+      if (user) {
+        const data = await getStudentActivityByWeekYear(
+          user?.student?.id || "",
+          week,
+          year
+        );
+        console.log(data);
+        setActivities(data.data as unknown as any[]);
+      }
+    };
+
+    fetchActivity();
   }, [year, week]);
 
   const nextWeek = () => {
@@ -216,7 +240,7 @@ const StudentSchedule = () => {
                   <th></th>
                   {days.map((d, i) => (
                     <th className="p-1" key={i}>
-                      <div className="bg-v-green mx-auto w-full max-w-[150px] rounded-lg text-center text-white">
+                      <div className="bg-green-500 mx-auto w-full max-w-[150px] rounded-lg text-center text-white">
                         <div className="text-sm font-semibold">{d.weekDay}</div>
                         <div className="text-sm font-semibold">{d.date}</div>
                       </div>
@@ -230,14 +254,21 @@ const StudentSchedule = () => {
                     <td className="col border text-center font-semibold">
                       <div>Slot {slot.index}</div>
                       <div className="grid w-full place-items-center">
-                        <span className="bg-v-green block w-fit whitespace-nowrap rounded-md p-1 text-[10px] font-semibold text-white">{`(${slot.from} - ${slot.to})`}</span>
+                        <span className="bg-green-500 block w-fit whitespace-nowrap rounded-md p-1 text-[10px] font-semibold text-white">{`(${slot.from} - ${slot.to})`}</span>
                       </div>
                     </td>
                     {days.map((day, i) => (
                       <td className="col border" key={i}>
-                        <Link href={`/activity/id`} className="group">
-                          <Activity />
-                        </Link>
+                        {activities?.length > 0 &&
+                          activities.map(
+                            (a, j) =>
+                              a.slot.name === slot.name &&
+                              getWeekDayByDateString(a.date) === i && (
+                                <Link href={`/activityDetail/${a.id}`}>
+                                  <Activity activity={a} />
+                                </Link>
+                              )
+                          )}
                       </td>
                     ))}
                   </tr>
@@ -246,14 +277,24 @@ const StudentSchedule = () => {
             </table>
 
             <div className="md:hidden">
-              <div className="flex items-center justify-between gap-1">
+              <div className="flex text-black  items-center justify-between gap-1">
                 {days.map((day, i) => (
                   <div
                     key={i}
-                    className="bg-v-green mx-auto w-full max-w-[150px] cursor-pointer rounded-lg text-center text-white"
+                    className="bg-green-500 mx-auto w-full max-w-[150px] text-black cursor-pointer rounded-lg text-center"
                   >
-                    <div className="text-sm font-semibold">{day.weekDay}</div>
-                    <div className="text-sm font-semibold">{day.date}</div>
+                    <span
+                      style={{ color: "black !important" }}
+                      className="text-sm font-semibold !text-black"
+                    >
+                      {day.weekDay}
+                    </span>
+                    <span
+                      style={{ color: "black !important" }}
+                      className="text-sm font-semibold !text-black"
+                    >
+                      {day.date}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -266,14 +307,10 @@ const StudentSchedule = () => {
                     <div className="grid place-items-center">
                       <div className="font-semibold">Slot {slot.index}</div>
                       <div className="grid w-full place-items-center">
-                        <span className="bg-v-green block w-fit whitespace-nowrap rounded-md p-1 text-[10px] font-semibold text-white">{`(${slot.from} - ${slot.to})`}</span>
+                        <span className="bg-green-500 block w-fit whitespace-nowrap rounded-md p-1 text-[10px] font-semibold text-white">{`(${slot.from} - ${slot.to})`}</span>
                       </div>
                     </div>
-                    <div>
-                      <Link href="/activity/id">
-                        <Activity />
-                      </Link>
-                    </div>
+                    <div></div>
                   </div>
                 ))}
               </div>

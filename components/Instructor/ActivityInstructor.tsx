@@ -8,7 +8,7 @@ interface Props {
   activity: any;
 }
 
-const Activity = ({ activity }: Props) => {
+const ActivityInstructor = ({ activity }: Props) => {
   const { user } = useSelector((state: RootState) => state.user);
   console.log("======================", user);
   const { getAssignSchdule, assignSchedule, setAssignSchedule } =
@@ -35,20 +35,10 @@ const Activity = ({ activity }: Props) => {
         <span>at {activity?.room?.code}</span>
       </div>
       <div>
-        (
-        <span className="text-green-500">
-          {activity.attendances.filter(
-            (attendance) => attendance?.student?.id === user?.student?.id
-          )[0].status ? (
-            <span className="text-green-500">present</span>
-          ) : (
-            <span className="text-red-500">absent</span>
-          )}
-        </span>
-        )<span className="block">{activity.instructor.username}</span>
+        <span>{assignSchedule?.grade?.code}</span>
       </div>
     </div>
   );
 };
 
-export default Activity;
+export default ActivityInstructor;

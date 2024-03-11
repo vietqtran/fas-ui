@@ -199,7 +199,7 @@ const page = (props: Props) => {
           <ArrowBackIcon /> List Assign
         </h1>
         <div className="flex justify-between items-center my-7">
-          <h1 className="text-3xl font-bold italic text-slate-600">Term {assignSchedule?.term?.name} - Course {assignSchedule?.course?.code} - Class {assignSchedule?.grade?.code}</h1>
+          <h1 className="text-3xl font-bold italic text-slate-600"> Activities for Term {assignSchedule?.term?.name} - Course {assignSchedule?.course?.code} - Class {assignSchedule?.grade?.code}</h1>
         </div>
         <div style={{ height: "100%", width: "100%" }}>
           <DataGrid
