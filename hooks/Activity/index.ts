@@ -1,10 +1,6 @@
 "use client";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
-import {
-    deleteAssignFeedBack,
-} from "@/helpers/api/assignFeedBack";
-import { createShedule, deleteSheduleById, getAllSchedule, getSheduleById, updateShedule } from "@/helpers/api/assignSchedule";
 import { getActivityByAssign, getActivityById, updateActivity } from "@/helpers/api/activity";
 
 const useActivity = () => {
@@ -16,7 +12,7 @@ const useActivity = () => {
     const [instructorId, setInstructorId] = useState("");
     const [assignId, setAssignId] = useState("");
 
-    const [activityDetail, setActivityDetail] = useState({});
+    const [activityDetail, setActivityDetail] = useState<any>({});
     const [idActivityDetail, setIdActivityDetail] = useState("");
 
     useEffect(() => {
@@ -54,7 +50,7 @@ const useActivity = () => {
     };
 
     const handleUpdateActivity = async (e) => {
-        e.preventDefault();
+        e.preventDefault();        
         try {
             const response = (await updateActivity(idActivityDetail, {
                 date: date,
@@ -88,8 +84,12 @@ const useActivity = () => {
         setRoomId,
         assignId,
         setAssignId,
-        
         fetchActivityByAssign,
+        getActivityDetail,
+        activityDetail,
+        setActivityDetail,
+        handleUpdateActivity,
+        setIdActivityDetail
     };
 };
 

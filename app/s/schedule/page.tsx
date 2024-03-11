@@ -13,12 +13,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import Activity from "@/components/Student/Dashboard/Activity";
 import { Button } from "@mui/material";
-import FormControl from "@mui/material/FormControl";
 import Header from "@/components/Common/Header";
 import InputLabel from "@mui/material/InputLabel";
 import Link from "next/link";
 import MenuItem from "@mui/material/MenuItem";
-import PreviewCourse from "@/components/Student/Dashboard/PreviewCourse";
 import { getStudentActivityByWeekYear } from "@/helpers/api/activity";
 import { useSelector } from "react-redux";
 import { RootState } from "@/helpers/redux/reducers";
@@ -32,11 +30,12 @@ const StudentSchedule = () => {
 
   const currentYear = new Date().getFullYear();
   const currentWeek = getWeek(new Date());
-  const [year, setYear] = useState(currentYear);
-  const [week, setWeek] = useState(1);
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
-  const [days, setDays] = useState([]);
+
+    const [year, setYear] = useState(currentYear)
+    const [week, setWeek] = useState(1)
+    const [from, setFrom] = useState(formatDateForMySQL(getFirstMonday(currentYear)));
+    const [to, setTo] = useState('');
+    const [days, setDays] = useState([])
 
   const years = [
     currentYear - 4,
@@ -241,7 +240,7 @@ const StudentSchedule = () => {
                   <th></th>
                   {days.map((d, i) => (
                     <th className="p-1" key={i}>
-                      <div className="bg-v-green mx-auto w-full max-w-[150px] rounded-lg text-center text-white">
+                      <div className="bg-green-500 mx-auto w-full max-w-[150px] rounded-lg text-center text-white">
                         <div className="text-sm font-semibold">{d.weekDay}</div>
                         <div className="text-sm font-semibold">{d.date}</div>
                       </div>
@@ -255,7 +254,7 @@ const StudentSchedule = () => {
                     <td className="col border text-center font-semibold">
                       <div>Slot {slot.index}</div>
                       <div className="grid w-full place-items-center">
-                        <span className="bg-v-green block w-fit whitespace-nowrap rounded-md p-1 text-[10px] font-semibold text-white">{`(${slot.from} - ${slot.to})`}</span>
+                        <span className="bg-green-500 block w-fit whitespace-nowrap rounded-md p-1 text-[10px] font-semibold text-white">{`(${slot.from} - ${slot.to})`}</span>
                       </div>
                     </td>
                     {days.map((day, i) => (
@@ -282,7 +281,7 @@ const StudentSchedule = () => {
                 {days.map((day, i) => (
                   <div
                     key={i}
-                    className="bg-v-green mx-auto w-full max-w-[150px] text-black cursor-pointer rounded-lg text-center"
+                    className="bg-green-500 mx-auto w-full max-w-[150px] text-black cursor-pointer rounded-lg text-center"
                   >
                     <span
                       style={{ color: "black !important" }}
@@ -308,7 +307,7 @@ const StudentSchedule = () => {
                     <div className="grid place-items-center">
                       <div className="font-semibold">Slot {slot.index}</div>
                       <div className="grid w-full place-items-center">
-                        <span className="bg-v-green block w-fit whitespace-nowrap rounded-md p-1 text-[10px] font-semibold text-white">{`(${slot.from} - ${slot.to})`}</span>
+                        <span className="bg-green-500 block w-fit whitespace-nowrap rounded-md p-1 text-[10px] font-semibold text-white">{`(${slot.from} - ${slot.to})`}</span>
                       </div>
                     </div>
                     <div></div>
