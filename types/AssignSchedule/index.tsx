@@ -3,6 +3,7 @@ interface AssignScheduleInformation {
         weekdays: string[];
         gradeId: string;
         courseId: string;
+        termId: string;
     }
     activityRequestDTO: {
         roomId: string;

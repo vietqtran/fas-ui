@@ -8,22 +8,23 @@ const END_POINT = {
   DELETE_ASSIGN: "assign/delete",
 };
 
-export const getAllBuilding = () => {
+export const getAllSchedule = () => {
   return instance.get(`/${END_POINT.CREATE_ASSIGN}`);
 };
 
-export const getBuildingById = (buildingId: string) => {
-  return instance.get(`/${END_POINT.GET_ASSIGN_BY_ID}/${buildingId}`);
+export const getSheduleById = (assignId: string) => {
+  console.log(assignId);
+  return instance.get(`/${END_POINT.GET_ASSIGN_BY_ID}/${assignId}`);
 };
 
-export const createBuilding = (data: BuildingInformation) => {
+export const createShedule = (data: AssignScheduleInformation) => {
   return instance.post(`/${END_POINT.GET_ALL_ASSIGN}`, data);
 };
 
-export const updateBuilding = (id: string, data: BuildingInformation) => {
+export const updateShedule = (id: string, data: AssignScheduleInformation) => {
   return instance.put(`/${END_POINT.UPDATE_ASSIGN}/${id}`, data);
 };
 
-export const deleteBuildingById = (id: string) => {
+export const deleteSheduleById = (id: string) => {
   return instance.put(`/${END_POINT.DELETE_ASSIGN}/${id}`);
 };
