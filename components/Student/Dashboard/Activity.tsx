@@ -1,24 +1,54 @@
-import React from 'react'
+import { auth } from "@/helpers/firebase";
+import { RootState } from "@/helpers/redux/reducers";
+import useAssignsChedule from "@/hooks/AssignSchedule";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 
-interface Props {}
-
-const Activity = (props: Props) => {
-   return (
-      <div className='group text-center'>
-         <div>
-            <strong className='text-blue-500 group-hover:underline'>
-               SWP391
-            </strong>
-         </div>
-         <div>
-            <span>at BE-419</span>
-         </div>
-         <div>
-            (<span className='text-green-500'>attended</span>)
-            {/* (<span className='text-red-500'>absent</span>) */}
-         </div>
-      </div>
-   )
+interface Props {
+  activity: any;
 }
 
-export default Activity
+const Activity = ({ activity }: Props) => {
+  const { user } = useSelector((state: RootState) => state.user);
+  console.log("======================", user);
+  const { getAssignSchdule, assignSchedule, setAssignSchedule } =
+    useAssignsChedule();
+
+  const getData = async (id) => {
+    const data = await getAssignSchdule(id);
+    setAssignSchedule(data);
+    console.log(data);
+  };
+
+  useEffect(() => {
+    getData(activity?.assign?.id);
+  }, [activity]);
+
+  return (
+    <div className="group text-center">
+      <div>
+        <strong className="text-blue-500 group-hover:underline">
+          {assignSchedule?.course?.code}
+        </strong>
+      </div>
+      <div>
+        <span>at {activity?.room?.code}</span>
+      </div>
+      <div>
+        (
+        <span className="text-green-500">
+          {activity.attendances.filter(
+            (attendance) => attendance?.student?.id === user?.student?.id
+          )[0].status ? (
+            <span className="text-green-500">present</span>
+          ) : (
+            <span className="text-red-500">absent</span>
+          )}
+        </span>
+        )<span className="block">{activity.instructor.username}</span>
+      </div>
+    </div>
+  );
+};
+
+export default Activity;
