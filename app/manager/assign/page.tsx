@@ -1,160 +1,203 @@
-'use client'
+"use client";
 
-import { DataGrid, GridColDef } from '@mui/x-data-grid'
-
-import AssignClassSchedule from '@/components/Manager/Assign/AssignClassSchedule'
-import AssignInstructorToClass from '@/components/Manager/Assign/AssignInstructorToClass'
-import AssignStudentsToClass from '@/components/Manager/Assign/AssignStudentsToClass'
-import Box from '@mui/material/Box'
-import { useState } from 'react'
-import ManagerLayout from '@/components/Common/Layouts/ManagerLayout'
-import { useRouter } from 'next/navigation'
-
-const columns: GridColDef[] = [
-   { field: 'id', headerName: 'ID', width: 90 },
-   {
-      field: 'name',
-      headerName: 'Name',
-      width: 150,
-      editable: false
-   },
-   {
-      field: 'class',
-      headerName: 'Student Group',
-      type: 'number',
-      width: 150,
-      editable: false
-   },
-   {
-      field: 'avatar',
-      headerName: 'Avatar',
-      type: 'string',
-      width: 250,
-      editable: false
-   }
-]
-
-const rows = [
-   {
-      id: '11',
-      name: 'Snow',
-      class: 'Jon',
-      avatar: 'https://i.pravatar.cc/300'
-   },
-   {
-      id: '22',
-      name: 'Lannister',
-      class: 'Cersei',
-      avatar: 'https://i.pravatar.cc/300'
-   },
-   {
-      id: '33',
-      name: 'Lannister',
-      class: 'Jaime',
-      avatar: 'https://i.pravatar.cc/300'
-   },
-   {
-      id: '44',
-      name: 'Stark',
-      class: 'Arya',
-      avatar: 'https://i.pravatar.cc/300'
-   },
-   {
-      id: '55',
-      name: 'Targaryen',
-      class: 'Daenerys',
-      avatar: 'https://i.pravatar.cc/300'
-   },
-   {
-      id: '66',
-      name: 'Melisandre',
-      class: null,
-      avatar: 'https://i.pravatar.cc/300'
-   },
-   {
-      id: '77',
-      name: 'Clifford',
-      class: 'Ferrara',
-      avatar: 'https://i.pravatar.cc/300'
-   },
-   {
-      id: '88',
-      name: 'Frances',
-      class: 'Rossini',
-      avatar: 'https://i.pravatar.cc/300'
-   },
-   {
-      id: '99',
-      name: 'Roxie',
-      class: 'Harvey',
-      avatar: 'https://i.pravatar.cc/300'
-   }
-]
+import * as React from "react";
+import {
+  DataGrid,
+  GridColDef,
+  GridToolbarContainer,
+  GridToolbarExport,
+  GridValueGetterParams,
+} from "@mui/x-data-grid";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import ManagerLayout from "@/components/Common/Layouts/ManagerLayout";
+import { RootState } from "@/helpers/redux/reducers";
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import ModalCourse from "@/components/Common/Modals/ModalCourse";
+import useBuilding from "@/hooks/Building";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import ModalBuilding from "@/components/Common/Modals/ModalBuilding";
+import useAssignsChedule from "@/hooks/AssignSchedule";
+import AssignClassSchedule from "@/components/Manager/Assign/AssignClassSchedule";
 
 const page = () => {
-   const [modal, setModal] = useState('')
+  const { user } = useSelector((state: RootState) => state.user);
+  const router = useRouter();
+  if (!user || user.role.name !== "MANAGER") {
+    router.push("/login");
+  }
 
-   const router = useRouter();
+  const { assignSchedules, fetchAssignSchedule, deleteAssignFeedBackById } =
+    useAssignsChedule();
+  const [open, setOpen] = React.useState(false);
 
-   return (
-      <ManagerLayout>
-      <div className="container">
-      {modal !== '' && (
-            <div
-               onClick={() => setModal('')}
-               className='absolute left-0 top-0 z-50 grid h-[100vh] w-[100vw] place-items-center bg-black/50'
-            >
-               <div
-                  onClick={(e) => e.stopPropagation()}
-                  className='h-auto min-h-[600px] w-[1000px] rounded-md bg-white text-black'
-               >
-                  {modal === 'instructorToClass' && <AssignInstructorToClass />}
-                  {modal === 'classSchedule' && <AssignClassSchedule />}
-               </div>
-            </div>
-         )}
-         <div className='p-5'>
-            <div className='flex items-center gap-3 pb-3'>
-               <button
-                  onClick={() => router.push('/manager/grades')}
-                  className='rounded-md bg-blue-500 px-4 py-2 text-sm text-white'
-               >
-                  Assign students to class
-               </button>
-               <button
-                  onClick={() => setModal('instructorToClass')}
-                  className='rounded-md bg-blue-500 px-4 py-2 text-sm text-white'
-               >
-                  Assign instructor to class
-               </button>
-               <button
-                  onClick={() => setModal('classSchedule')}
-                  className='rounded-md bg-blue-500 px-4 py-2 text-sm text-white'
-               >
-                  Assign class schedule
-               </button>
-            </div>
-            <Box sx={{ height: 'auto', width: '100%' }}>
-               <DataGrid
-                  rows={rows}
-                  columns={columns}
-                  initialState={{
-                     pagination: {
-                        paginationModel: {
-                           pageSize: 15
-                        }
-                     }
-                  }}
-                  pageSizeOptions={[15]}
-                  onRowSelectionModelChange={(row) => console.log(row)}
-                  checkboxSelection
-                  disableRowSelectionOnClick
-               />
-            </Box>
-         </div>
+  const handleOpen = () => {
+    setOpen(true);
+    setAction("create");
+    setId("");
+  };
+  const handleClose = () => {
+    fetchAssignSchedule();
+    setOpen(false);
+  };
+
+  const [id, setId] = React.useState("");
+
+  console.log(assignSchedules);
+
+  const [action, setAction] = React.useState("");
+
+  const handleView = async (id) => {
+    console.log(id);
+    router.push(`/manager/assign/${id}`);
+  };
+
+  const handleUpdate = async (idEvent: string) => {
+    setAction("update");
+    setId(idEvent);
+    setOpen(true);
+  };
+
+  const handleDelete = (id: string) => {
+    deleteAssignFeedBackById(id);
+  };
+
+  const columns: GridColDef[] = [
+    { field: "id", headerName: "ID", width: 250 },
+    {
+      field: "course",
+      headerName: "Course",
+      width: 150,
+      valueGetter: (params: GridValueGetterParams) => params.row.course?.code,
+    },
+    {
+      field: "term",
+      headerName: "Term",
+      width: 150,
+      valueGetter: (params: GridValueGetterParams) => params.row.term?.name,
+    },
+    {
+      field: "grade",
+      headerName: "Student Group",
+      width: 150,
+      valueGetter: (params: GridValueGetterParams) => params.row.grade?.code,
+    },
+    {
+      field: "weekdays",
+      headerName: "weekdays",
+      width: 180,
+      valueGetter: (params: GridValueGetterParams) =>
+        params.row.weekdays?.join(", "),
+    },
+    {
+      field: "createdAt",
+      headerName: "Created At",
+      width: 150,
+      valueGetter: (params: GridValueGetterParams) =>
+        new Date(params.row.createdAt).toISOString().split("T")[0],
+    },
+    {
+      field: "updatedAt",
+      headerName: "Updated At",
+      width: 150,
+      valueGetter: (params: GridValueGetterParams) =>
+        new Date(params.row.updatedAt).toISOString().split("T")[0],
+    },
+    {
+      field: "deleted",
+      headerName: "Status",
+      width: 80,
+      renderCell: (params) => (
+        <div style={{ color: !params.row.deleted ? "green" : "red" }}>
+          {!params.row.deleted ? "Active" : "Inactive"}
+        </div>
+      ),
+    },
+    {
+      field: "action",
+      headerName: "Action",
+      width: 240,
+      disableColumnMenu: true,
+      renderCell: (params) => (
+        <div className="flex gap-5">
+          <button
+            className="rounded bg-blue-500 px-2 py-2 font-bold text-white hover:bg-blue-600"
+            onClick={() => handleView(params.row.id)}
+          >
+            <VisibilityIcon />
+          </button>
+
+          <button
+            className="rounded bg-yellow-500 px-2 py-2 font-bold text-white hover:bg-yellow-600"
+            onClick={() => handleUpdate(params.row.id)}
+          >
+            <EditIcon />
+          </button>
+          <button
+            className="rounded bg-red-500 px-2 py-2 font-bold text-white hover:bg-red-700"
+            onClick={() => handleDelete(params.row.id)}
+          >
+            <DeleteIcon />
+          </button>
+        </div>
+      ),
+    },
+  ];
+
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarExport />
+      </GridToolbarContainer>
+    );
+  }
+
+  return (
+    <ManagerLayout>
+      <div className="container pt-1=">
+        <h1 className="my-8 text-3xl font-bold">List of Assign</h1>
+        <div className="flex justify-end">
+          <button
+            className="mb-4 flex items-center gap-2 rounded-md bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+            onClick={() => handleOpen()}
+          >
+            <AddIcon />
+            Create Assign
+          </button>
+        </div>
+        <div style={{ height: "100%", width: "100%" }}>
+          <DataGrid
+            rows={assignSchedules}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 10 },
+              },
+            }}
+            pageSizeOptions={[5, 10]}
+            sx={{
+              ".MuiDataGrid-columnHeader": {
+                outline: "none !important",
+              },
+            }}
+            showColumnVerticalBorder={true}
+            showCellVerticalBorder={true}
+            slots={{
+              toolbar: CustomToolbar,
+            }}
+          />
+          <AssignClassSchedule
+            open={open}
+            handleClose={handleClose}
+            id={id}
+            action={action}
+          />
+        </div>
       </div>
     </ManagerLayout>
-   )
-}
+  );
+};
 
-export default page
+export default page;
