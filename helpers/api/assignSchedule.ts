@@ -12,9 +12,7 @@ export const getAllSchedule = () => {
   return instance.get(`/${END_POINT.CREATE_ASSIGN}`);
 };
 
-export const getSheduleById = (assignId: string) => {
-  console.log(assignId);
-  return instance.get(`/${END_POINT.GET_ASSIGN_BY_ID}/${assignId}`);
+export const getSheduleById = (assignId: string) => {  return instance.get(`/${END_POINT.GET_ASSIGN_BY_ID}/${assignId}`);
 };
 
 export const createShedule = (data: AssignScheduleInformation) => {
