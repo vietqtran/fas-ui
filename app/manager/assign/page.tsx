@@ -45,12 +45,9 @@ const page = () => {
 
   const [id, setId] = React.useState("");
 
-  console.log(assignSchedules);
-
   const [action, setAction] = React.useState("");
 
   const handleView = async (id) => {
-    console.log(id);
     router.push(`/manager/assign/${id}`);
   };
 

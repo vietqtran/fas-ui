@@ -53,6 +53,12 @@ const AssignClassSchedule = (props: Props) => {
     }
   };
 
+  const { assignSchedules, fetchAssignSchedule, deleteAssignFeedBackById } =
+    useAssignsChedule();
+
+    console.log(assignSchedules);
+    
+
   const daysOfWeek = [
     "MONDAY",
     "TUESDAY",
@@ -87,6 +93,10 @@ const AssignClassSchedule = (props: Props) => {
     setWeekdays,
     addAssignSchedule,
   } = useAssignsChedule();
+
+
+  
+
 
   return (
     <Modal
