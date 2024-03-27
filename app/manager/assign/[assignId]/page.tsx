@@ -25,79 +25,79 @@ import { Modal } from "@mui/material";
 import ModalActivity from "@/components/Common/Modals/ModalActivity";
 type Props = {
   params: {
-    slug: string;
+    assignId: string;
   };
 };
 
 const page = (props: Props) => {
-  const { slug } = props.params;
+  const { assignId } = props.params;
+
+  console.log(assignId);
+
   const [reload, setReload] = React.useState(false);
-  const {
-    fetchActivityByAssign,
-    activities,
-    getActivityDetail,
-    activityDetail,
-    setActivityDetail,
-  } = useActivity();
+  const { fetchActivityByAssign, activities } = useActivity();
   const { assignSchedule, setAssignSchedule, getAssignSchdule } =
     useAssignsChedule();
 
-  const [dataArray, setDataArray] = useState<any>([]);
+  const [dateArray, setDateArray] = useState<any>([]);
 
   const getData = async (id: string) => {
     try {
-      const data = await getActivityDetail(id);
-      console.log(data);
-      setActivityDetail(data);
-      setDataArray(data.attendances);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+      const data2 = await getAssignSchdule(id);
+      console.log(data2);
+
+      setAssignSchedule(data2);
+    } catch (error) {}
   };
 
   useEffect(() => {
-    getData(slug[0]);
-  }, [slug, reload]);
+    getData(assignId);
+  }, []);
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+
+    setAction("create");
+  };
+  const handleClose = () => {
+    getData(assignId);
+    setOpen(false);
+  };
 
   const router = useRouter();
 
+  const [id, setId] = React.useState("");
+  const [action, setAction] = React.useState("");
+  const [openView, setOpenView] = React.useState(false);
+  const handleView = async (idStudent: string) => {
+    setAction("view");
+    setId(idStudent);
+    setOpenView(true);
+  };
+
+  const handleUpdate = async (idActivity: string) => {
+    setAction("update");
+    setId(idActivity);
+    setOpen(true);
+  };
+
+  const handleCloseView = () => {
+    setOpenView(false);
+  };
+
   const handleViewActivity = async (idActivity: string) => {
-    router.push(`/manager/activities/${idActivity}`);
+    router.push(`/manager/assign/activity/${idActivity}`);
   };
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 70 },
     {
-      field: "username",
-      headerName: "Username",
-      width: 150,
-      valueGetter: (params: GridValueGetterParams) =>
-        params.row.student?.username,
-    },
-    {
-      field: "fullname",
-      headerName: "fullName",
-      width: 150,
-      valueGetter: (params: GridValueGetterParams) =>
-        params.row.student?.firstName +
-        " " +
-        params.row.student?.middleName +
-        " " +
-        params.row.student?.lastName,
-    },
-    {
-      field: "code",
-      headerName: "Student Code",
-      width: 150,
-      valueGetter: (params: GridValueGetterParams) =>
-        params.row.student?.studentCode,
-    },
-    {
       field: "instructor",
       headerName: "Instructor",
-      width: 120,
+      width: 150,
       valueGetter: (params: GridValueGetterParams) =>
-        activityDetail.instructor?.username,
+        params.row.instructor?.username,
     },
     {
       field: "slot",
@@ -105,31 +105,31 @@ const page = (props: Props) => {
       width: 260,
       renderCell: (params) => (
         <div>
-          {activityDetail.slot?.name} ( {activityDetail.slot?.startAt} -{" "}
-          {activityDetail.slot?.endAt} )
+          {params.row.slot?.name} ( {params.row.slot?.startAt} -{" "}
+          {params.row.slot?.endAt} )
         </div>
       ),
     },
     {
       field: "room",
       headerName: "Room",
-      width: 100,
-      valueGetter: (params: GridValueGetterParams) => activityDetail.room?.code,
+      width: 260,
+      valueGetter: (params: GridValueGetterParams) => params.row.room?.code,
     },
     {
       field: "date",
       headerName: "Date",
       type: "dateTime",
-      width: 150,
+      width: 200,
       valueFormatter(params) {
-        return new Date(activityDetail.date).toLocaleDateString();
+        return new Date(params.value).toLocaleDateString();
       },
     },
     {
       field: "createAt",
       headerName: "Created At",
       type: "dateTime",
-      width: 150,
+      width: 170,
       valueFormatter(params) {
         return new Date(params.value).toLocaleDateString();
       },
@@ -138,7 +138,7 @@ const page = (props: Props) => {
       field: "updateAt",
       headerName: "Updated At",
       type: "dateTime",
-      width: 150,
+      width: 170,
       valueFormatter(params) {
         return new Date(params.value).toLocaleDateString();
       },
@@ -149,7 +149,30 @@ const page = (props: Props) => {
       width: 80,
       renderCell: (params) => (
         <div style={{ color: params.row.status ? "green" : "red" }}>
-          {params.row.status ? "Attend" : "Absent"}
+          {params.row.status ? "Active" : "Inactive"}
+        </div>
+      ),
+    },
+    {
+      field: "action",
+      headerName: "Action",
+      width: 160,
+      disableColumnMenu: true,
+      renderCell: (params) => (
+        <div className="flex gap-3">
+          <button
+            className="rounded bg-blue-500 px-2 py-2 font-bold text-white hover:bg-blue-600"
+            onClick={() => handleView(params.row.id)}
+          >
+            <VisibilityIcon onClick={() => handleViewActivity(params.row.id)} />
+          </button>
+
+          <button
+            className="rounded bg-yellow-500 px-2 py-2 font-bold text-white hover:bg-yellow-600"
+            onClick={() => handleUpdate(params.row.id)}
+          >
+            <EditIcon />
+          </button>
         </div>
       ),
     },
@@ -170,14 +193,18 @@ const page = (props: Props) => {
           onClick={() => router.push("/manager/assign")}
         >
           {" "}
-          <ArrowBackIcon /> List Activity
+          <ArrowBackIcon /> List Assign
         </h1>
         <div className="flex justify-between items-center my-7">
-          <h1 className="text-3xl font-bold italic text-slate-600"></h1>
+          <h1 className="text-3xl font-bold italic text-slate-600">
+            {" "}
+            Activities for Term {assignSchedule?.term?.name} - Course{" "}
+            {assignSchedule?.course?.code} - Class {assignSchedule?.grade?.code}
+          </h1>
         </div>
         <div style={{ height: "100%", width: "100%" }}>
           <DataGrid
-            rows={dataArray}
+            rows={activities}
             columns={columns}
             initialState={{
               pagination: {
@@ -195,6 +222,12 @@ const page = (props: Props) => {
             slots={{
               toolbar: CustomToolbar,
             }}
+          />
+          <ModalActivity
+            open={open}
+            handleClose={handleClose}
+            id={id}
+            action={action}
           />
         </div>
       </div>

@@ -25,6 +25,7 @@ export const useInstructor = () => {
   const [campusId, setCampusId] = useState("");
   const [idCard, setIdCard] = useState("");
   const [gender, setGender] = useState(Boolean);
+  const [instructorDetail, setInstructorDetail] = useState<any>();
 
   useEffect(() => {
     fetchInstructors();
@@ -107,6 +108,7 @@ export const useInstructor = () => {
     )) as BaseResponse;
 
     if (response && response?.code === "SUCCESS") {
+      setInstructorDetail(response.data);
       return response.data;
     } else {
       toast.error("error to fetch data");
@@ -174,5 +176,6 @@ export const useInstructor = () => {
     setGender,
     idCard,
     setIdCard,
+    instructorDetail,
   };
 };

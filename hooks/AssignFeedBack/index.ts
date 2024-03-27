@@ -34,11 +34,8 @@ const useAssignFeedBack = () => {
       if (response) {
         setAssignFeedBacks(response.data);
       } else {
-        console.log(response.message);
       }
-    } catch (error) {
-      console.error("Error fetching grade:", error);
-    }
+    } catch (error) {}
   };
 
   const getAssignFeedBack = async (id: string) => {
@@ -59,8 +56,6 @@ const useAssignFeedBack = () => {
 
   const addAssign = async (e) => {
     e.preventDefault();
-    console.log(instructorId, gradeId, startDate, endDate);
-
     try {
       const response = (await addAssignFeedBack({
         instructorId,
@@ -74,7 +69,6 @@ const useAssignFeedBack = () => {
         toast.error(response?.message || "Add course failed");
       }
     } catch (error) {
-      console.error("Error adding course:", error);
       toast.error("Add course failed");
     }
   };
@@ -153,7 +147,7 @@ const useAssignFeedBack = () => {
     handleUpdateAssignFeedBack,
     getAssignFeedBack,
     fectchAssignFeedBack,
-    getAssignFeedBackGrade
+    getAssignFeedBackGrade,
   };
 };
 

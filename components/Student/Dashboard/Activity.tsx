@@ -10,14 +10,12 @@ interface Props {
 
 const Activity = ({ activity }: Props) => {
   const { user } = useSelector((state: RootState) => state.user);
-  console.log("======================", user);
   const { getAssignSchdule, assignSchedule, setAssignSchedule } =
     useAssignsChedule();
 
   const getData = async (id) => {
     const data = await getAssignSchdule(id);
     setAssignSchedule(data);
-    console.log(data);
   };
 
   useEffect(() => {
@@ -45,7 +43,7 @@ const Activity = ({ activity }: Props) => {
             <span className="text-red-500">absent</span>
           )}
         </span>
-        )<span className="block">{activity.instructor.username}</span>
+        )
       </div>
     </div>
   );

@@ -39,29 +39,21 @@ interface Result {
 const page = (props: Props) => {
   const { id } = props.params;
 
-  const [reload, setReload] = React.useState(false);
-  const {
-    fetchActivityByAssign,
-    activities,
-    getActivityDetail,
-    activityDetail,
-    setActivityDetail,
-  } = useActivity();
+  const { getActivityDetail } = useActivity();
   const { assignSchedule, setAssignSchedule, getAssignSchdule } =
     useAssignsChedule();
+
+  console.log(assignSchedule);
 
   const [dataArray, setDataArray] = useState<any>([]);
 
   const getData = async (id: string) => {
     try {
       const data = await getActivityDetail(id);
-      console.log(data);
       const assign = await getAssignSchdule(data?.assign?.id);
       setAssignSchedule(assign);
       setDataArray(data.attendances);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -93,14 +85,16 @@ const page = (props: Props) => {
         content: result?.note,
         status: result?.attend,
       };
-      console.log(result?.studentCode);
 
       console.log(data);
+
       await updateAttendance(result?.studentCode, data);
     });
 
     toast.success("Update success");
   };
+
+  console.log(dataArray);
 
   return (
     <div className="grid h-[100%] place-items-center bg-white text-black">
@@ -175,10 +169,12 @@ const page = (props: Props) => {
                           onChange={(e) => {
                             setDataArray(
                               dataArray.map((item) => {
+                                console.log(e.target.value);
+
                                 if (item.id === row.id) {
                                   return {
                                     ...item,
-                                    status: e.target.checked,
+                                    status: e.target.value === "attend",
                                   };
                                 }
                                 return item;

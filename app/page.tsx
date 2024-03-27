@@ -38,7 +38,7 @@ export default function Home() {
 
         {user?.role?.id === 1 ? (
           <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
-            <Link href={"/attendReport"}> View Attendance Report</Link>
+            <Link href={"/s/schedule"}> View Weekly Timetable</Link>
           </div>
         ) : (
           <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
@@ -62,8 +62,6 @@ export default function Home() {
 
 const Contributors = () => {
   const { events } = useEvent();
-
-  console.log(events);
 
   return (
     <Swiper

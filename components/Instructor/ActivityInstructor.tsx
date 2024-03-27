@@ -10,14 +10,12 @@ interface Props {
 
 const ActivityInstructor = ({ activity }: Props) => {
   const { user } = useSelector((state: RootState) => state.user);
-  console.log("======================", user);
   const { getAssignSchdule, assignSchedule, setAssignSchedule } =
     useAssignsChedule();
 
   const getData = async (id) => {
     const data = await getAssignSchdule(id);
     setAssignSchedule(data);
-    console.log(data);
   };
 
   useEffect(() => {

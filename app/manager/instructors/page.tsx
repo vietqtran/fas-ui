@@ -57,7 +57,6 @@ export default function page(props: Props) {
 
   const handleDelete = (instructorId: string) => {
     // Handle delete logic here
-    console.log(`Delete button clicked for row with ID: ${instructorId}`);
     handleDeleteInstructor(instructorId);
   };
 

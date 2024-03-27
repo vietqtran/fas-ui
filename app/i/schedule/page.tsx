@@ -107,7 +107,6 @@ const InstructorSchedule = () => {
           week,
           year
         );
-        console.log(data);
         setActivities(data.data as unknown as any[]);
       }
     };

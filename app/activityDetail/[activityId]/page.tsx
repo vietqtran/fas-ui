@@ -7,45 +7,31 @@ import { RootState } from "@/helpers/redux/reducers";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import useStudent from "@/hooks/Student";
+import useActivity from "@/hooks/Activity";
+import useAssignsChedule from "@/hooks/AssignSchedule";
+import Link from "next/link";
 
-const Profile = () => {
-  const { fetchStudentByEmail } = useStudent();
+type Props = {
+  params: {
+    activityId: string;
+  };
+};
 
-  let [student, setStudent] = useState({
-    firstName: "",
-    middleName: "",
-    lastName: "",
-    birthDay: "",
-    phone: "",
-    major: {
-      code: "",
-    },
-    campusId: "",
-    studentCode: "",
-    username: "",
-    address: "",
-    profileImage: "",
-    id: "",
-    email: "",
-    gender: true,
-    idCard: "",
-  });
-
-  const { user } = useSelector((state: RootState) => state.user);
-  const router = useRouter();
-  if (!user) {
-    router.push("/login");
-  }
-
+const Profile = (props: Props) => {
+  const { activityId } = props.params;
+  console.log(activityId);
+  const { getActivityDetail, activityDetail } = useActivity();
+  const { getAssignSchdule, assignSchedule } = useAssignsChedule();
   useEffect(() => {
-    handleGetStudent(user.email);
+    getActivityDetail(activityId);
   }, []);
 
-  const handleGetStudent = async (email) => {
-    let data = await fetchStudentByEmail(email);
-    setStudent(data);
-  };
-  // get data from local storege (data user by email)
+  useEffect(() => {
+    getAssignSchdule(activityDetail?.assign?.id);
+  }, [activityDetail]);
+
+  console.log(activityDetail);
+  console.log(assignSchedule);
 
   return (
     <div className="h-[100vh] w-[100vw] bg-white text-black">
@@ -58,27 +44,37 @@ const Profile = () => {
               <tbody>
                 <tr className="border-b px-4 py-2">
                   <td className="font-semibold">Date:</td>
-                  <td>Tuesday 27/02/2024</td>
+                  <td>{activityDetail?.date}</td>
                 </tr>
                 <tr className="border-b px-4 py-2">
                   <td className="font-semibold">Slot:</td>
-                  <td>3</td>
+                  <td>{activityDetail?.slot?.name}</td>
                 </tr>
                 <tr className="border-b px-4 py-2">
                   <td className="font-semibold">Student group</td>
                   <td>
-                    <a href="../Course/Groups.aspx?group=42509">SE1747-NET</a>
+                    <a href="../Course/Groups.aspx?group=42509">
+                      {assignSchedule?.grade?.code}
+                    </a>
                   </td>
                 </tr>
                 <tr className="border-b px-4 py-2">
                   <td className="font-semibold">Instructor:</td>
                   <td>
-                    <a href="../User/UserDetail.aspx?login=anhctl7">anhctl7</a>
+                    <Link
+                      href={`/instructorDetail/${activityDetail?.instructor?.id}`}
+                      className="text-blue-500 font-semibold"
+                    >
+                      {activityDetail?.instructor?.username}
+                    </Link>
                   </td>
                 </tr>
                 <tr className="border-b px-4 py-2">
                   <td className="font-semibold">Course:</td>
-                  <td>Software Requirement(SWR302)</td>
+                  <td>
+                    {assignSchedule?.course?.name} (
+                    {assignSchedule?.course?.code})
+                  </td>
                 </tr>
                 <tr className="border-b px-4 py-2">
                   <td className="font-semibold">Course session number:</td>

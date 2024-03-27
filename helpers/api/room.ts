@@ -14,8 +14,6 @@ export const getAllRoom = () => {
 };
 
 export const getRoomById = (roomBuilding: string) => {
-  console.log(roomBuilding);
-
   return instance.get(`/${END_POINT.GET_ROOM_BY_ID}/${roomBuilding}`);
 };
 

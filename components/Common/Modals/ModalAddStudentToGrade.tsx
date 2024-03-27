@@ -7,11 +7,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Checkbox, FormControl, MenuItem, TextField } from "@mui/material";
 import useStudent from "@/hooks/Student";
 import useGrade from "@/hooks/Grade";
-import {
-  DataGrid,
-  GridColDef,
-  GridValueGetterParams,
-} from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 
 const style = {
   position: "absolute" as "absolute",
@@ -31,30 +27,30 @@ interface Props {
   handleClose: () => void;
   id: string;
   action: string;
-  studentInGrade:any[]
+  studentInGrade: any[];
 }
 
 export default function ModalAddStudentToGrade(props: Props) {
-  const { open, handleClose, id, action, studentInGrade } = props;  
+  const { open, handleClose, id, action, studentInGrade } = props;
 
   const { handleAddStudentToGrade, studentId, setStudentId } = useGrade();
-  const {getGrade} = useGrade();
+  const { getGrade } = useGrade();
   const [selectedStudents, setSelectedStudents] = React.useState([]);
-  const [studentArray, setStudentArray] = React.useState(['1']);
+  const [studentArray, setStudentArray] = React.useState(["1"]);
   const { students, fetchStudentByMajorAndCampus } = useStudent();
   const getData = async (id: string) => {
-    const data = await getGrade(id);;
-    
-    const data2 = await fetchStudentByMajorAndCampus(data?.major?.id, data?.campus?.id);
-    console.log(data2);
-    
+    const data = await getGrade(id);
+
+    const data2 = await fetchStudentByMajorAndCampus(
+      data?.major?.id,
+      data?.campus?.id
+    );
     setStudentArray(data2);
   };
 
   React.useEffect(() => {
     getData(id);
-  },[id])
-  
+  }, [id]);
 
   const handleCheckboxChange = (event, studentId) => {
     const isChecked = event.target.checked;
@@ -70,20 +66,18 @@ export default function ModalAddStudentToGrade(props: Props) {
     }
   };
 
-
   const handleSubmit = (e) => {
     addStudentsToGrade();
   };
 
   const addStudentsToGrade = async () => {
     for (const studentId of selectedStudents) {
-      await handleAddStudentToGrade(studentId,id);
+      await handleAddStudentToGrade(studentId, id);
     }
   };
 
-  
-  const filteredStudents = studentArray?.filter(student => {
-    return !studentInGrade.some(grade => grade.id === student.id);
+  const filteredStudents = studentArray?.filter((student) => {
+    return !studentInGrade.some((grade) => grade.id === student.id);
   });
 
   const columns: GridColDef[] = [

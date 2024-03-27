@@ -26,8 +26,6 @@ const page = () => {
 
   const { courses, fetchCourses, deleteCourse } = useCourse();
   const [open, setOpen] = React.useState(false);
-  console.log(courses);
-
   const handleOpen = () => {
     setOpen(true);
     setAction("create");

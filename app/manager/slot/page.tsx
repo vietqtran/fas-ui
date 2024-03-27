@@ -58,8 +58,7 @@ const page = () => {
 
   const handleDelete = async (idEvent: string) => {
     deleteSlotById(idEvent);
-  }
-
+  };
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 200 },
@@ -69,15 +68,23 @@ const page = () => {
       headerName: "Start Date",
       width: 250,
     },
-    { field: "endAt", headerName: "End Date", width: 250, },
-    { field: "createdAt", headerName: "Created At", width: 200,
-    renderCell: (params) => (
-      <div>{new Date(params.row.createdAt).toLocaleDateString("en-US")}</div>
-    ), },
-    { field: "updatedAt", headerName: "Updated At", width: 200,
-    renderCell: (params) => (
-      <div>{new Date(params.row.updatedAt).toLocaleDateString("en-US")}</div>
-    ), },
+    { field: "endAt", headerName: "End Date", width: 250 },
+    {
+      field: "createdAt",
+      headerName: "Created At",
+      width: 200,
+      renderCell: (params) => (
+        <div>{new Date(params.row.createdAt).toLocaleDateString("en-US")}</div>
+      ),
+    },
+    {
+      field: "updatedAt",
+      headerName: "Updated At",
+      width: 200,
+      renderCell: (params) => (
+        <div>{new Date(params.row.updatedAt).toLocaleDateString("en-US")}</div>
+      ),
+    },
     {
       field: "status",
       headerName: "Status",
@@ -111,9 +118,6 @@ const page = () => {
       ),
     },
   ];
-
-  console.log(slots);
-  
 
   function CustomToolbar() {
     return (
@@ -160,7 +164,12 @@ const page = () => {
         </div>
       </div>
 
-      <ModalSlot open={open} handleClose={handleClose} action={action} id={id}/>
+      <ModalSlot
+        open={open}
+        handleClose={handleClose}
+        action={action}
+        id={id}
+      />
     </ManagerLayout>
   );
 };

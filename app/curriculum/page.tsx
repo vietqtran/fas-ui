@@ -13,7 +13,6 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { log } from "console";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -107,7 +106,6 @@ const page = () => {
     setMajorId(data?.major?.id);
     setStudent(data);
   };
-
 
   return (
     <div className="min-h-[100vh] h-[100%] w-[100vw] bg-white text-black ">

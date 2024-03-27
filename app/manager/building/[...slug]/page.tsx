@@ -37,15 +37,12 @@ const page = (props: Props) => {
   const getData = async (id: string) => {
     try {
       const data = await handleGetRoomByBuilding(id);
-      console.log(data);
       //   setStudentArray(data.students);
       //   setGrade(data);
       //   setId(slug[0]);
       //   setCampusId(data.campus.id);
       //   setMajor(data.major.id);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {

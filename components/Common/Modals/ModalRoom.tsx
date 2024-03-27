@@ -3,13 +3,9 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
 import { FormControl, MenuItem, TextField } from "@mui/material";
-import useCourse from "@/hooks/Course";
-import { getCourseByID } from "@/helpers/api/course";
 import useBuilding from "@/hooks/Building";
 import useStudent from "@/hooks/Student";
-import { set } from "firebase/database";
 import useRoom from "@/hooks/Room";
-import { log } from "console";
 const style = {
   position: "absolute" as "absolute",
   top: "50%",

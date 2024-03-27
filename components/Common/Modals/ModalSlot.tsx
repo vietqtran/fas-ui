@@ -80,9 +80,6 @@ const ModalSlot = (props: Props) => {
     setEndAt(updatedSlot.endAt.split("T")[0]);
   };
 
-  console.log(startAt, endAt);
-  
-
   return (
     <div>
       <Modal

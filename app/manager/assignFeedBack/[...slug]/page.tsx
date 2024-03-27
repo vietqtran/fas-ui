@@ -52,7 +52,6 @@ const page = (props: Props) => {
   });
   const getData = async (id: string) => {
     const data = await getAssignFeedBack(id);
-    console.log(data);
     setFeedbackArray(data.feedBacks);
     setTitle(`Class ${data?.grade?.code} - ${data?.instructor?.username}`);
     setGrade(data);

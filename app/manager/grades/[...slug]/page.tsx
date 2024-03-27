@@ -17,7 +17,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import ManagerLayout from "@/components/Common/Layouts/ManagerLayout";
 import ModalStudent from "@/components/Common/Modals/ModalStudent";
 import ModalAddStudentToGrade from "@/components/Common/Modals/ModalAddStudentToGrade";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useRouter } from "next/navigation";
 type Props = {
   params: {
@@ -35,21 +35,14 @@ const page = (props: Props) => {
   const [campusId, setCampusId] = React.useState("");
   const getData = async (id: string) => {
     try {
-        const data = await getGrade(id);    
-        console.log(data);
-        setStudentArray(data.students);
-        setGrade(data);
-        setId(slug[0]);
-        setCampusId(data.campus.id);
-        setMajor(data.major.id);
-    } catch (error) {
-        console.error("Error fetching data:", error);
-    }
-};
-
- 
-
-
+      const data = await getGrade(id);
+      setStudentArray(data.students);
+      setGrade(data);
+      setId(slug[0]);
+      setCampusId(data.campus.id);
+      setMajor(data.major.id);
+    } catch (error) {}
+  };
 
   useEffect(() => {
     getData(slug[0]);
@@ -170,14 +163,24 @@ const page = (props: Props) => {
     );
   }
 
-  const filtered = studentArray.filter(student => student.major.id === major && student.campus.id === campusId);
+  const filtered = studentArray.filter(
+    (student) => student.major.id === major && student.campus.id === campusId
+  );
 
   return (
     <ManagerLayout>
       <div className="container">
-        <h1 className="text-3xl font-bold my-5 hover:cursor-pointer" onClick={() => router.push("/manager/grades")}> <ArrowBackIcon/> List Classes</h1>
+        <h1
+          className="text-3xl font-bold my-5 hover:cursor-pointer"
+          onClick={() => router.push("/manager/grades")}
+        >
+          {" "}
+          <ArrowBackIcon /> List Classes
+        </h1>
         <div className="flex justify-between items-center my-7">
-          <h1 className="text-3xl font-bold italic text-slate-600">Class {grade?.code}</h1>
+          <h1 className="text-3xl font-bold italic text-slate-600">
+            Class {grade?.code}
+          </h1>
           <button
             className="flex items-center gap-2 rounded-md bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
             onClick={() => handleOpen()}

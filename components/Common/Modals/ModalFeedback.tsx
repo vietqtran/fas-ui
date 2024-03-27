@@ -51,9 +51,8 @@ interface Props {
 }
 
 const ModalFeedback = (props: Props) => {
-  const { open, handleClose, feedback, id, action } = props;
+  const { open, handleClose, feedback, id, action } = { ...props };
   const { user } = useSelector((state: RootState) => state.user);
-  console.log(action);
 
   const [submit, setSubmit] = React.useState("create");
 
@@ -110,7 +109,6 @@ const ModalFeedback = (props: Props) => {
         setAssignFeedBackId(feedback.id);
         setStudentId(user.student.id);
         const data = await checkFeedBack(feedback.id, user.student.id);
-        console.log(data);
 
         if (data != null) {
           setId(data?.id);
@@ -129,7 +127,6 @@ const ModalFeedback = (props: Props) => {
         }
       } catch (error) {
         // Handle errors here
-        console.error("Error fetching data:", error);
       }
     };
     fetchData();

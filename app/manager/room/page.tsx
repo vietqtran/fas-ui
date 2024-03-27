@@ -43,9 +43,7 @@ const page = () => {
 
   const [action, setAction] = React.useState("");
 
-  const handleView = async () => {
-    console.log(1);
-  };
+  const handleView = async () => {};
 
   const handleUpdate = async (idEvent: string) => {
     setAction("update");

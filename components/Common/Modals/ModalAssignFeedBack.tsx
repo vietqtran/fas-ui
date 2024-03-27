@@ -85,8 +85,6 @@ const ModalAssignFeedBack = (props: Props) => {
     handleUpdateAssignFeedBack(e);
   };
 
-  console.log(instructors, grades);
-
   return (
     <div>
       <Modal

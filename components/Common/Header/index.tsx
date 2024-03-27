@@ -18,17 +18,14 @@ const Header = () => {
   let [userName, setUserName] = useState();
   let [campus, setCampus] = useState();
 
-  console.log(user);
-
   useEffect(() => {
     const fetchData = async () => {
-      if (user.role.name === "STUDENT") {
+      if (user?.role?.name === "STUDENT") {
         await handleGetStudent(user?.email ?? "");
-      } else if (user.role.name === "INSTRUCTOR") {
-        console.log("okkkkkkkkkkkkkkkkkkkkkkkkkk");
-        const data = await fetchInstructor(user.instructor.id);
-        setUserName(data.username);
-        setCampus(data.campus.location);
+      } else if (user?.role?.name === "INSTRUCTOR") {
+        const data = await fetchInstructor(user?.instructor?.id);
+        setUserName(data?.username);
+        setCampus(data?.campus?.location);
       }
     };
 

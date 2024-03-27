@@ -26,16 +26,17 @@ const StudentSchedule = () => {
   const searchParams = useSearchParams();
 
   const { user } = useSelector((state: RootState) => state.user);
-  console.log("=>>>>>>>>>", user);
 
   const currentYear = new Date().getFullYear();
   const currentWeek = getWeek(new Date());
 
-    const [year, setYear] = useState(currentYear)
-    const [week, setWeek] = useState(1)
-    const [from, setFrom] = useState(formatDateForMySQL(getFirstMonday(currentYear)));
-    const [to, setTo] = useState('');
-    const [days, setDays] = useState([])
+  const [year, setYear] = useState(currentYear);
+  const [week, setWeek] = useState(1);
+  const [from, setFrom] = useState(
+    formatDateForMySQL(getFirstMonday(currentYear))
+  );
+  const [to, setTo] = useState("");
+  const [days, setDays] = useState([]);
 
   const years = [
     currentYear - 4,
@@ -105,7 +106,6 @@ const StudentSchedule = () => {
           week,
           year
         );
-        console.log(data);
         setActivities(data.data as unknown as any[]);
       }
     };
@@ -233,8 +233,8 @@ const StudentSchedule = () => {
             </div>
           </div>
 
-          <div className="pt-10">
-            <table className="hidden min-w-full table-auto border-collapse border-spacing-px p-3 md:table">
+          <div className="">
+            <table className="hidden min-w-full table-auto border-collapse border-spacing-px md:table">
               <thead>
                 <tr className="row py-2">
                   <th></th>

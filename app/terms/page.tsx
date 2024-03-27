@@ -11,33 +11,26 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { log } from "console";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 
 const rows = Array.from({ length: 30 }, (_, index) => index + 1);
 
 const page = () => {
-  const {terms} = useTerm();
-  const [allTerms, setAllTerms] = useState([]);
+  const { terms } = useTerm();
   const { user } = useSelector((state: RootState) => state.user);
   const router = useRouter();
   if (!user) {
     router.push("/login");
   }
 
-  console.log(terms);
-  
-
   return (
     <div className="min-h-[100vh] h-[100%] w-[100vw] bg-white text-black ">
       <div className="container mx-auto py-5 text-gray-600">
         <Header />
         <div className="mt-10">
-          <h1 className="text-3xl font-semibold text-black">
-            Term List
-          </h1>
+          <h1 className="text-3xl font-semibold text-black">Term List</h1>
           <h2 className="mt-10 mb-4">Campus: FU_HL</h2>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -58,9 +51,11 @@ const page = () => {
                       {row.name}
                     </TableCell>
                     <TableCell component="th" scope="row">
-                    {new Date(row.startAt).toLocaleDateString()}
+                      {new Date(row.startAt).toLocaleDateString()}
                     </TableCell>
-                    <TableCell>{new Date(row.endAt).toLocaleDateString()}</TableCell>
+                    <TableCell>
+                      {new Date(row.endAt).toLocaleDateString()}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

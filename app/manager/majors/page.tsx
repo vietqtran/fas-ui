@@ -15,7 +15,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import ManagerLayout from "@/components/Common/Layouts/ManagerLayout";
 import ModalMajor from "@/components/Common/Modals/ModalMajor";
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { RootState } from "@/helpers/redux/reducers";
 import useMajor from "@/hooks/Major";
 import { useSelector } from "react-redux";
@@ -59,12 +59,11 @@ export default function page() {
 
   const handleDelete = (id: string) => {
     deleteMajor(id);
-    console.log(`Delete button clicked for row with ID: ${id}`);
   };
 
-  const hanldeOpenMajor = (id:string) => {
+  const hanldeOpenMajor = (id: string) => {
     router.push(`/manager/majors/${id}`);
-  }
+  };
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 300 },
