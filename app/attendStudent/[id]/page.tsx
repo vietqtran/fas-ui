@@ -25,7 +25,7 @@ import { toast } from "react-toastify";
 
 type Props = {
   params: {
-    slug: string;
+    id: string;
   };
 };
 
@@ -37,7 +37,7 @@ interface Result {
 }
 
 const page = (props: Props) => {
-  const { slug } = props.params;
+  const { id } = props.params;
 
   const [reload, setReload] = React.useState(false);
   const {
@@ -65,8 +65,8 @@ const page = (props: Props) => {
   };
 
   useEffect(() => {
-    getData(slug[0]);
-  }, [slug, reload]);
+    getData(id);
+  }, []);
 
   const [results, setResults] = useState([]);
 
@@ -74,11 +74,11 @@ const page = (props: Props) => {
     e.preventDefault();
     const newResults = dataArray.map((row, index) => {
       const idValue = document.getElementById(`id-${index}`).innerHTML || "";
-      const attendValue = row?.status
+      const attendValue = row?.status;
       const noteValue =
         (document.getElementById(`note-${index}`) as HTMLInputElement)?.value ||
         "";
-        
+
       return {
         index: index + 1,
         studentCode: idValue,
@@ -90,21 +90,17 @@ const page = (props: Props) => {
 
     results.forEach(async (result, index) => {
       const data = {
-        content:result?.note,
+        content: result?.note,
         status: result?.attend,
-      }
+      };
       console.log(result?.studentCode);
-      
+
       console.log(data);
       await updateAttendance(result?.studentCode, data);
     });
 
     toast.success("Update success");
-
-
   };
-
-
 
   return (
     <div className="grid h-[100%] place-items-center bg-white text-black">
@@ -177,17 +173,17 @@ const page = (props: Props) => {
                             row.status === true ? "attend" : "absent"
                           }
                           onChange={(e) => {
-                              setDataArray(
-                                dataArray.map((item) => {
-                                  if (item.id === row.id) {
-                                    return {
-                                      ...item,
-                                      status: e.target.checked,
-                                    }
-                                  }
-                                  return item
-                                })
-                              )
+                            setDataArray(
+                              dataArray.map((item) => {
+                                if (item.id === row.id) {
+                                  return {
+                                    ...item,
+                                    status: e.target.checked,
+                                  };
+                                }
+                                return item;
+                              })
+                            );
                           }}
                           name="radio-buttons-group"
                           id={`attend-${index}`}
