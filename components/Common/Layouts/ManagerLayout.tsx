@@ -172,6 +172,11 @@ const ManagerLayout: FC<Props> = ({ children }) => {
                 FeedBack Management
               </SidebarLink>
             </li>
+            <li className="w-[80%]">
+              <SidebarLink href="/manager/assignFeedBack">
+                Slot Management
+              </SidebarLink>
+            </li>
             <li
               onClick={() => {
                 dispatch(removeUser());
