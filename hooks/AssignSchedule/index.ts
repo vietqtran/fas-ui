@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import { deleteAssignFeedBack } from "@/helpers/api/assignFeedBack";
 import {
   createShedule,
-  deleteSheduleById,
+  changeStatusSchedule,
   getAllSchedule,
   getSheduleById,
   updateShedule,
+  deleteSchedule,
 } from "@/helpers/api/assignSchedule";
 
 const useAssignsChedule = () => {
@@ -39,7 +40,7 @@ const useAssignsChedule = () => {
       if (response) {
         setAssignSchedules(response.data);
       } else {
-        console.log(response.message);
+
       }
     } catch (error) {
       console.error("Error fetching grade:", error);
@@ -47,14 +48,11 @@ const useAssignsChedule = () => {
   };
 
   const getAssignSchdule = async (id: string) => {
-    console.log(id);
     try {
       const response = (await getSheduleById(id).then(
         (res) => res
       )) as BaseResponse;
       if (response) {
-        console.log(response.data);
-
         setAssignSchedule(response.data);
         return response.data;
       } else {
@@ -66,22 +64,11 @@ const useAssignsChedule = () => {
   };
 
   const addAssignSchedule = async (e) => {
-    console.log(
-      weekdays,
-      gradeId,
-      courseId,
-      termId,
-      roomId,
-      slotId,
-      assignId,
-      instructorId
-    );
-
     e.preventDefault();
     try {
       const response = (await createShedule({
         assignRequestDTO: {
-          weekdays: weekdays,
+          weekdays: weekdays.length <= 2 && weekdays.length > 0 && weekdays,
           gradeId: gradeId,
           courseId: courseId,
           termId: termId,
@@ -93,11 +80,12 @@ const useAssignsChedule = () => {
           instructorId: instructorId,
         },
       } as AssignScheduleInformation).then((res) => res)) as BaseResponse;
-      console.log(response);
       if (response && response.code === "SUCCESS") {
         toast.success(response.message);
       } else {
-        toast.error(response?.message || "Add course failed");
+        console.log(response);
+        
+        toast.error(response || "Add course failed");
       }
     } catch (error) {
       console.error("Error adding course:", error);
@@ -106,10 +94,9 @@ const useAssignsChedule = () => {
   };
 
   const deleteAssignFeedBackById = async (id: string) => {
-    console.log(id);
-
     try {
-      const response = (await deleteSheduleById(id).then(
+      
+      const response = (await changeStatusSchedule(id).then(
         (res) => res
       )) as BaseResponse;
       if (response) {
@@ -123,7 +110,23 @@ const useAssignsChedule = () => {
     }
   };
 
-  const handleUpdateAssignFeedBack = async (e) => {
+  const handleDeleteAssignSchedule = async (id: string) => {
+    try {
+      const response = (await deleteSchedule(id).then(
+        (res) => res
+      )) as BaseResponse;
+      if (response) {
+        toast.success(response.message);
+        fetchAssignSchedule();
+      } else {
+        return response.message;
+      }
+    } catch (error) {
+      console.error("Error deleting assign feedback:", error);
+    }
+  }
+
+  const handleUpdateAssignSchedule = async (e) => {
     e.preventDefault();
     try {
       const response = (await updateShedule(idAssignSchedule, {
@@ -153,6 +156,8 @@ const useAssignsChedule = () => {
     }
   };
 
+
+
   return {
     instructorId,
     setInstructorId,
@@ -175,9 +180,11 @@ const useAssignsChedule = () => {
     setAssignSchedule,
     addAssignSchedule,
     deleteAssignFeedBackById,
-    handleUpdateAssignFeedBack,
+    handleUpdateAssignSchedule,
     fetchAssignSchedule,
     getAssignSchdule,
+    setIdAssignSchedule,
+    handleDeleteAssignSchedule
   };
 };
 

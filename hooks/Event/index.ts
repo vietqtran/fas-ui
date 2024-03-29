@@ -34,8 +34,6 @@ const useEvent = () => {
     const response = (await deleteEventById(id).then(
       (res) => res
     )) as BaseResponse;
-    console.log(response);
-
     if (response && response?.code === "SUCCESS") {
       toast.success(response?.message);
       fetchEvent();
@@ -62,7 +60,6 @@ const useEvent = () => {
       image,
       url,
     } as EventInformation).then((res) => res)) as BaseResponse;
-    console.log(response);
 
     if (response && response?.code === "SUCCESS") {
       toast.success(response?.message);

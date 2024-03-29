@@ -25,26 +25,27 @@ const StudentSchedule = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const { user } = useSelector((state: RootState) => state.user);
+  const { user } = useSelector((state: RootState) => state.user); 
 
-  const currentYear = new Date().getFullYear();
-  const currentWeek = getWeek(new Date());
-
-  const [year, setYear] = useState(currentYear);
-  const [week, setWeek] = useState(1);
-  const [from, setFrom] = useState(
-    formatDateForMySQL(getFirstMonday(currentYear))
-  );
-  const [to, setTo] = useState("");
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [week, setWeek] = useState(getWeek(new Date()));
+  console.log(week)
   const [days, setDays] = useState([]);
 
+  useEffect(() => {
+    return () => {
+      setYear(new Date().getFullYear());
+      setWeek(getWeek(new Date()));
+    };
+  }, []);
+
   const years = [
-    currentYear - 4,
-    currentYear - 3,
-    currentYear - 2,
-    currentYear - 1,
-    currentYear,
-    currentYear + 1,
+    new Date().getFullYear() - 4,
+    new Date().getFullYear() - 3,
+    new Date().getFullYear() - 2,
+    new Date().getFullYear() - 1,
+    new Date().getFullYear(),
+    new Date().getFullYear() + 1,
   ];
 
   const slots = [
@@ -57,40 +58,36 @@ const StudentSchedule = () => {
   ];
 
   const weeksComputed = getWeeks(year);
-
   useEffect(() => {
     const updateDateRange = () => {
       const firstMondayOfYear = getFirstMonday(year);
       const startOfWeek = new Date(firstMondayOfYear);
       startOfWeek.setDate(firstMondayOfYear.getDate() + (week - 1) * 7);
-      setFrom(formatDateForMySQL(startOfWeek));
-
-      const endOfWeek = new Date(startOfWeek);
-      endOfWeek.setDate(startOfWeek.getDate() + 6);
-      setTo(formatDateForMySQL(endOfWeek));
+      const format = formatDateForMySQL(startOfWeek)
 
       const newDays = [];
-      const [yearValue, month, day] = from.split("-");
+      const [yearValue, month, day] = format.split("-");
       const startDate = new Date(`${month}/${day}/${yearValue}`);
       for (let i = 0; i < 7; i++) {
         const newDate = new Date(startDate.getTime());
         newDate.setDate(newDate.getDate() + i);
         newDays.push(newDate);
       }
+      const testDate = newDays.map((date) => {
+        const weekDay = date.toLocaleString("default", {
+          weekday: "short",
+        });
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        return {
+          weekDay,
+          date: `${day}/${month}`,
+        };
+      })
 
-      setDays(
-        newDays.map((date) => {
-          const weekDay = date.toLocaleString("default", {
-            weekday: "short",
-          });
-          const month = date.getMonth() + 1;
-          const day = date.getDate();
-          return {
-            weekDay,
-            date: `${day}/${month}`,
-          };
-        })
-      );
+      console.log(newDays)
+
+      setDays(testDate);
     };
 
     updateDateRange();
@@ -132,23 +129,18 @@ const StudentSchedule = () => {
   };
 
   const setCurrentWeek = () => {
-    setYear(currentYear);
-    setWeek(1);
+    setYear(new Date().getFullYear());
+    setWeek(getWeek(new Date()));
   };
 
   useEffect(() => {
-    const parsedYear = parseInt(searchParams.get("year")) || currentYear;
-    const parsedWeek = parseInt(searchParams.get("week")) || 1;
+    const parsedYear = parseInt(searchParams.get("year")) || new Date().getFullYear();
+    const parsedWeek = parseInt(searchParams.get("week")) || getWeek(new Date());
     setYear(parsedYear);
     setWeek(parsedWeek);
   }, [searchParams]);
 
-  useEffect(() => {
-    return () => {
-      setYear(currentYear);
-      setWeek(1);
-    };
-  }, []);
+  
 
   const handleYearChange = (e) => {
     const queryParams = new URLSearchParams();
@@ -263,7 +255,7 @@ const StudentSchedule = () => {
                           activities.map(
                             (a, j) =>
                               a.slot.name === slot.name &&
-                              getWeekDayByDateString(a.date) === i && (
+                              getWeekDayByDateString(a.date) === i + 1 && (
                                 <Link href={`/activityDetail/${a.id}`}>
                                   <Activity activity={a} />
                                 </Link>

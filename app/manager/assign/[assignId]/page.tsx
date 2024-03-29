@@ -32,8 +32,6 @@ type Props = {
 const page = (props: Props) => {
   const { assignId } = props.params;
 
-  console.log(assignId);
-
   const [reload, setReload] = React.useState(false);
   const { fetchActivityByAssign, activities } = useActivity();
   const { assignSchedule, setAssignSchedule, getAssignSchdule } =
@@ -44,9 +42,8 @@ const page = (props: Props) => {
   const getData = async (id: string) => {
     try {
       const data2 = await getAssignSchdule(id);
-      console.log(data2);
-
       setAssignSchedule(data2);
+      fetchActivityByAssign(assignId);
     } catch (error) {}
   };
 

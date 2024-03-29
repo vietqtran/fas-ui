@@ -45,7 +45,6 @@ function createData(
 }
 const page = () => {
   const campus = "FU-HL";
-  // const terms = ["SUMMER2023", "FALL2023", "SPRING2024"];
 
   const { terms } = useTerm();
   const { majors } = useMajor();
@@ -413,11 +412,11 @@ const page = () => {
                           <TableCell>
                             <IconButton
                               onClick={() => handleClickChat(student.id)}
-                              disabled={student.id === user.student.id}
+                              disabled={student.id === user?.student?.id}
                             >
                               <ChatIcon
                                 className={
-                                  student.id === user.student.id
+                                  student.id === user?.student?.id
                                     ? `text-gray-500 text-xxl`
                                     : `text-blue-500 text-xxl`
                                 }

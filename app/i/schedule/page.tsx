@@ -11,7 +11,6 @@ import {
 } from "@/utils/date";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import Activity from "@/components/Student/Dashboard/Activity";
 import { Button } from "@mui/material";
 import Header from "@/components/Common/Header";
 import InputLabel from "@mui/material/InputLabel";
@@ -29,14 +28,9 @@ const InstructorSchedule = () => {
   const { user } = useSelector((state: RootState) => state.user);
 
   const currentYear = new Date().getFullYear();
-  const currentWeek = getWeek(new Date());
 
   const [year, setYear] = useState(currentYear);
-  const [week, setWeek] = useState(1);
-  const [from, setFrom] = useState(
-    formatDateForMySQL(getFirstMonday(currentYear))
-  );
-  const [to, setTo] = useState("");
+  const [week, setWeek] = useState(getWeek(new Date()));
   const [days, setDays] = useState([]);
 
   const years = [
@@ -64,14 +58,10 @@ const InstructorSchedule = () => {
       const firstMondayOfYear = getFirstMonday(year);
       const startOfWeek = new Date(firstMondayOfYear);
       startOfWeek.setDate(firstMondayOfYear.getDate() + (week - 1) * 7);
-      setFrom(formatDateForMySQL(startOfWeek));
-
-      const endOfWeek = new Date(startOfWeek);
-      endOfWeek.setDate(startOfWeek.getDate() + 6);
-      setTo(formatDateForMySQL(endOfWeek));
+      const format = formatDateForMySQL(startOfWeek)
 
       const newDays = [];
-      const [yearValue, month, day] = from.split("-");
+      const [yearValue, month, day] = format.split("-");
       const startDate = new Date(`${month}/${day}/${yearValue}`);
       for (let i = 0; i < 7; i++) {
         const newDate = new Date(startDate.getTime());
@@ -139,7 +129,7 @@ const InstructorSchedule = () => {
 
   useEffect(() => {
     const parsedYear = parseInt(searchParams.get("year")) || currentYear;
-    const parsedWeek = parseInt(searchParams.get("week")) || 1;
+    const parsedWeek = parseInt(searchParams.get("week")) || getWeek(new Date());
     setYear(parsedYear);
     setWeek(parsedWeek);
   }, [searchParams]);
@@ -147,7 +137,7 @@ const InstructorSchedule = () => {
   useEffect(() => {
     return () => {
       setYear(currentYear);
-      setWeek(1);
+      setWeek(getWeek(new Date()));
     };
   }, []);
 

@@ -46,7 +46,6 @@ const ModalGrade = (props: Props) => {
   const {campuses} = useStudent();
   const getGradeById = async (id) => {
     const data = await getGrade(id);
-    console.log(data);
     setId(data?.id);
     setCode(data?.code);
     setMajorId(data?.major?.id);

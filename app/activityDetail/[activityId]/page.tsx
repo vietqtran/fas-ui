@@ -19,7 +19,6 @@ type Props = {
 
 const Profile = (props: Props) => {
   const { activityId } = props.params;
-  console.log(activityId);
   const { getActivityDetail, activityDetail } = useActivity();
   const { getAssignSchdule, assignSchedule } = useAssignsChedule();
   useEffect(() => {
@@ -30,8 +29,6 @@ const Profile = (props: Props) => {
     getAssignSchdule(activityDetail?.assign?.id);
   }, [activityDetail]);
 
-  console.log(activityDetail);
-  console.log(assignSchedule);
 
   return (
     <div className="h-[100vh] w-[100vw] bg-white text-black">
@@ -50,12 +47,12 @@ const Profile = (props: Props) => {
                   <td className="font-semibold">Slot:</td>
                   <td>{activityDetail?.slot?.name}</td>
                 </tr>
-                <tr className="border-b px-4 py-2">
+                <tr className="border-b px-4 py-2 ">
                   <td className="font-semibold">Student group</td>
                   <td>
-                    <a href="../Course/Groups.aspx?group=42509">
-                      {assignSchedule?.grade?.code}
-                    </a>
+                    <Link href={`/s/viewClass`} className="text-blue-500 font-semibold"> 
+                    {assignSchedule?.grade?.code}
+                    </Link>
                   </td>
                 </tr>
                 <tr className="border-b px-4 py-2">

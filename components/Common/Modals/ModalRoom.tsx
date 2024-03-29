@@ -108,32 +108,13 @@ const ModalRoom = (props: Props) => {
                 </div>
 
                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                  <div className="sm:col-span-3">
-                    <FormControl fullWidth>
-                      <label
-                        htmlFor="building-name"
-                        className="block text-sm font-medium leading-6 text-gray-900"
-                      >
-                        Room Code:
-                      </label>
-                      <TextField
-                        size="small"
-                        className="mt-2"
-                        type="text"
-                        variant="outlined"
-                        value={code}
-                        disabled={action === "view"}
-                        onChange={(e) => setCode(e.target.value)}
-                      />
-                    </FormControl>
-                  </div>
-                  <div className="sm:col-span-3">
+                <div className="sm:col-span-3">
                     <FormControl fullWidth>
                       <label
                         htmlFor="campus"
                         className="block text-sm font-medium leading-6 text-gray-900"
                       >
-                        Campus
+                        Bulding
                       </label>
                       <TextField
                         className="mt-2"
@@ -155,6 +136,26 @@ const ModalRoom = (props: Props) => {
                       </TextField>
                     </FormControl>
                   </div>
+                  <div className="sm:col-span-3">
+                    <FormControl fullWidth>
+                      <label
+                        htmlFor="building-name"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Room Code:
+                      </label>
+                      <TextField
+                        size="small"
+                        className="mt-2"
+                        type="text"
+                        variant="outlined"
+                        value={code}
+                        disabled={action === "view"}
+                        onChange={(e) => setCode(e.target.value)}
+                      />
+                    </FormControl>
+                  </div>
+                  
                 </div>
               </div>
             </div>

@@ -93,17 +93,6 @@ const useFeedBack = () => {
 
   const handleUpdateFeedBack = async (e) => {
     e.preventDefault();
-    console.log("ass", assignFeedBackId);
-    console.log("studentId:", studentId);
-    console.log("punctuality:", punctuality);
-    console.log("teachingSkill:", teachingSkill);
-    console.log("adequatelySyllabus:", adequatelySyllabus);
-    console.log("support:", support);
-    console.log("responseQuestion:", responseQuestion);
-    console.log("teachingMethods:", teachingMethods);
-    console.log("dispositionStudents:", dispositionStudents);
-    console.log("overall:", overall);
-    console.log("comment:", comment);
     try {
       const response = (await updateFeedBack(id, {
         studentId,

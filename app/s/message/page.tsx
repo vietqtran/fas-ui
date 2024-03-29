@@ -136,12 +136,12 @@ const page = (props: Props) => {
   }, [messages]);
 
   return (
-    <div>
+    <div className="text-black">
       <Grid container className="h-screen overflow-y-hidden">
         <Grid className="px-5" item xs={3}>
           <div className="flex h-full justify-between space-x-2">
             <div className="w-full">
-              <div className="flex space-x-4 items-center py-5 cursor-pointer">
+              <div className="flex space-x-4 text-gray-900 items-center py-5 cursor-pointer">
                 <WestIcon />
                 <h1
                   onClick={() => router.push("/s/viewClass")}

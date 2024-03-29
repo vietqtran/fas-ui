@@ -10,7 +10,10 @@ instance.interceptors.response.use(
       return response.data
    },
    (error: AxiosError) => {
-      console.log(error.response?.data)
+      const {data} = error.response?.data
+      console.log(data);
+      
+     return data;
    }
 )
 

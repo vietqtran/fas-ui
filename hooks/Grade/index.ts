@@ -39,7 +39,7 @@ const useGrade = () => {
             if (response) {
                 setGrades(response.data);
             } else {
-                console.log(response.message);
+              
             }
         } catch (error) {
             console.error("Error fetching grade:", error);
@@ -53,7 +53,7 @@ const useGrade = () => {
             if (response) {
                 setGrades(response.data);
             } else {
-                console.log(response?.message);
+            
             }
         } catch (error) {
             console.error("Error fetching grade:", error);
@@ -66,7 +66,7 @@ const useGrade = () => {
             if (response) {
                 setGrades(response.data);
             } else {
-                console.log(response?.message);
+            
             }
         } catch (error) {
             console.error("Error fetching grade:", error);
@@ -80,7 +80,7 @@ const useGrade = () => {
                 setGradeByMajor(response.data);
                 return response.data;
             } else {
-                console.log(response?.message);
+            
             }
         } catch (error) {
             console.error("Error fetching grade:", error);

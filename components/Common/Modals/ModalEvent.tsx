@@ -51,7 +51,6 @@ export default function ModalEvent(props: Props) {
 
   const getEvent = async (id) => {
     const data = await getEventByID(id);
-    console.log(data);
     setId(data?.data?.id);
     setImageEvent(data?.data?.image);
     setUrlEvent(data?.data?.url);
