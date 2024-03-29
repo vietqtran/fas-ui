@@ -39,11 +39,10 @@ interface Result {
 const page = (props: Props) => {
   const { id } = props.params;
 
-  const { getActivityDetail } = useActivity();
+  const { getActivityDetail, activityDetail } = useActivity();
   const { assignSchedule, setAssignSchedule, getAssignSchdule } =
     useAssignsChedule();
 
-  console.log(assignSchedule);
 
   const [dataArray, setDataArray] = useState<any>([]);
 
@@ -59,6 +58,10 @@ const page = (props: Props) => {
   useEffect(() => {
     getData(id);
   }, []);
+
+
+  console.log(activityDetail);
+  
 
   const [results, setResults] = useState([]);
 
@@ -86,15 +89,18 @@ const page = (props: Props) => {
         status: result?.attend,
       };
 
-      console.log(data);
-
       await updateAttendance(result?.studentCode, data);
     });
 
     toast.success("Update success");
   };
 
-  console.log(dataArray);
+  function getDayOfWeek(dateString) {
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const date = new Date(dateString);
+    const dayIndex = date.getDay();
+    return daysOfWeek[dayIndex];
+}
 
   return (
     <div className="grid h-[100%] place-items-center bg-white text-black">
@@ -106,8 +112,7 @@ const page = (props: Props) => {
         <div className="mt-5">
           <h1 className="text-3xl">Take attendance</h1>
           <p className="my-5">
-            Attendance for hoann6 at slot 3 on Monday 19/02/2024 ar room
-            DE-C210.This is the session number 11 of the course
+            Attendance for {activityDetail?.instructor?.username} at {activityDetail?.slot?.name} on {getDayOfWeek(activityDetail?.date)} {activityDetail?.date} at room {activityDetail?.room?.code}.
           </p>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -169,8 +174,6 @@ const page = (props: Props) => {
                           onChange={(e) => {
                             setDataArray(
                               dataArray.map((item) => {
-                                console.log(e.target.value);
-
                                 if (item.id === row.id) {
                                   return {
                                     ...item,

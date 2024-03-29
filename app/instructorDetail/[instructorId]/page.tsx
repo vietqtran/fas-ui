@@ -24,8 +24,6 @@ const Profile = (props: Props) => {
     fetchInstructor(instructorId);
   }, []);
 
-  console.log(instructorDetail);
-
   return (
     <div className="h-[100vh] w-[100vw] bg-white text-black">
       <div className="container mx-auto py-5 text-gray-600">

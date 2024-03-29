@@ -1,4 +1,5 @@
 import instance from "@/helpers/api/_axios_instance";
+import { toast } from "react-toastify";
 
 const END_POINT = {
   GET_ALL_STUDENTS: "student",
@@ -22,7 +23,13 @@ export const getStudentById = (id: string) => {
 };
 
 export const addStudent = (studentData: StudentInformation) => {
-  return instance.post(`/${END_POINT.CREATE_STUDENT}`, studentData);
+  console.log(studentData);
+  
+  try {
+    return instance.post(`/${END_POINT.CREATE_STUDENT}`, studentData);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const updateStudent = (id: string, studentData: StudentInformation) => {

@@ -18,9 +18,24 @@ import { useSelector } from "react-redux";
 import ModalCourse from "@/components/Common/Modals/ModalCourse";
 import useBuilding from "@/hooks/Building";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+
 import ModalBuilding from "@/components/Common/Modals/ModalBuilding";
 import useAssignsChedule from "@/hooks/AssignSchedule";
 import AssignClassSchedule from "@/components/Manager/Assign/AssignClassSchedule";
+import { toast } from "react-toastify";
+import { Box, Button, Modal, Typography } from "@mui/material";
+
+const style = {
+  position: "absolute",
+  top: "20%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  boxShadow: 24,
+  bgcolor: "#fff",
+  p: 4,
+  color: "black"
+};
 
 const page = () => {
   const { user } = useSelector((state: RootState) => state.user);
@@ -29,8 +44,13 @@ const page = () => {
     router.push("/login");
   }
 
-  const { assignSchedules, fetchAssignSchedule, deleteAssignFeedBackById } =
-    useAssignsChedule();
+  const {
+    assignSchedules,
+    fetchAssignSchedule,
+    deleteAssignFeedBackById,
+    setIdAssignSchedule,
+    handleDeleteAssignSchedule,
+  } = useAssignsChedule();
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
@@ -42,6 +62,10 @@ const page = () => {
     fetchAssignSchedule();
     setOpen(false);
   };
+
+  const [openDelete, setOpenDelete] = React.useState(false);
+  const handleOpenDelete = () => setOpenDelete(true);
+  const handleCloseDelete = () => setOpenDelete(false);
 
   const [id, setId] = React.useState("");
 
@@ -57,8 +81,15 @@ const page = () => {
     setOpen(true);
   };
 
-  const handleDelete = (id: string) => {
+  const handleChangeStatus = (id: string) => {
     deleteAssignFeedBackById(id);
+  };
+
+  const handleDelete = (id: string) => {
+    handleOpenDelete();
+    setId(id);
+    console.log(id);
+    
   };
 
   const columns: GridColDef[] = [
@@ -125,10 +156,9 @@ const page = () => {
           >
             <VisibilityIcon />
           </button>
-
           <button
             className="rounded bg-yellow-500 px-2 py-2 font-bold text-white hover:bg-yellow-600"
-            onClick={() => handleUpdate(params.row.id)}
+            onClick={() => handleChangeStatus(params.row.id)}
           >
             <EditIcon />
           </button>
@@ -164,7 +194,7 @@ const page = () => {
             Create Assign
           </button>
         </div>
-        <div style={{ height: "100%", width: "100%" }}>
+        <div style={{ height: "100%"}}>
           <DataGrid
             rows={assignSchedules}
             columns={columns}
@@ -191,6 +221,23 @@ const page = () => {
             id={id}
             action={action}
           />
+          <Modal
+            open={openDelete}
+            onClose={handleCloseDelete}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <Typography id="modal-modal-title" variant="h5" component="h2">
+                Do you want to delete this assgin?  
+              </Typography>
+              <Typography className="float-end mt-2 flex gap-4">
+                <Button variant="contained" color="success" className="my-2" onClick={() => {handleDeleteAssignSchedule(id); handleCloseDelete()}
+                }>Yes</Button>
+                <Button variant="contained" onClick={() => handleCloseDelete()} color="error">No</Button>
+              </Typography>
+            </Box>
+          </Modal>
         </div>
       </div>
     </ManagerLayout>

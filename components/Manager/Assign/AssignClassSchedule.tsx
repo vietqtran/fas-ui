@@ -55,9 +55,7 @@ const AssignClassSchedule = (props: Props) => {
 
   const { assignSchedules, fetchAssignSchedule, deleteAssignFeedBackById } =
     useAssignsChedule();
-
-    console.log(assignSchedules);
-    
+  
 
   const daysOfWeek = [
     "MONDAY",

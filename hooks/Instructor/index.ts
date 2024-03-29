@@ -56,7 +56,7 @@ export const useInstructor = () => {
         toast.error("error to fetch data");
       }
     } catch (error) {
-      console.log(error);
+     
     }
   };
 
@@ -64,8 +64,6 @@ export const useInstructor = () => {
     const response = (await deleteInstructorById(id).then(
       (res) => res
     )) as BaseResponse;
-
-    console.log(response);
 
     if (response && response?.code === "SUCCESS") {
       toast.success(response?.message);
@@ -96,7 +94,7 @@ export const useInstructor = () => {
     if (response && response?.code === "SUCCESS") {
       toast.success(response?.message);
       let data = await fetchInstructors();
-      console.log(data);
+      
     } else {
       toast.error(response?.message);
     }

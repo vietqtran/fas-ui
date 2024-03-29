@@ -44,7 +44,6 @@ const useCourse = () => {
             const response = await deleteCourseById(id).then(
                 (res) => res
             ) as BaseResponse;
-            console.log(response);
             if (response && response.code === "SUCCESS") {
                 toast.success(response?.message);
                 fetchCourses();
@@ -82,8 +81,6 @@ const useCourse = () => {
                 (res) => res
             ) as BaseResponse;
             if (response && response.code === "SUCCESS") {
-                console.log(response.data);
-
                 setCourses(response.data);
             }
         } catch (error) {

@@ -31,7 +31,6 @@ type Props = {
 
 const page = (props: Props) => {
   const { id } = props.params;
-  console.log(id);
 
   const [reload, setReload] = React.useState(false);
   const {
@@ -45,11 +44,11 @@ const page = (props: Props) => {
     useAssignsChedule();
 
   const [dataArray, setDataArray] = useState<any>([]);
+  console.log(activityDetail);
 
   const getData = async (id: string) => {
     try {
       const data = await getActivityDetail(id);
-      console.log(data);
       setActivityDetail(data);
       setDataArray(data.attendances);
     } catch (error) {}
@@ -120,7 +119,7 @@ const page = (props: Props) => {
       field: "date",
       headerName: "Date",
       type: "dateTime",
-      width: 150,
+      width: 100,
       valueFormatter(params) {
         return new Date(activityDetail.date).toLocaleDateString();
       },
@@ -129,7 +128,7 @@ const page = (props: Props) => {
       field: "createAt",
       headerName: "Created At",
       type: "dateTime",
-      width: 150,
+      width: 100,
       valueFormatter(params) {
         return new Date(params.value).toLocaleDateString();
       },
@@ -138,7 +137,7 @@ const page = (props: Props) => {
       field: "updateAt",
       headerName: "Updated At",
       type: "dateTime",
-      width: 150,
+      width: 100,
       valueFormatter(params) {
         return new Date(params.value).toLocaleDateString();
       },
@@ -152,6 +151,13 @@ const page = (props: Props) => {
           {params.row.status ? "Attend" : "Absent"}
         </div>
       ),
+    },
+    {
+      field: "content",
+      headerName: "Note",
+      width: 150,
+     valueGetter: (params: GridValueGetterParams) =>
+        params?.row?.content,
     },
   ];
   function CustomToolbar() {
@@ -167,7 +173,9 @@ const page = (props: Props) => {
       <div className="container">
         <h1
           className="text-3xl font-bold my-5 hover:cursor-pointer"
-          onClick={() => router.push("/manager/assign")}
+          onClick={() =>
+            router.push(`/manager/assign/${activityDetail?.assign?.id}`)
+          }
         >
           {" "}
           <ArrowBackIcon /> List Activity

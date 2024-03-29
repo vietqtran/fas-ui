@@ -28,7 +28,6 @@ const useMajor = () => {
         const response = (await deleteMajorById(id).then(
             (res) => res
         )) as BaseResponse
-        console.log(response);
         
         if (response && response?.code === 'SUCCESS') {
             toast.success(response?.message)
@@ -55,7 +54,6 @@ const useMajor = () => {
             code,
             name
         } as MajorInformation).then((res) => res) as BaseResponse;
-        console.log(response);
 
         if (response && response?.code === "SUCCESS") {
             toast.success(response?.message);

@@ -50,6 +50,23 @@ const useStudent = () => {
     "7228a3fc-d3ba-11ee-a242-106530543950"
   );
 
+  const [errorMessage, setErrorMessage] = useState({
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    birthDay: "",
+    phone: "",
+    majorId: "",
+    email: "",
+    studentCode: "",
+    username: "",
+    address: "",
+    profileImage: "",
+    campusId: "",
+    idCard: "",
+    gender: "",
+  });
+
   useEffect(() => {
     fetchStudents();
     fetchCampuses();
@@ -124,7 +141,6 @@ const useStudent = () => {
       setCurrentPage(response.data?.currentPage);
       setTotalPages(response.data?.totalPages);
     } else {
-      console.log("Fetch students failed");
       setGradeStudents([]);
     }
   };
@@ -143,7 +159,7 @@ const useStudent = () => {
 
   const createStudent = async (e) => {
     e.preventDefault();
-    const response = (await addStudent({
+    const response = await addStudent({
       firstName,
       middleName,
       lastName,
@@ -158,16 +174,57 @@ const useStudent = () => {
       profileImage,
       gender,
       idCard,
-    } as StudentInformation).then((res) => res)) as BaseResponse;
-    console.log(response);
-
-    if (response && response?.code === "SUCCESS") {
-      toast.success(response?.message);
+    } as StudentInformation).then((res) => res) as BaseResponse;
+  
+    if (response && response.code === "SUCCESS") {
+      toast.success(response.message);
       await fetchStudents();
     } else {
-      toast.error("Add students failed");
+  
+  
+      for (let i = 0; i < response.length; i++) {
+        const error = response[i];
+        if (error.errorMessage) {
+          console.log(error);
+          toast.error(error.errorMessage);
+          break; // Exit the loop after displaying the first error message
+        } else {
+          console.log(error);
+          toast.error("Create student failed");
+          break;
+        }
+      }
+
+        // // Reset all error messages to empty strings if response array is empty
+        // if (!response || !Array.isArray(response) || response.length === 0) {
+        //   setErrorMessage({
+        //     firstName: "",
+        //     middleName: "",
+        //     lastName: "",
+        //     birthDay: "",
+        //     phone: "",
+        //     majorId: "",
+        //     email: "",
+        //     studentCode: "",
+        //     username: "",
+        //     address: "",
+        //     profileImage: "",
+        //     campusId: "",
+        //     idCard: "",
+        //     gender: "",
+        //   });
+        // } else {
+        //   // Update error messages for each field if response array is not empty
+        //   response.forEach(error => {
+        //     setErrorMessage(prevErrorMessage => ({
+        //       ...prevErrorMessage,
+        //       [error.fieldName]: error.errorMessage,
+        //     }));
+        //   });
+        // }
     }
   };
+  
 
   const handleUpdateStudent = async (e) => {
     e.preventDefault();
@@ -192,7 +249,9 @@ const useStudent = () => {
       toast.success(response?.message);
       fetchStudents();
     } else {
-      toast.error("update students failed");
+      console.log(response);
+      
+      toast.error(response || "Update students failed");
     }
   };
 

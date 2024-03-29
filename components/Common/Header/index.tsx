@@ -69,6 +69,7 @@ const Header = () => {
           <div className="cursor-pointer rounded-md bg-green-500 p-1 text-sm text-white hover:underline">
             Campus: {campus}
           </div>
+          <Link href={"/changePassword"} className="cursor-pointer rounded-md bg-green-500 p-1 text-sm text-white hover:underline">Change password</Link>
         </div>
       </div>
     </>

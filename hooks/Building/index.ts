@@ -43,7 +43,6 @@ const useBuilding = () => {
       const response = (await deleteBuildingById(id).then(
         (res) => res
       )) as BaseResponse;
-      console.log(response);
       if (response && response.code === "SUCCESS") {
         toast.success(response?.message);
         fetchBuildings();

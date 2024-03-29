@@ -38,12 +38,12 @@ const getFirstMonday = (year: number) => {
   return firstDayOfYear;
 };
 
-function getWeek(date: Date): number {
-  const onejan = new Date(date.getFullYear(), 0, 1);
-  return Math.ceil(
-    ((date.getTime() - onejan.getTime()) / 86400000 + onejan.getDay() + 1) / 7
-  );
-}
+function getWeek(now: Date): number {
+  const startOfYear: Date = new Date(now.getFullYear(), 0, 0);
+  const diff: number = now.getTime() - startOfYear.getTime();
+  const oneWeek: number = 1000 * 60 * 60 * 24 * 7;
+  const weekNumber: number = Math.floor(diff / oneWeek) + 1; // Adding 1 to start week count from 1
+  return weekNumber;}
 
 const scheduleDateToString = ({ day1, day2 }) => {
   const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
