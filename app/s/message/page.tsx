@@ -58,7 +58,7 @@ const page = (props: Props) => {
     useEffect(() => {
         if (stompClient && user.student && currentChat) {
             const subscription = stompClient.subscribe(
-                `/user/${currentChat.id}/private`,
+                /user/${currentChat.id}/private,
                 onMessageReceive
             );
 
@@ -88,7 +88,7 @@ const page = (props: Props) => {
     const sendMessageToServer = (newMessage: MessageInformation) => {
         if (stompClient && newMessage) {
             stompClient.send(
-                `/app/chat/${currentChat?.id.toString()}`,
+                /app/chat/${currentChat?.id.toString()},
                 {},
                 JSON.stringify(newMessage)
             );

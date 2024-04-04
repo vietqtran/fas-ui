@@ -131,6 +131,14 @@ const ManagerLayout: FC<Props> = ({ children }) => {
           </div>
           <ul className="py-5 text-gray-600">
             <li className="w-[80%]">
+              <SidebarLink href="/manager/building">
+                Buildings Management
+              </SidebarLink>
+            </li>
+            <li className="w-[80%]">
+              <SidebarLink href="/manager/room">Rooms Management</SidebarLink>
+            </li>
+            <li className="w-[80%]">
               <SidebarLink href="/manager/students">
                 Students Management
               </SidebarLink>
@@ -144,9 +152,10 @@ const ManagerLayout: FC<Props> = ({ children }) => {
               <SidebarLink href="/manager/majors">Major Management</SidebarLink>
             </li>
             <li className="w-[80%]">
-              <SidebarLink href="/manager/grades">
-                Grades Management
-              </SidebarLink>
+              <SidebarLink href="/manager/grades">Class Management</SidebarLink>
+            </li>
+            <li className="w-[80%]">
+              <SidebarLink href="/manager/assign">Assign Class</SidebarLink>
             </li>
             <li className="w-[80%]">
               <SidebarLink href="/manager/events">
@@ -154,13 +163,21 @@ const ManagerLayout: FC<Props> = ({ children }) => {
               </SidebarLink>
             </li>
             <li className="w-[80%]">
-              <SidebarLink href="/manager/terms">
-                Term Management
-              </SidebarLink>
+              <SidebarLink href="/manager/terms">Term Management</SidebarLink>
             </li>
             <li className="w-[80%]">
               <SidebarLink href="/manager/courses">
                 Courses Management
+              </SidebarLink>
+            </li>
+            <li className="w-[80%]">
+              <SidebarLink href="/manager/assignFeedBack">
+                FeedBack Management
+              </SidebarLink>
+            </li>
+            <li className="w-[80%]">
+              <SidebarLink href="/manager/assignFeedBack">
+                Slot Management
               </SidebarLink>
             </li>
             <li

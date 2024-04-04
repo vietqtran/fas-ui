@@ -114,7 +114,7 @@ export default function ModalInstructor(props: Props) {
     setImage("");
     setGender(true);
     setIdCard("");
-  }
+  };
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
@@ -133,7 +133,6 @@ export default function ModalInstructor(props: Props) {
     handleUpdateInstructor(e);
   };
 
-  console.log(campuses);
   return (
     <div>
       <Modal
@@ -301,7 +300,6 @@ export default function ModalInstructor(props: Props) {
                         htmlFor="email"
                         className="block text-sm font-medium leading-6 text-gray-900"
                       >
-
                         Email Address:{" "}
                       </label>
                       <TextField
@@ -314,7 +312,6 @@ export default function ModalInstructor(props: Props) {
                       />
                     </FormControl>
                   </div>
-
 
                   <div className="sm:col-span-2">
                     <FormControl fullWidth>
@@ -337,7 +334,6 @@ export default function ModalInstructor(props: Props) {
 
                   <div className="sm:col-span-2">
                     <FormControl fullWidth>
-
                       <label
                         htmlFor="campus"
                         className="block text-sm font-medium leading-6 text-gray-900"

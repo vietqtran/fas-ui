@@ -11,7 +11,7 @@ const useCourse = () => {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [noCredit, setNoCredit] = useState<number>(0);
-    const [courseMajorId, setCourseMajorId] = useState("72e18d9c-bf96-11ee-bdb8-106530543950");
+    const [courseMajorId, setCourseMajorId] = useState("");
     const [majorId, setMajorId] = useState("72e18d9c-bf96-11ee-bdb8-106530543950");
     const [id, setId] = useState("");
 
@@ -44,7 +44,6 @@ const useCourse = () => {
             const response = await deleteCourseById(id).then(
                 (res) => res
             ) as BaseResponse;
-            console.log(response);
             if (response && response.code === "SUCCESS") {
                 toast.success(response?.message);
                 fetchCourses();
@@ -82,8 +81,6 @@ const useCourse = () => {
                 (res) => res
             ) as BaseResponse;
             if (response && response.code === "SUCCESS") {
-                console.log(response.data);
-
                 setCourses(response.data);
             }
         } catch (error) {

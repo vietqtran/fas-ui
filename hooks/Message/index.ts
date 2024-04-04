@@ -11,7 +11,6 @@ const useMessage = () => {
 
     React.useEffect(() => {
         if (chatId) {
-            console.log(chatId);
 
             fetchMessageByChatId(chatId)
         }
@@ -22,10 +21,10 @@ const useMessage = () => {
             let response = (await getAllMessage(chatId).then((res) => res)) as BaseResponse
             if (response && response.code === "SUCCESS") {
                 setMessages(response.data)
-                console.log(response.data);
+                
             }
         } catch (error) {
-            console.log(error)
+            
         }
     }
 
@@ -33,7 +32,7 @@ const useMessage = () => {
         try {
             let response = (await addMessage(studentId, chatId, message).then((res) => res)) as BaseResponse;
             if (response && response.code === "SUCCESS") {
-                console.log(response.data);
+               
                 sendMessageToServer(response.data);
                 fetchMessageByChatId(chatId);
             }

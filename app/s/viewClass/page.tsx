@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import ChatIcon from '@mui/icons-material/Chat';
+import ChatIcon from "@mui/icons-material/Chat";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -34,7 +34,6 @@ import { RootState } from "@/helpers/redux/reducers";
 import useChat from "@/hooks/Chat";
 import { useRouter } from "next/navigation";
 
-
 function createData(
   name: string,
   calories: number,
@@ -46,12 +45,12 @@ function createData(
 }
 const page = () => {
   const campus = "FU-HL";
-  // const terms = ["SUMMER2023", "FALL2023", "SPRING2024"];
 
-  const { terms } = useTerm()
+  const { terms } = useTerm();
   const { majors } = useMajor();
   const { courseMajorId, setCourseMajorId, courses } = useCourse();
-  const { courseId, setCourseId, grades, gradeTermId, setGradeTermId } = useGrade();
+  const { courseId, setCourseId, grades, gradeTermId, setGradeTermId } =
+    useGrade();
   const {
     gradeId,
     setGradeId,
@@ -67,7 +66,7 @@ const page = () => {
     setSearchValue,
     order,
     setOrder,
-    setStudentTermId
+    setStudentTermId,
   } = useStudent();
 
   const handleChangePage = (
@@ -115,19 +114,18 @@ const page = () => {
     setSearchValue("");
   };
 
-  const { handleCreateChat } = useChat()
+  const { handleCreateChat } = useChat();
 
-  const { user } = useSelector((state: RootState) => state.user)
+  const { user } = useSelector((state: RootState) => state.user);
 
   const router = useRouter();
 
   const handleClickChat = (studentId: string) => {
     if (user?.role?.name === "STUDENT") {
-      console.log(user);
       handleCreateChat(user.student.id, studentId);
       router.push("/s/message");
     }
-  }
+  };
 
   return (
     <div className="grid min-h-[100vh] h-[100%] place-items-center bg-white text-black">
@@ -142,19 +140,29 @@ const page = () => {
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                   <TableRow style={{ backgroundColor: "#6b90da" }}>
-                    <TableCell style={{ width: "10%", borderRight: "1px solid white" }}>
+                    <TableCell
+                      style={{ width: "10%", borderRight: "1px solid white" }}
+                    >
                       CAMPUS
                     </TableCell>
-                    <TableCell style={{ width: "10%", borderRight: "1px solid white" }}>
+                    <TableCell
+                      style={{ width: "10%", borderRight: "1px solid white" }}
+                    >
                       TERM
                     </TableCell>
-                    <TableCell style={{ width: "20%", borderRight: "1px solid white" }}>
+                    <TableCell
+                      style={{ width: "20%", borderRight: "1px solid white" }}
+                    >
                       MAJOR
                     </TableCell>
-                    <TableCell style={{ width: "30%", borderRight: "1px solid white" }}>
+                    <TableCell
+                      style={{ width: "30%", borderRight: "1px solid white" }}
+                    >
                       COURSE
                     </TableCell>
-                    <TableCell style={{ width: "30%", borderRight: "1px solid white" }}>
+                    <TableCell
+                      style={{ width: "30%", borderRight: "1px solid white" }}
+                    >
                       GROUP
                     </TableCell>
                   </TableRow>
@@ -166,7 +174,10 @@ const page = () => {
                     </TableCell>
                     <TableCell className="align-top" component="th" scope="row">
                       {terms.map((term, index) => (
-                        <div onClick={() => handleTermClick(term.id)} key={index + 1}>
+                        <div
+                          onClick={() => handleTermClick(term.id)}
+                          key={index + 1}
+                        >
                           <span
                             className={
                               term.id === gradeTermId
@@ -279,15 +290,24 @@ const page = () => {
                               name="radio-buttons-group"
                               onChange={(e) => setOrder(e.target.value)}
                             >
-                              <FormControlLabel checked={order === "ASC"} value="ASC" control={<Radio />} label="Ascending" />
-                              <FormControlLabel checked={order === "DESC"} value="DESC" control={<Radio />} label="Descending" />
+                              <FormControlLabel
+                                checked={order === "ASC"}
+                                value="ASC"
+                                control={<Radio />}
+                                label="Ascending"
+                              />
+                              <FormControlLabel
+                                checked={order === "DESC"}
+                                value="DESC"
+                                control={<Radio />}
+                                label="Descending"
+                              />
                             </RadioGroup>
                           </FormControl>
                         </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell className="space-y-3">
-
                           <FormControl>
                             <FormLabel id="filter-major">Major</FormLabel>
                             <RadioGroup
@@ -296,7 +316,13 @@ const page = () => {
                               onChange={(e) => setMajorId(e.target.value)}
                             >
                               {majors.map((major, index) => (
-                                <FormControlLabel checked={majorId === major.id} key={index + 1} value={major.id} control={<Radio />} label={major.code} />
+                                <FormControlLabel
+                                  checked={majorId === major.id}
+                                  key={index + 1}
+                                  value={major.id}
+                                  control={<Radio />}
+                                  label={major.code}
+                                />
                               ))}
                             </RadioGroup>
                           </FormControl>
@@ -305,11 +331,13 @@ const page = () => {
                     </TableBody>
                   </Table>
                 </TableContainer>
-
               </div>
               <div className="w-5/6">
                 <div className="mb-5 flex items-center gap-3">
-                  <button onClick={handleRefresh} className="rounded bg-gray-700 px-4 py-3 font-bold text-white hover:bg-gray-600 flex items-center gap-1">
+                  <button
+                    onClick={handleRefresh}
+                    className="rounded bg-gray-700 px-4 py-3 font-bold text-white hover:bg-gray-600 flex items-center gap-1"
+                  >
                     <span>Refresh</span>
                     <RefreshIcon />
                   </button>
@@ -332,23 +360,41 @@ const page = () => {
                   <Table aria-label="simple table">
                     <TableHead>
                       <TableRow style={{ backgroundColor: "#6b90da" }}>
-                        <TableCell style={{ borderRight: "1px solid white" }}>INDEX</TableCell>
-                        <TableCell style={{ borderRight: "1px solid white" }}>IMAGE</TableCell>
-                        <TableCell style={{ borderRight: "1px solid white" }}>Code</TableCell>
-                        <TableCell style={{ borderRight: "1px solid white" }}>SURNAME</TableCell>
-                        <TableCell style={{ borderRight: "1px solid white" }}>MIDDLENAME</TableCell>
-                        <TableCell style={{ borderRight: "1px solid white" }}>GIVENNAME</TableCell>
-                        <TableCell style={{ borderRight: "1px solid white" }}>ACTION</TableCell>
+                        <TableCell style={{ borderRight: "1px solid white" }}>
+                          INDEX
+                        </TableCell>
+                        <TableCell style={{ borderRight: "1px solid white" }}>
+                          IMAGE
+                        </TableCell>
+                        <TableCell style={{ borderRight: "1px solid white" }}>
+                          Code
+                        </TableCell>
+                        <TableCell style={{ borderRight: "1px solid white" }}>
+                          SURNAME
+                        </TableCell>
+                        <TableCell style={{ borderRight: "1px solid white" }}>
+                          MIDDLENAME
+                        </TableCell>
+                        <TableCell style={{ borderRight: "1px solid white" }}>
+                          GIVENNAME
+                        </TableCell>
+                        <TableCell style={{ borderRight: "1px solid white" }}>
+                          ACTION
+                        </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {gradeStudents.map((student, index) => (
                         <TableRow
                           key={index + 1}
-                          sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                          sx={{
+                            "&:last-child td, &:last-child th": { border: 0 },
+                          }}
                         >
                           <TableCell component="th" scope="row">
-                            {(parseInt(currentPage) - 1) * parseInt(pageSize) + index + 1}
+                            {(parseInt(currentPage) - 1) * parseInt(pageSize) +
+                              index +
+                              1}
                           </TableCell>
                           <TableCell component="th" scope="row">
                             <img
@@ -360,18 +406,21 @@ const page = () => {
                           <TableCell component="th" scope="row">
                             {student.studentCode}
                           </TableCell>
+                          <TableCell>{student.firstName}</TableCell>
+                          <TableCell>{student.middleName}</TableCell>
+                          <TableCell>{student.lastName}</TableCell>
                           <TableCell>
-                            {student.firstName}
-                          </TableCell>
-                          <TableCell>
-                            {student.middleName}
-                          </TableCell>
-                          <TableCell>
-                            {student.lastName}
-                          </TableCell>
-                          <TableCell>
-                            <IconButton onClick={() => handleClickChat(student.id)} disabled={student.id === user.student.id}>
-                              <ChatIcon className={student.id === user.student.id ? `text-gray-500 text-xxl` : `text-blue-500 text-xxl`} />
+                            <IconButton
+                              onClick={() => handleClickChat(student.id)}
+                              disabled={student.id === user?.student?.id}
+                            >
+                              <ChatIcon
+                                className={
+                                  student.id === user?.student?.id
+                                    ? `text-gray-500 text-xxl`
+                                    : `text-blue-500 text-xxl`
+                                }
+                              />
                             </IconButton>
                           </TableCell>
                         </TableRow>
@@ -381,7 +430,11 @@ const page = () => {
                 </TableContainer>
 
                 <div className="flex justify-center mt-3">
-                  <Pagination onChange={handleChangePage} page={parseInt(currentPage)} count={totalPages} />
+                  <Pagination
+                    onChange={handleChangePage}
+                    page={parseInt(currentPage)}
+                    count={totalPages}
+                  />
                 </div>
               </div>
             </div>

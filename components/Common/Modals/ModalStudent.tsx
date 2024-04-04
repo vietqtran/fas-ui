@@ -112,7 +112,7 @@ export default function ModalStudent(props: Props) {
 
   const handleSubmit = async (e) => {
     createStudent(e);
-    clearFormData();
+    
   };
 
   const clearFormData = () => {
@@ -137,6 +137,11 @@ export default function ModalStudent(props: Props) {
     handleUpdateStudent(e);
   };
 
+  const closeModal = () => {
+    clearFormData();
+    handleClose();
+  }
+
   return (
     <div>
       <Modal
@@ -154,7 +159,7 @@ export default function ModalStudent(props: Props) {
                 </h2>
                 <button
                     className="text-gray-400 hover:text-gray-600 transition duration-200 ease-in-out"
-                    onClick={handleClose}
+                    onClick={closeModal}
                   >
                     <CloseIcon />
                   </button>

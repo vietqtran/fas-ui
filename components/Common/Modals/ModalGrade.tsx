@@ -46,7 +46,6 @@ const ModalGrade = (props: Props) => {
   const {campuses} = useStudent();
   const getGradeById = async (id) => {
     const data = await getGrade(id);
-    console.log(data);
     setId(data?.id);
     setCode(data?.code);
     setMajorId(data?.major?.id);
@@ -90,7 +89,7 @@ const ModalGrade = (props: Props) => {
               <div className="border-b border-gray-900/10 pb-12">
                 <div className="flex justify-between">
                   <h2 className="text-xl font-semibold leading-7 text-gray-900">
-                    Grade's information
+                    Class's information
                   </h2>
                   <button
                     className="text-gray-400 hover:text-gray-600 transition duration-200 ease-in-out"
@@ -107,7 +106,7 @@ const ModalGrade = (props: Props) => {
                         htmlFor="grade-name"
                         className="block text-sm font-medium leading-6 text-gray-900"
                       >
-                        Grade Name:
+                        Class Name:
                       </label>
                       <TextField
                         size="small"

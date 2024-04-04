@@ -48,7 +48,6 @@ export default function ModalMajor(props: Props) {
 
   const getMajor = async (id) => {
     const data = await getMajorByID(id);
-    console.log(data);
     setId(data?.data?.id);
     setNameMajor(data?.data?.name);
     setCodeMajor(data?.data?.code);

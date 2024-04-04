@@ -1,20 +1,20 @@
 const initialState = {
-   user: null
-}
+  user: null || { id: "" },
+};
 
 export const userReducer = (state = initialState, action: any) => {
-   switch (action.type) {
-      case 'SET_USER':
-         return {
-            ...state,
-            user: action.payload
-         }
-      case 'REMOVE_USER':
-         return {
-            ...state,
-            user: null
-         }
-      default:
-         return state
-   }
-}
+  switch (action.type) {
+    case "SET_USER":
+      return {
+        ...state,
+        user: action.payload,
+      };
+    case "REMOVE_USER":
+      return {
+        ...state,
+        user: null,
+      };
+    default:
+      return state;
+  }
+};

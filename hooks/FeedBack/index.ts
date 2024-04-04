@@ -3,6 +3,8 @@ import { Bounce, toast } from "react-toastify";
 import React, { useEffect, useState } from "react";
 import {
   addFeedBack,
+  checkFeedBackExist,
+  deleteFeedBackById,
   getAllFeedBack,
   getFeedBackByID,
   updateFeedBack,
@@ -14,23 +16,16 @@ const useFeedBack = () => {
   const [feedbacks, setFeedBacks] = useState([]);
 
   const [studentId, setStudentId] = useState<string>("");
-  const [instructorId, setInstructorId] = useState<string>("");
-  const [courseId, setCourseId] = useState<string>("");
   const [punctuality, setPunctuality] = useState<string>("");
   const [teachingSkill, setTeachingSkill] = useState<string>("");
-
   const [adequatelySyllabus, setAdequatelySyllabus] = useState<string>("");
   const [support, setSupport] = useState<string>("");
   const [responseQuestion, setResponseQuestion] = useState<string>("");
   const [teachingMethods, setTeachingMethods] = useState<string>("");
   const [dispositionStudents, setDispositionStudents] = useState<string>("");
-  const [professionalPractices, setProfessionalPractices] =
-    useState<string>("");
-  const [appearanceAndPersonal, setAppearanceAndPersonal] =
-    useState<string>("");
   const [overall, setOverall] = useState<string>("");
   const [comment, setComment] = useState<string>("");
-
+  const [assignFeedBackId, setAssignFeedBackId] = useState<string>("");
   const [id, setId] = useState("");
 
   useEffect(() => {
@@ -60,12 +55,10 @@ const useFeedBack = () => {
         toast.success(response.message);
         return response.data;
       } else {
-        toast.error(response?.message || "Failed to get feedback");
         return undefined;
       }
     } catch (error) {
       console.error("Error getting feedback:", error);
-      toast.error("Failed to get feedback");
       return undefined;
     }
   };
@@ -75,8 +68,6 @@ const useFeedBack = () => {
     try {
       const response = (await addFeedBack({
         studentId,
-        instructorId,
-        courseId,
         punctuality,
         teachingSkill,
         adequatelySyllabus,
@@ -84,10 +75,9 @@ const useFeedBack = () => {
         responseQuestion,
         teachingMethods,
         dispositionStudents,
-        professionalPractices,
-        appearanceAndPersonal,
         overall,
         comment,
+        assignFeedBackId,
       } as FeedBackInformation).then((res) => res)) as BaseResponse;
       if (response && response.code === "SUCCESS") {
         toast.success(response.message);
@@ -106,8 +96,6 @@ const useFeedBack = () => {
     try {
       const response = (await updateFeedBack(id, {
         studentId,
-        instructorId,
-        courseId,
         punctuality,
         teachingSkill,
         adequatelySyllabus,
@@ -115,10 +103,9 @@ const useFeedBack = () => {
         responseQuestion,
         teachingMethods,
         dispositionStudents,
-        professionalPractices,
-        appearanceAndPersonal,
         overall,
         comment,
+        assignFeedBackId,
       } as FeedBackInformation).then((res) => res)) as BaseResponse;
 
       if (response && response.code === "SUCCESS") {
@@ -133,6 +120,37 @@ const useFeedBack = () => {
     }
   };
 
+  const checkFeedBack = async (assignId: string, studentId: string) => {
+    try {
+      const response = (await checkFeedBackExist(assignId, studentId).then(
+        (res) => res
+      )) as BaseResponse;
+      if (response && response.code === "SUCCESS") {
+        return response.data;
+      } else {
+        return undefined;
+      }
+    } catch (error) {
+      console.error("Error getting feedback:", error);
+      return undefined;
+    }
+  };
+
+  const deleteFeedBack = async (id: string) => {
+    try {
+      const response = (await deleteFeedBackById(id).then(
+        (res) => res
+      )) as BaseResponse;
+      if (response) {
+        toast.success(response.message);
+      } else {
+        return response.message;
+      }
+    } catch (error) {
+      console.error("Error deleting grade:", error);
+    }
+  };
+
   return {
     feedbacks,
     fetchFeedBacks,
@@ -141,10 +159,6 @@ const useFeedBack = () => {
     handleUpdateFeedBack,
     studentId,
     setStudentId,
-    instructorId,
-    setInstructorId,
-    courseId,
-    setCourseId,
     punctuality,
     setPunctuality,
     teachingSkill,
@@ -159,16 +173,16 @@ const useFeedBack = () => {
     setTeachingMethods,
     dispositionStudents,
     setDispositionStudents,
-    professionalPractices,
-    setProfessionalPractices,
-    appearanceAndPersonal,
-    setAppearanceAndPersonal,
     overall,
     setOverall,
     comment,
     setComment,
     id,
     setId,
+    assignFeedBackId,
+    setAssignFeedBackId,
+    checkFeedBack,
+    deleteFeedBack,
   };
 };
 

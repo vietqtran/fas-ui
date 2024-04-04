@@ -1,16 +1,16 @@
 "use client";
 import { Bounce, toast } from "react-toastify";
 import React, { useEffect, useState } from "react";
-import { addStudentToGrade, createGrade, deleteGradeById, deleteStudentToGrade, getAllGrade, getAllGradeByCourse, getAllGradeByCourseAndTerm, getGradeByID, getGradeByMajor, updateGrade } from "@/helpers/api/grade";
+import { addStudentToGrade, createGrade, deleteGradeById, deleteStudentToGrade, getAllGrade, getAllGradeByCourse, getAllGradeByCourseAndTerm, getGradeByID, getGradeByMajor, getGradeByStudent, updateGrade } from "@/helpers/api/grade";
 
 const useGrade = () => {
     const [code, setCode] = useState("");
     const [grades, setGrades] = useState([]);
-    const [courseId, setCourseId] = useState("663fe3e3-d087-11ee-a242-106530543950");
+    const [courseId, setCourseId] = useState("");
     const [id, setId] = useState("");
     const [studentId, setStudentId] = useState("");
     const [gradeId, setGradeId] = useState("");
-    const [gradeTermId, setGradeTermId] = useState("7228a3fc-d3ba-11ee-a242-106530543950");
+    const [gradeTermId, setGradeTermId] = useState("");
     const [majorId, setMajorId] = useState("");
     const [campusId, setCampusId] = useState("");
     const [gradeByMajor, setGradeByMajor] = useState([]);
@@ -39,7 +39,7 @@ const useGrade = () => {
             if (response) {
                 setGrades(response.data);
             } else {
-                console.log(response.message);
+              
             }
         } catch (error) {
             console.error("Error fetching grade:", error);
@@ -53,7 +53,7 @@ const useGrade = () => {
             if (response) {
                 setGrades(response.data);
             } else {
-                console.log(response?.message);
+            
             }
         } catch (error) {
             console.error("Error fetching grade:", error);
@@ -66,7 +66,7 @@ const useGrade = () => {
             if (response) {
                 setGrades(response.data);
             } else {
-                console.log(response?.message);
+            
             }
         } catch (error) {
             console.error("Error fetching grade:", error);
@@ -80,7 +80,7 @@ const useGrade = () => {
                 setGradeByMajor(response.data);
                 return response.data;
             } else {
-                console.log(response?.message);
+            
             }
         } catch (error) {
             console.error("Error fetching grade:", error);
@@ -151,6 +151,7 @@ const useGrade = () => {
                 toast.success(response.message);
                 fectchGrade();
             } else {
+                toast.error(response?.message || "Update grade failed");
                 return (response?.message || "Update grade failed");
             }
         }
@@ -190,6 +191,21 @@ const useGrade = () => {
         }
     }
 
+    const getGradeStudent = async (id: string) => {
+        try {
+            const response = await getGradeByStudent(id).then((res) => res) as BaseResponse;
+            if (response) {
+                setGrade(response.data);
+                return response.data;
+            }
+            else {
+                return response?.message;
+            }
+        } catch (error) {
+            console.error("Error fetching grade:", error);
+        }
+    }
+
     return {
         grades,
         setGrades,
@@ -219,7 +235,8 @@ const useGrade = () => {
         gradeByMajor,
         setGradeByMajor,
         gradeTermId,
-        setGradeTermId
+        setGradeTermId,
+        getGradeStudent
     }
 }
 

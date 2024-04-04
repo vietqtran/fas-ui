@@ -11,7 +11,6 @@ const useChat = () => {
     const { user } = useSelector((state: RootState) => state.user);
 
     const [reqStudentId, setReqStudentId] = useState(user?.student?.id);
-    console.log("reqStudentId: ", reqStudentId);
 
     const [chat, setChat] = useState(null);
     const [chats, setChats] = useState([]);
@@ -29,7 +28,7 @@ const useChat = () => {
                 setChat(response.data);
             }
         } catch (error) {
-            console.log(error);
+            
         }
     }
 
@@ -41,7 +40,7 @@ const useChat = () => {
                 setChats(response.data);
             }
         } catch (error) {
-            console.log(error);
+            
         }
     }
 

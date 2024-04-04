@@ -13,7 +13,6 @@ const SearchUser = (props: Props) => {
 
     const handleSearchUser = (e) => {
         setUsername(e.target.value);
-        // console.log(auth.searchUsers);
         // dispatch(searchUserAction(usernamme));
     };
     return (
