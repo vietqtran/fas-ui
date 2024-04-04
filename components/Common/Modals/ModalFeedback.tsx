@@ -103,7 +103,7 @@ const ModalFeedback = (props: Props) => {
     }
 
     setAssignFeedBackId(feedback.id);
-    setStudentId(user.id);
+    setStudentId(user?.id);
     const fetchData = async () => {
       try {
         setAssignFeedBackId(feedback.id);

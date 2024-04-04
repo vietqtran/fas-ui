@@ -29,7 +29,6 @@ const StudentSchedule = () => {
 
   const [year, setYear] = useState(new Date().getFullYear());
   const [week, setWeek] = useState(getWeek(new Date()));
-  console.log(week)
   const [days, setDays] = useState([]);
 
   useEffect(() => {

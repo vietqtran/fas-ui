@@ -142,11 +142,6 @@ export default function page(props: Props) {
         </h1>
 
         <div className="my-8 flex justify-end gap-2">
-          <button className="flex items-center gap-1 rounded-md bg-green-700 px-4 py-2 font-bold text-white hover:bg-green-800">
-            <FileDownloadIcon />
-            Export to excel
-          </button>
-
           <button
             className="flex items-center gap-1 rounded-md bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
             onClick={() => handleOpen()}
