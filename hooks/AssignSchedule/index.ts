@@ -9,7 +9,10 @@ import {
   getSheduleById,
   updateShedule,
   deleteSchedule,
+  getAssignByTermAndStudent,
+  getAssignByCourseAndGrade,
 } from "@/helpers/api/assignSchedule";
+import { South } from "@mui/icons-material";
 
 const useAssignsChedule = () => {
   const [assignSchedules, setAssignSchedules] = useState([]);
@@ -23,6 +26,9 @@ const useAssignsChedule = () => {
   const [assignId, setAssignId] = useState("");
   const [assignSchedule, setAssignSchedule] = useState<any>({});
   const [idAssignSchedule, setIdAssignSchedule] = useState("");
+
+  const [listAssignByStudentAndTerm, setListAssignByStudentAndTerm] = useState<any>([]);
+  const [activityOfAssign, setActivityOfAssign] = useState<any>([]);
 
   useEffect(() => {
     fetchAssignSchedule();
@@ -82,10 +88,10 @@ const useAssignsChedule = () => {
       } as AssignScheduleInformation).then((res) => res)) as BaseResponse;
       if (response && response.code === "SUCCESS") {
         toast.success(response.message);
+        return response.message;
       } else {
-        console.log(response);
-        
         toast.error(response || "Add course failed");
+        return response?.message;
       }
     } catch (error) {
       console.error("Error adding course:", error);
@@ -157,6 +163,40 @@ const useAssignsChedule = () => {
   };
 
 
+  const getAssignSchduleByStudentAndTerm = async (termId: string, studentId: string) => {
+    try {
+      const response = (await getAssignByTermAndStudent(termId, studentId).then(
+        (res) => res
+      )) as BaseResponse;
+      
+      if (response) {
+        setListAssignByStudentAndTerm(response.data);        
+        return response.data;
+      } else {
+        return response?.message;
+      }
+    } catch (error) {
+      console.error("Error fetching grade:", error);
+    }
+  };
+
+  const getDetailAssign = async (courseId: string, gradeId: string, termId: string) => {
+    try {
+      const response = (await getAssignByCourseAndGrade(courseId, gradeId, termId).then(
+        (res) => res
+      )) as BaseResponse;      
+      if (response) {
+        setActivityOfAssign(response.data);        
+        return response.data;
+      } else {
+        return response?.message;
+      }
+    } catch (error) {
+      console.error("Error fetching grade:", error);
+    }
+  };
+
+
 
   return {
     instructorId,
@@ -184,7 +224,11 @@ const useAssignsChedule = () => {
     fetchAssignSchedule,
     getAssignSchdule,
     setIdAssignSchedule,
-    handleDeleteAssignSchedule
+    handleDeleteAssignSchedule,
+    getAssignSchduleByStudentAndTerm,
+    listAssignByStudentAndTerm,
+    getDetailAssign,
+    activityOfAssign,
   };
 };
 

@@ -27,7 +27,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "60%",
-  maxHeight: "70%",
+  maxHeight: "85%",
   overflowY: "auto", // or "scroll"
   bgcolor: "#fff",
   border: "1px solid #ccc",
@@ -93,8 +93,23 @@ const AssignClassSchedule = (props: Props) => {
   } = useAssignsChedule();
 
 
-  
+  const refreshAll = () => {
+    setGradeId("");
+    setCourseId("");
+    setTermId("");
+    setRoomId("");
+    setSlotId("");
+    setInstructorId("");
+    setWeekdays([]);
+    handleClose();
+  }
 
+  const handleSubmit = async (e) => {
+    const data = await addAssignSchedule(e);
+    if (data === "Create assign successfully") {
+      refreshAll();
+    }
+  }
 
   return (
     <Modal
@@ -106,13 +121,13 @@ const AssignClassSchedule = (props: Props) => {
       <div className="flex justify-end">
         <button
           className="text-gray-400 hover:text-gray-600 transition duration-200 ease-in-out"
-          onClick={handleClose}
+          onClick={refreshAll}
         >
           <CloseIcon />
         </button>
       </div>
         <form
-          onSubmit={addAssignSchedule}
+          onSubmit={handleSubmit}
           className="grid grid-cols-2 gap-10 p-5"
         >               
           <FormControl fullWidth className="col-span-1">

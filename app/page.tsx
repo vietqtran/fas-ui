@@ -45,6 +45,11 @@ export default function Home() {
             <Link href={"/attendStudent"}> Take Attendance Student</Link>
           </div>
         )}
+
+        <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
+          <Link href={"/attendReport"}>View Attendance Report</Link>
+        </div>
+
         <div className="cursor-pointer rounded-md bg-green-500 p-5 text-white hover:underline">
           <Link href={"/curriculum"}> Curriculum</Link>
         </div>

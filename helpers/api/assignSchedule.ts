@@ -1,3 +1,4 @@
+import { South } from "@mui/icons-material";
 import instance from "./_axios_instance";
 
 const END_POINT = {
@@ -31,3 +32,12 @@ export const changeStatusSchedule = (id: string) => {
 export const deleteSchedule = (id: string) => {
   return instance.delete(`/${END_POINT.DELETE_ASSIGN}/${id}`);
 };
+
+export const getAssignByTermAndStudent = (termId: string, studentId: string) => {
+  return instance.get(`/assign/student/${studentId}/term/${termId}`);
+}
+
+export const getAssignByCourseAndGrade = (courseId: string, gradeId: string, termId: string) => {
+  
+  return instance.get(`/assign/course/${courseId}/grade/${gradeId}/term/${termId}`);
+}

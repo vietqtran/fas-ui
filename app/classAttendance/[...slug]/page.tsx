@@ -5,6 +5,7 @@ import { updateAttendance } from "@/helpers/api/attendance";
 import useActivity from "@/hooks/Activity";
 import useAssignsChedule from "@/hooks/AssignSchedule";
 import useGrade from "@/hooks/Grade";
+import { South } from "@mui/icons-material";
 import {
   Button,
   FormControl,
@@ -57,27 +58,41 @@ const page = (props: Props) => {
     getData(slug[1], slug[3], slug[5]);
   }, []);
 
+  const currentDate = new Date();
+
   const caculcateAvg = (studentId: string) => {
     const newArray = [];
+    const newArray2 = [];
+
     const data = listActivityClass?.map((item, index) => {
       item?.attendances?.map((item2) => {
-        if (item2?.student?.id === studentId) { 
+        if (item2?.student?.id === studentId) {
           newArray.push(item2);
         }
-      })
-    })
-    const filter = newArray.filter((item) => item.status === false);
-    return filter.length / newArray.length * 100;
-  }
+      });
+    });
+    
+    const data1 = listActivityClass?.map((item, index) => {
+      const rowDate = new Date(item?.date);
+      item?.attendances?.map((item2) => {
+        if (item2?.student?.id === studentId && item2?.status === false && rowDate <= currentDate) {
+          newArray2.push(item2);
+        }
+      });
+    });
+  
+    return (newArray2.length / newArray.length) * 100;
+  };
 
   return (
     <div className="grid h-[100%] place-items-center bg-white text-black py-10">
-      <form
-        className="container text-gray-600"
-      >
+      <form className="container text-gray-600">
         <Header />
         <div className="mt-5">
-          <h1 className="text-3xl my-5">Summary attendance of class {assignSchedule?.grade?.code} course {assignSchedule?.course?.code}</h1>
+          <h1 className="text-3xl my-5">
+            Summary attendance of class {assignSchedule?.grade?.code} course{" "}
+            {assignSchedule?.course?.code}
+          </h1>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
@@ -86,7 +101,9 @@ const page = (props: Props) => {
                   <TableCell>FullName</TableCell>
                   <TableCell>Rate</TableCell>
                   {listActivityClass.map((item, index) => (
-                    <TableCell key={item.id} className="text-sm">{item.date}</TableCell>
+                    <TableCell key={item.id} className="text-sm">
+                      {item.date}
+                    </TableCell>
                   ))}
                 </TableRow>
               </TableHead>
@@ -107,20 +124,42 @@ const page = (props: Props) => {
                         row.middleName}
                     </TableCell>
                     <TableCell component="th" scope="row">
-                      {caculcateAvg(row?.id) > 20 ? <span className="text-red-500">{caculcateAvg(row?.id)}%</span> : <span className="text-gray-50">{caculcateAvg(row?.id)}%</span>}
+                      {caculcateAvg(row?.id) > 20 ? (
+                        <span className="text-red-500">
+                          {Math.round(caculcateAvg(row?.id))}%
+                        </span>
+                      ) : (
+                        <span className="text-gray-500">
+                          {Math.round(caculcateAvg(row?.id))}%
+                        </span>
+                      )}
                     </TableCell>
                     {listActivityClass.map((item, itemIndex) => {
                       return item?.attendances?.map(
                         (studentAttendance, attendanceIndex) => {
+                          const date = new Date(item?.date);
                           if (row.id === studentAttendance?.student?.id) {
-                            return (
-                              <TableCell
-                                key={`cell-${item.id}-${attendanceIndex}`}
-                                id={`id-${item.id}-${attendanceIndex}`}
-                              >
-                                {studentAttendance?.status ? <span className="text-green-500">present</span> : <span className="text-red-500">absent</span>}
-                              </TableCell>
-                            );
+                            if (currentDate >= date) {
+                              return (
+                                <TableCell
+                                  key={`cell-${item.id}-${attendanceIndex}`}
+                                  id={`id-${item.id}-${attendanceIndex}`}
+                                >
+                                  {studentAttendance?.status ? (
+                                    <span className="text-green-500">
+                                      present
+                                    </span>
+                                  ) : (
+                                    <span className="text-red-500">absent</span>
+                                  )}
+                                </TableCell>
+                              );
+                            }
+                            else {
+                              return (<TableCell>
+                                <span className="text-gray-500">Future</span>
+                              </TableCell>);
+                            }
                           } else {
                             return null; // Return null if condition doesn't match to avoid rendering undefined
                           }

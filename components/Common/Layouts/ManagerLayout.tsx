@@ -176,7 +176,7 @@ const ManagerLayout: FC<Props> = ({ children }) => {
               </SidebarLink>
             </li>
             <li className="w-[80%]">
-              <SidebarLink href="/manager/assignFeedBack">
+              <SidebarLink href="/manager/slot">
                 Slot Management
               </SidebarLink>
             </li>

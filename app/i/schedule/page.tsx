@@ -27,19 +27,18 @@ const InstructorSchedule = () => {
 
   const { user } = useSelector((state: RootState) => state.user);
 
-  const currentYear = new Date().getFullYear();
 
-  const [year, setYear] = useState(currentYear);
+  const [year, setYear] = useState(new Date().getFullYear());
   const [week, setWeek] = useState(getWeek(new Date()));
   const [days, setDays] = useState([]);
 
   const years = [
-    currentYear - 4,
-    currentYear - 3,
-    currentYear - 2,
-    currentYear - 1,
-    currentYear,
-    currentYear + 1,
+    new Date().getFullYear() - 4,
+    new Date().getFullYear() - 3,
+    new Date().getFullYear() - 2,
+    new Date().getFullYear() - 1,
+    new Date().getFullYear(),
+    new Date().getFullYear() + 1,
   ];
 
   const slots = [
@@ -123,23 +122,17 @@ const InstructorSchedule = () => {
   };
 
   const setCurrentWeek = () => {
-    setYear(currentYear);
+    setYear(new Date().getFullYear());
     setWeek(1);
   };
 
   useEffect(() => {
-    const parsedYear = parseInt(searchParams.get("year")) || currentYear;
+    const parsedYear = parseInt(searchParams.get("year")) || new Date().getFullYear();
     const parsedWeek = parseInt(searchParams.get("week")) || getWeek(new Date());
     setYear(parsedYear);
     setWeek(parsedWeek);
   }, [searchParams]);
 
-  useEffect(() => {
-    return () => {
-      setYear(currentYear);
-      setWeek(getWeek(new Date()));
-    };
-  }, []);
 
   const handleYearChange = (e) => {
     const queryParams = new URLSearchParams();
@@ -257,7 +250,7 @@ const InstructorSchedule = () => {
                             activities.map(
                               (a, j) =>
                                 a.slot.name === slot?.name &&
-                                getWeekDayByDateString(a.date) === i && (
+                                getWeekDayByDateString(a.date) === i + 1 && (
                                     <ActivityInstructor activity={a} />
                                 )
                             )}
