@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import {
   getActivityByAssign,
   getActivityById,
+  getActivityByTermCourseClass,
   updateActivity,
 } from "@/helpers/api/activity";
 
@@ -17,6 +18,8 @@ const useActivity = () => {
 
   const [activityDetail, setActivityDetail] = useState<any>({});
   const [idActivityDetail, setIdActivityDetail] = useState("");
+
+  const [listActivityClass, setListActivityClass] = useState([]);
 
   useEffect(() => {
     getActivityDetail(idActivityDetail);
@@ -75,6 +78,24 @@ const useActivity = () => {
     }
   };
 
+  const getListActivity = async (termId: string, courseId: string, classId: string) => {
+    console.log(termId, courseId, classId);
+    
+    try {
+      const response = (await getActivityByTermCourseClass(termId, courseId, classId).then(
+        (res) => res
+      )) as BaseResponse;
+      if (response) {
+        setListActivityClass(response.data);
+        return response.data;
+      } else {
+        return response?.message;
+      }
+    } catch (error) {
+      console.error("Error fetching activity:", error);
+    }
+  };
+
   return {
     instructorId,
     setInstructorId,
@@ -94,6 +115,8 @@ const useActivity = () => {
     setActivityDetail,
     handleUpdateActivity,
     setIdActivityDetail,
+    getListActivity,
+    listActivityClass
   };
 };
 

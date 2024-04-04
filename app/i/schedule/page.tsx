@@ -258,9 +258,7 @@ const InstructorSchedule = () => {
                               (a, j) =>
                                 a.slot.name === slot?.name &&
                                 getWeekDayByDateString(a.date) === i && (
-                                  <Link href={`/attendStudent/${a.id}`}>
                                     <ActivityInstructor activity={a} />
-                                  </Link>
                                 )
                             )}
                         </td>
