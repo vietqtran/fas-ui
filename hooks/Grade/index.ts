@@ -151,6 +151,7 @@ const useGrade = () => {
                 toast.success(response.message);
                 fectchGrade();
             } else {
+                toast.error(response?.message || "Update grade failed");
                 return (response?.message || "Update grade failed");
             }
         }

@@ -36,4 +36,10 @@ export const getInstructorActivityByWeekYear = (instructorId: string,
   return instance.get(`/${END_POINT.FIND_ACTIVITY_FOR_INSTRUCTOR}/${instructorId}?week=${week}&year=${year}`);
 }
 
+export const getActivityByTermCourseClass = (termId: string,
+  courseId: string,
+  classId: string) => {
+  return instance.get(`/activity/term/${termId}/course/${courseId}/grade/${classId}`);
+}
+
 
